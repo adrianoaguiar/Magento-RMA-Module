@@ -1,0 +1,113 @@
+ <?php echo $this->getMessagesBlock()->getGroupedHtml(); 
+ 
+ $thisCustomer		= $this->getSession('Customer');
+ $tempKlantPost 	= $this->getSession('tempKlantPost');
+ if(isset($tempKlantPost['email'])) $email = $tempKlantPost['email']; elseif(isset($thisCustomer['shippingAddress']['email']) && !empty($thisCustomer['shippingAddress']['email']))$email = $thisCustomer['shippingAddress']['email']; else  $email = $thisCustomer['email'];
+ if(isset($tempKlantPost['naam'])) $naam = $tempKlantPost['naam']; else $naam= $thisCustomer['firstname'].' '.$thisCustomer['lastname'];
+ if(isset($tempKlantPost['stad'])) $stad = $tempKlantPost['stad']; else $stad = $thisCustomer['shippingAddress']['city'];
+ if(isset($tempKlantPost['adres'])) $adres = $tempKlantPost['adres']; else {
+ 	$parts = preg_split('/\s+/', str_replace("  "," ",trim($thisCustomer['shippingAddress']['street'])));
+	$last = count($parts)-1;
+	$huisnummer = $parts[$last];
+	unset($parts[$last]);
+	$adres = implode(" ",$parts);
+		    
+ }
+ if(isset($tempKlantPost['telefoon'])) $telefoon = $tempKlantPost['telefoon']; else $telefoon = $thisCustomer['shippingAddress']['telephone'];
+ if(isset($tempKlantPost['postcode'])) $postcode = $tempKlantPost['postcode']; else $postcode = $thisCustomer['shippingAddress']['postcode'];
+ if(isset($tempKlantPost['fax'])) $fax = $tempKlantPost['fax']; else $fax = '';
+ if(isset($tempKlantPost['mobiel'])) $mobiel = $tempKlantPost['mobiel']; else $mobiel = '';
+ if(isset($tempKlantPost['bedrijf'])) $bedrijf = $tempKlantPost['bedrijf']; else $bedrijf = $thisCustomer['shippingAddress']['company'];
+ if(isset($tempKlantPost['huisnummer'])) $huisnummer = $tempKlantPost['huisnummer'];
+ if(isset($tempKlantPost['land'])) $land = $tempKlantPost['land']; else $land=$thisCustomer['shippingAddress']['country_id'];;
+
+
+ $rawCountries = $this->getSession('allowedCountries');
+ foreach($rawCountries['allowedcountries']['country'] as $country)if(is_array($country)) $countries[$country['code']] = $country['code']; else $countries[$country] = $country;
+ ?>
+<div class="returnContainer">
+		<div class="registered-users">
+<div class="box-title"><h3><?php echo $this->translate('KlantGegevens')?></h3></div>
+<?php echo $this->showSubTitle('klantgegevens');?><br /><br />
+<div class="fullWidth">
+	<ul class="form-list">
+	<form action="" method="post">
+		<table cellpadding="0" cellspacing="0" border="0">
+			<tr>
+				 <td><label class="required"><em>*</em><?php echo $this->translate('Naam')?></label></td>
+				 <td width="20"></td>
+				 <td><input type="text"  style="width:200px !important;" class="input-text required-entry"  name="naam" id="naam" value="<?php echo$naam;?>"/></td>
+				 <td width="20"></td>
+				 <td ><label class="required"><em>*</em><?php echo $this->translate('Stad')?></label></td>
+				 <td width="20"></td>
+				 <td><input type="text"  style="width:200px !important;" class="input-text required-entry"  name="stad" id="stad" value="<?php echo$stad;?>"/></td>
+			</tr>
+			<tr><td colspan="7"><br /></td></tr>
+			<tr>
+				 <td ><label class="required"><em>*</em><?php echo $this->translate('Straat')?></label></td>
+				 <td width="20"></td>
+				 <td><input type="text"  style="width:200px !important;" class="input-text required-entry"  name="adres" id="adres" value="<?php echo$adres;?>" /></td>
+				 <td width="20"></td>
+				 <td ><label class="required"><em>*</em><?php echo $this->translate('Huisnummer')?></label></td>
+				 <td width="20"></td>
+				 <td><input type="text"  style="width:200px !important;" class="input-text required-entry"  name="huisnummer" id="huisnummer" value="<?php echo$huisnummer;?>" /></td>
+			</tr>
+			<tr><td colspan="7"><br /></td></tr>
+			<tr>
+				 <td ><label class="required"><em>*</em><?php echo $this->translate('Postcode')?></label></td>
+				 <td width="20"></td>
+				 <td><input type="text"  style="width:200px !important;" class="input-text required-entry"  name="postcode" id="postcode" value="<?php echo$postcode;?>"/></td>
+				 <td width="20"></td>
+				 <td ><label><?php echo $this->translate('Fax')?></label></td>
+				 <td width="20"></td>
+				 <td><input type="text" style="width:200px !important;" class="input-text" name="fax" id="fax" value="<?php echo$fax;?>"/></td>
+			</tr>
+			<tr><td colspan="7"><br /></td></tr>
+			<tr>
+				 <td ><label class="required"><em>*</em><?php echo $this->translate('Email')?></label></td>
+				 <td width="20"></td>
+				 <td><input type="text"  style="width:200px !important;" class="input-text required-entry"  name="email" id="email" value="<?php echo$email;?>"/></td>
+				 <td width="20"></td>
+				 <td ><label><?php echo $this->translate('Mobiel')?></label></td>
+				 <td width="20"></td>
+				 <td><input type="text" style="width:200px !important;" class="input-text" name="mobiel" id="mobiel" value="<?php echo$mobiel;?>"/></td>
+			</tr>
+			<tr><td colspan="7"><br /></td></tr>
+			<tr>
+				 <td ><label class="required"><em>*</em><?php echo $this->translate('Land')?></label></td>
+				 <td width="20"></td>
+				 <td>
+				 	<select name="land" id="land" style="width:200px !important;">
+				 		<?php foreach($countries as $code=>$country)
+						{
+							if($code==$land)$sel = 'selected'; else $sel='';
+							echo '<option '.$sel.' value="'.$code.'">'.$country.'</option>';
+						}?>
+				 		
+				 	</select>
+				 </td>
+				 <td width="20"></td>
+				 <td ><label><?php echo $this->translate('Bedrijf')?></label></td>
+				 <td width="20"></td>
+				 <td><input type="text" style="width:200px !important;" class="input-text" name="bedrijf" id="bedrijf" value="<?php echo$bedrijf;?>"/></td>
+			</tr>
+			<tr><td colspan="7"><br /></td></tr>
+			<tr>
+				 <td ><label class="required"><em>*</em><?php echo $this->translate('Telefoon')?></label></td>
+				 <td width="20"></td>
+				 <td><input type="text"  style="width:200px !important;" class="input-text required-entry"  name="telefoon" id="telefoon" value="<?php echo$telefoon;?>"/></td>
+				 <td width="20"></td>
+				 <td></td>
+				 <td width="20"></td>
+				 <td></td>
+			</tr>
+			<tr><td colspan="7"><br /></td></tr>
+			<?php echo"<tr><td colspan='4'><span class='requiredAnswer'>*</span> <i>".$this->translate('requiredFields')."</i></td></tr>"; ?> 
+		</table>
+		<div class="floatLeft buttons buttons-set"> <button onclick="history.back()"class="returnBtnBig btn btn-cart add-to-cart button" type="button"  /><span><span><?php echo $this->translate('Terug')?></span></span></button></div>
+		<div class="floatRight buttons buttons-set"><button class="returnBtnBig btn btn-cart add-to-cart button" type="submit"  /><span><span><?php echo $this->translate('Verder')?></span></span></button></div>
+	</form>
+	</ul>
+</div>
+</div>
+</div>

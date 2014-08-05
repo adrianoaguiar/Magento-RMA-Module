@@ -1,0 +1,127 @@
+﻿OneTwoReturn_RMA::selectOrder,Sélectionnez une commande
+OneTwoReturn_RMA::notLoggedIn,Vous ne vous êtes pas identifié
+OneTwoReturn_RMA::postcodeDoesNotMatch,Le code postal ne correspond pas à la commande
+OneTwoReturn_RMA::orderDoesNotExists,La commande n'existe pas
+OneTwoReturn_RMA::noOrdersAvailable,Aucune commande susceptible d’être retournée disponible en ce moment
+OneTwoReturn_RMA::notFilledInRequiredInfo,Veuillez remplir toutes les informations requises
+OneTwoReturn_RMA::orderCanNotBeReturned,Les produits figurant sur cette commande ne peuvent plus être retournés
+OneTwoReturn_RMA::selectProducts,Sélectionnez les produits à retourner
+OneTwoReturn_RMA::order,Commande
+OneTwoReturn_RMA::datum,Date
+OneTwoReturn_RMA::Postcode,Code postal
+OneTwoReturn_RMA::Verder,Suivant
+OneTwoReturn_RMA::orderNummer,Numéro de commande
+OneTwoReturn_RMA::verstuur,Envoyez
+OneTwoReturn_RMA::orderNotCompleted,Cette commande n’est pas totalement achevée
+OneTwoReturn_RMA::systemError,Une erreur indéfinie s’est produite, veuillez réessayer
+OneTwoReturn_RMA::SelectAProduct,Veuillez sélectionner le produit que vous souhaitez retourner
+OneTwoReturn_RMA::MiniumQuantity,Veuillez retourner 1 produit au minimum
+OneTwoReturn_RMA::MaxiumQuantity,Vous ne pouvez pas retourner un nombre plus élevé de produits que celui des produits qui figurent sur votre commande
+OneTwoReturn_RMA::noProductsAvailable,Il n’y a pas de produits disponibles pour cette commande
+OneTwoReturn_RMA::Prijsperstuk,Prix par unité
+OneTwoReturn_RMA::Aantal,Nombre
+OneTwoReturn_RMA::Subtotaal,Sous-total
+OneTwoReturn_RMA::Verder,Suivant
+OneTwoReturn_RMA::CurlError,Une erreur s’est produite lors de la connexion avec l’API: 
+OneTwoReturn_RMA::missingField,Toutes les données requises n’ont pas été enregistrées pour ce produit, veuillez demander à l’administrateur d’ajouter les données suivantes: 
+OneTwoReturn_RMA::MissingFormField,Une réponse est requise pour la question: 
+OneTwoReturn_RMA::requiredFields,Ces champs sont obligatoires
+OneTwoReturn_RMA::RetourInformatie,Informations pour le retour
+OneTwoReturn_RMA::KlantGegevens,Données client
+OneTwoReturn_RMA::Naam,Nom
+OneTwoReturn_RMA::Stad,Ville
+OneTwoReturn_RMA::Adres,Adresse
+OneTwoReturn_RMA::Telefoon,Téléphone
+OneTwoReturn_RMA::Postcode,Code postal
+OneTwoReturn_RMA::Fax,Fax
+OneTwoReturn_RMA::Email,E-mail
+OneTwoReturn_RMA::Mobiel,Téléphone mobile
+OneTwoReturn_RMA::Land,Pays
+OneTwoReturn_RMA::Nederland,Pays-Bas
+OneTwoReturn_RMA::Bedrijf,Société
+OneTwoReturn_RMA::ServiceKosten,Frais de Service
+OneTwoReturn_RMA::Voorwaarden,Conditions
+OneTwoReturn_RMA::acceptTerms,J’accepte les conditions
+OneTwoReturn_RMA::TotaleKosten,Frais totaux
+OneTwoReturn_RMA::selecteer,Sélectionnez
+OneTwoReturn_RMA::Straat,Rue
+OneTwoReturn_RMA::Huisnummer,Numéro
+OneTwoReturn_RMA::RetourKosten,Frais de retour
+OneTwoReturn_RMA::FieldToLong,Le contenu du champ suivant est trop long:
+OneTwoReturn_RMA::WrongSyntax,Le champ suivant contient des erreurs:
+OneTwoReturn_RMA::RecoveryAmount,Montant du retour, à titre indicatif aucun paiement n’est requis
+OneTwoReturn_RMA::Vervoerders,Type de retour
+OneTwoReturn_RMA::ErrorCallingReturnOptions,Une erreur s’est produite lors de la recherche des transporteurs
+OneTwoReturn_RMA::ReturnIdMissing,Une erreur s’est produite lors de l’attribution de l’ID
+OneTwoReturn_RMA::orderNotValidForRma,Vous ne pouvez pas retourner des produits d’une commande précise sans l’accord préalable de l’administrateur
+OneTwoReturn_RMA::notValidCountry,Vous avez commandé un produit dans un pays qui n’est pas pris en charge dans notre politique de retour automatique
+OneTwoReturn_RMA::Checkout,Passer à la caisse
+OneTwoReturn_RMA::noActiveReturnType,Un type de retour doit être activé au minimum
+OneTwoReturn_RMA::ReturnType,Type de retour
+OneTwoReturn_RMA::acceptVoorwaarden,Vous devez accepter les conditions
+OneTwoReturn_RMA::errorGettingStatus,Une erreur s’est produite lors de la recherche du statut
+OneTwoReturn_RMA::Selecteer,Sélectionnez
+OneTwoReturn_RMA::TeRetournerenArtikelen,Articles à retourner
+OneTwoReturn_RMA::Prijs,Prix  
+OneTwoReturn_RMA::Totaal,Total
+OneTwoReturn_RMA::Vervoerskosten,Frais de transport
+OneTwoReturn_RMA::gratis,Gratuit
+OneTwoReturn_RMA::RetourStatusenOrder,Statuts de retour de cette commande:
+OneTwoReturn_RMA::RetourStatusenProduct,Statuts de retour de ce produit:
+OneTwoReturn_RMA::RMAreferentie:,Référence RMA:
+OneTwoReturn_RMA::status,Statut
+OneTwoReturn_RMA::noOrdersAvailable,Aucune commande à retourner disponible
+OneTwoReturn_RMA::1Stuks,1
+OneTwoReturn_RMA::LoginOrder,S’identifier
+OneTwoReturn_RMA::LoginOrderText,Veuillez remplir votre numéro de commande et votre code postal afin de retourner des produits de la commande sélectionnée
+OneTwoReturn_RMA::orderTypeChoose,Sélectionnez le type de retour que vous souhaitez mentionner
+OneTwoReturn_RMA::selectOrderType,Quel genre de retour souhaitez-vous mentionner?
+OneTwoReturn_RMA::view,Aperçu retour et/ou échange
+OneTwoReturn_RMA::warranty,Garantie de retour
+OneTwoReturn_RMA::BTW,TVA
+OneTwoReturn_RMA::Re-stock,Aperçu retour et/ou échange
+OneTwoReturn_RMA::Repair,Garantie de retour
+OneTwoReturn_RMA::Type,Type  
+OneTwoReturn_RMA::Parts recovery,Remplacement de pièces
+OneTwoReturn_RMA::Recycling,Recyclage
+OneTwoReturn_RMA::Re-use,Réemploi
+OneTwoReturn_RMA::Refurbishment,Remise à neuf
+OneTwoReturn_RMA::Re-manufacturing,Reproduction
+OneTwoReturn_RMA::Re-marketing,Re-marketing
+OneTwoReturn_RMA::Scrap,Débris
+OneTwoReturn_RMA::Swap,Echange
+OneTwoReturn_RMA::Warranty,Garantie de retour
+OneTwoReturn_RMA::Warranty redemption,Remboursement de garantie
+OneTwoReturn_RMA::Terug,Retour
+OneTwoReturn_RMA::Order selectie,Sélection de commande
+OneTwoReturn_RMA::Producten,Produits
+OneTwoReturn_RMA::Vervoerders,Type de retour
+OneTwoReturn_RMA::Checkout,Passer à la caisse
+OneTwoReturn_RMA::Uw RMA referentie nummer:,Référence RMA:
+OneTwoReturn_RMA::Bedankt voor uw retour.,Merci pour votre retour
+OneTwoReturn_RMA::noActiveSupply,Sélectionner un transporteur
+OneTwoReturn_RMA::Nieuwe retour,Nouveau retour
+OneTwoReturn_RMA::errorGettingCountries,Une erreur s’est produite lors de la recherche des pays
+OneTwoReturn_RMA::transporttationsCosts,Frais de transport
+OneTwoReturn_RMA::productname,Produit
+OneTwoReturn_RMA::newretour,Nouveau retour
+OneTwoReturn_RMA::supplychain,Type de retour
+OneTwoReturn_RMA::orderProduct,Produit 
+OneTwoReturn_RMA::BTW,TVA
+OneTwoReturn_RMA::STK,Aperçu retour et/ou échange
+OneTwoReturn_RMA::RPR,Garantie de retour
+OneTwoReturn_RMA::type,Type
+OneTwoReturn_RMA::PRY,Remplacement de pièces
+OneTwoReturn_RMA::REC,Recyclage
+OneTwoReturn_RMA::REU,Réemploi
+OneTwoReturn_RMA::RFT,Remise à neuf
+OneTwoReturn_RMA::RMG,Reproduction
+OneTwoReturn_RMA::RMK,Re-marketing
+OneTwoReturn_RMA::SCR,Débris
+OneTwoReturn_RMA::SWP,Echange
+OneTwoReturn_RMA::WAR,Garantie de retour
+OneTwoReturn_RMA::WRN,Remboursement de garantie
+OneTwoReturn_RMA::orderSelectie,Commande
+OneTwoReturn_RMA::Ordered,Besteld
+OneTwoReturn_RMA::Returning,retour
+OneTwoReturn_RMA::Returned,renvoye

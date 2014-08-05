@@ -1,0 +1,226 @@
+<?php 
+echo $this->getMessagesBlock()->getGroupedHtml(); 
+$sessionXML 	= $this->getSession('xml');
+$configXML 	= $this->getSession('Config');
+$order = $this->getSession('order');	
+
+$_order = Mage::getModel('sales/order')->loadByIncrementID($order['orderId']);
+$allproducts = $_order->getAllItems();
+
+if(isset($allproducts) && !empty($allproducts) && is_array($allproducts))
+{
+$lineNo=0;
+	foreach($allproducts as $index=>$_product)
+	{
+		$obj = Mage::getModel('catalog/product')->load($_product->getProductId());
+		$allOptions = $_product->getData('product_options');
+		$options = unserialize($allOptions);
+		
+		if(!isset($options['info_buyRequest']['product']) || $_product->getProductId()==$options['info_buyRequest']['product'])
+		{
+			$lineNo++;
+			if($configXML['pricevat']=='ex')$price =  $_product->getPrice(); else $price =  $_product->getPriceInclTax();
+			
+
+			$customOpts='';
+			if (isset($options['options'])) {
+				foreach ($options['options'] as $optionValues) {
+					if ($optionValues['value']) {
+	                    $customOpts.= '&nbsp;<strong><i>'. $optionValues['label'].'</i></strong>: ';
+	
+	                    $_printValue = isset($optionValues['print_value']) ? $optionValues['print_value'] : strip_tags($optionValues['value']);
+	                    $values = explode(', ', $_printValue);
+	                    foreach ($values as $value) {
+	                        if (is_array($value))
+	                          foreach ($value as $_value) 
+	                              $customOpts.= $_value;
+	                        else $customOpts.= $value; 
+	                    }
+	                    $customOpts.= '<br />';
+	                }
+				}	
+			} 
+			if (isset($options['attributes_info'])) {
+				foreach ($options['attributes_info'] as $optionValues) {
+					if ($optionValues['value']) {
+	                    $customOpts.= '&nbsp;<strong><i>'. $optionValues['label'].'</i></strong>: ';
+	
+	                    $_printValue = isset($optionValues['print_value']) ? $optionValues['print_value'] : strip_tags($optionValues['value']);
+	                    $values = explode(', ', $_printValue);
+	                    foreach ($values as $value) {
+	                        if (is_array($value))
+	                          foreach ($value as $_value) 
+	                              $customOpts.= $_value;
+	                        else $customOpts.= $value; 
+	                    }
+	                    $customOpts.= '<br />';
+	                }
+				}
+			}
+			
+			$products[$lineNo]['customOpts']=$customOpts;
+			$products[$lineNo]['productUrl']=$obj->getProductUrl();
+			$products[$lineNo]['obj']= $obj;
+			$products[$lineNo]['naam']=$this->htmlEscape($_product['name']); 
+			foreach($sessionXML['products']['product'] as $sesProduct)if($lineNo==$sesProduct['lineno'])$products[$lineNo]['qty']=$sesProduct['qty'];
+			if(isset($products[$lineNo]['qty']))$totals=  $price*$products[$lineNo]['qty']; else $totals=0;
+			$products[$lineNo]['price'] = Mage::helper('core')->currency($price); 
+			$products[$lineNo]['totals']= Mage::helper('core')->currency($totals);
+		}
+	}
+}
+
+?>
+<div class="returnContainer">
+	<div class="registered-users">
+		<div class="box-title"><h3><?php echo $this->translate('Checkout')?></h3></div><?php echo $this->showSubTitle('checkout');?><br /><br />
+		<h4><?php echo $this->translate('TeRetournerenArtikelen')?>:</h4>
+		<div class="serviceBox">
+		    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="data-table">
+		    <thead>
+		        <tr class="first last">
+		        	<th>&nbsp;</th> 
+		        	<th><?php echo $this->translate('productname');?></th>
+		        	
+		        	<th><?php echo $this->translate('Prijsperstuk');?></th>
+		        	<th><?php echo $this->translate('Aantal');?></th>
+		        	<th><?php echo $this->translate('Subtotaal');?></th>
+		        </tr>
+		    </thead><?php
+		    $first=true;
+			$i=0;
+			foreach($sessionXML['products']['product'] as $product)
+			{
+				$i++;
+				$class='';
+				if($first){
+					$first=false;
+					$class.='first';
+				}
+				if($i%2)
+				{
+					$class.=' even ';
+				} else $class.=' odd ';
+			?>
+		        <tr class="<?php echo $class;?>">
+		        	<td width="80"><div class="demoAfbeelding"><a target="_blank" href="<?php echo $products[$product['lineno']]['productUrl']; ?>"><img src="<?php echo Mage::helper('catalog/image')->init($products[$product['lineno']]['obj'], 'thumbnail')->resize(76, 59) ?>" border="0" width="76" height="59" /></a></div></td>
+		            <td><strong><a target="_blank" href="<?php echo $products[$product['lineno']]['productUrl']; ?>"><?php echo $products[$product['lineno']]['naam']; ?></a></strong><br /><?php echo $products[$product['lineno']]['customOpts'];?></td>
+		            <td><span class="price"><?php echo $products[$product['lineno']]['price']; ?></span></td>
+		            <td><?php echo $products[$product['lineno']]['qty']; ?></td>
+		            <td><span class="price"><?php echo $products[$product['lineno']]['totals']; ?></span></td>
+		
+		        </tr>
+			<?php }?>
+			</table>
+		</div>
+		<br /><br /><br /> 
+		<h4><?php echo $this->translate('Vervoerskosten');?>:</h4>
+		
+		<?php foreach($sessionXML['returnoptions']['returnoption'] as $returnoption){
+			if(isset($returnoption['selected']) && $returnoption['selected']=='Y')
+			{
+				$img = Mage::helper('rma')->getImageUrl($returnoption['logourl']);
+				$returnoptionRight=$returnoption;
+?>
+	<div class="serviceBox">
+	    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+	        <tr>
+	            <td width="100"><div class="demoAfbeelding"><img src="<?php echo $img;?>" width="85" /></div></td>
+	            <td><strong class="vervoerderTitel"><?php echo $returnoption['prompt']; ?></strong><br />
+	            	<?php if(isset($returnoption['instruction']))echo $returnoption['instruction'];?>
+	            </td>
+	            <td><strong></strong><br />
+	            <?php 
+	        	if(!empty($returnoption['optionamount']) && !empty($returnoption['optionccy']) && $returnoption['optionamount']>0){
+	        			if($returnoption['optionccy']=='EUR')$optionccy='&euro;'; else $optionccy=$returnoption['optionccy'];
+	                	echo '<strong> '.$optionccy.' '.$returnoption['optionamount'].'</strong>'; 
+	           } //else { echo $this->translate('gratis');}?>
+	            </td>
+	        </tr>
+	    </table>
+	</div> 
+<?php } }  ?>
+<?php
+if(isset($sessionXML['reutilization']['reutilcosts']['reutilcost']))
+{?>
+	
+	<?php
+	$costs=array();
+	$first=true;
+	foreach($sessionXML['reutilization']['reutilcosts']['reutilcost'] as $data)
+	{
+		if($data['reutilamounttype']!='N' && $data['reutilamount']!='0' && isset($data['reutilamount']))
+		{
+			if(empty($data['reutilccy']))$data['reutilccy']='EUR';
+			$costs[] = $data;
+		}
+		
+	}
+	
+	if(!empty($costs))
+	{
+		$totalPrice = 0;
+		$totalVat = 0;
+		foreach($costs as $cost)
+		{
+			$price= $cost['reutilamount'];
+			$totalPrice+=$price;
+			$totalVat+=$cost['vatamount'];
+		?>
+		<h2><?php echo $this->translate('ServiceKosten');?>:</h2>
+		<div class="serviceBox">
+		    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+		        <tr>
+		            <td class="lefTD"><strong><?php if($cost['reutilamounttype']=='P')echo $this->translate('RetourKosten');else echo $this->translate('RecoveryAmount');?></strong></td>
+		            <td align="right" rowspan="2" class="rightTD"><?php echo Mage::helper('core')->currency($price); ?></td>
+		        </tr>
+		        <tr>
+		            <td></td>
+		        </tr>
+		    </table>
+		</div>
+		<?php }
+	}
+
+}
+
+if(isset($returnoptionRight['optionamount']) && $returnoptionRight['optionamount']>0)
+{
+	$totalPrijs = $returnoptionRight['optionamount'];
+	if(isset($returnoptionRight['optionamount']))$totalVatPrijs = $returnoptionRight['vatamount']; else $totalVatPrijs=0;
+} else {
+	$totalPrijs=0;
+}
+$totalVatPrijs=0;
+if(isset($totalPrice) && $totalPrice>0)
+{
+	$totalPrijs+=$totalPrice;
+	$totalVatPrijs+=$totalVat;
+}
+$totalPrijsIncVat=$totalPrijs+$totalVatPrijs;
+?>
+<form action="" method="post" onsubmit="myButton.disabled = true; return true;">
+	<div class="totaalKostenContainer">
+		<div class="floatRight">
+			<table cellpadding="0" border="0" cellspacing="0" width="100%">
+			<tr><td><span class="subtotaalKosten"><?php 
+		    if(!isset($returnoptionRight['optionccy']) || $returnoptionRight['optionccy']=='EUR')$optionccy='&euro;'; else $optionccy=$returnoptionRight['optionccy'];
+		    echo $this->translate('transporttationsCosts')?>:</span></td><td align="right"><span class="subtotaalKosten">  &nbsp; <?php echo $optionccy.' '.$totalPrijs?></span></td></tr>
+		    
+		    <tr><td><span class="totaalBTWKosten"><?php 
+		    echo $this->translate('BTW')?>:</span></td><td align="right"><span class="totaalBTWKosten">  &nbsp; <?php echo $optionccy.' '.$totalVatPrijs?></span></td></tr>
+		    
+		    <tr><td colspan="2" ><div style="border:0; height:1px; background:black; width:250px; margin-bottom:3px;">&nbsp;</div></td></tr>
+		    
+		    <tr><td><span class="totaalKosten"><?php 
+		    echo $this->translate('Totaal')?>:</span></td><td align="right"> <span class="totaalKosten"> &nbsp; <?php echo $optionccy.' '.$totalPrijsIncVat?></span></td></tr>
+		    </table>
+		</div><br /><br /><br style="clear:both" />
+		
+	</div>
+	<div class="floatLeft buttons buttons-set"> <button onclick="history.back()"class="returnBtnBig btn btn-cart add-to-cart button" type="button"  /><span><span><?php echo $this->translate('Terug')?></span></span></button></div>
+	<div class="floatRight buttons buttons-set"><button class="returnBtnBig btn btn-cart add-to-cart button" name="myButton" type="submit"  /><span><span><?php echo $this->translate('Verder')?></span></span></button></div>
+	<div class="floatRight"> <a href="<?php echo $configXML['tosurl'];?>" target="_blank"><?php echo $this->translate('Voorwaarden')?></a> &nbsp; &nbsp; &nbsp;&nbsp; <input value="true" name="voorwaarden" type="checkbox"/> &nbsp;  <?php echo $this->__('acceptTerms')?> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </div>
+		
+</form>
+</div></div>

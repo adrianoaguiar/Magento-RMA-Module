@@ -1,0 +1,200 @@
+<?php 
+
+$order 			= $this->getSession('order');
+$allorders 		= $this->getSession('allorders');
+$customer 		= $this->getSession('Customer');
+$config 		= $this->getSession('Config');
+$_order 		= Mage::getModel('sales/order')->loadByIncrementID($order['orderId']);
+$tableRow		= '';
+$first			= true;
+$i				= 0;
+$returnValid	=false;
+$allproducts 	= $_order->getAllItems();
+
+if(isset($allproducts) && !empty($allproducts) && is_array($allproducts))
+{
+	$lineNo=0;
+	foreach($allproducts as $index=>$_product)
+	{
+		if($config['pricevat']=='ex')
+		{
+			$price 	= $_product->getPrice(); 
+			$totals	= $_product->getRowTotal(); 
+		} else 
+		{
+			$price  = $_product->getPriceInclTax();
+			$totals	= $_product->getRowTotalInclTax(); 
+		}
+		
+		
+		$allOptions = $_product->getData('product_options');
+		$options = unserialize($allOptions);
+		
+		if(!isset($options['info_buyRequest']['product']) || $_product->getProductId()==$options['info_buyRequest']['product'])
+		{
+			$qnty= round($_product->getQtyOrdered()); 
+			$obj = Mage::getModel('catalog/product')->load($_product->getProductId());
+			$lineNo++;
+			$count=0;
+			
+			$rmaItems = Mage::helper('rma')->getRmaItemsByOrderItem($_product->getItemId())->getData();
+			if(is_array($rmaItems))
+			{
+				foreach($rmaItems as $ritem)
+				{
+					//echo($ritem['rma_items_qty_returning']).'-';
+					$count=$count+$ritem['rma_items_qty_returning']+$ritem['rma_items_qty_returned'];
+				}
+				
+				$vqnty= $qnty - $count;
+				//echo"<pre>";
+				//die(print_r(Mage::helper('rma')->getRmaItemsByOrderItem($_product->getItemId())->getData()));
+			} else $vqnty=$qnty;
+
+			
+			$customOpts='';
+			if (isset($options['options'])) {
+				foreach ($options['options'] as $optionValues) {
+					if ($optionValues['value']) {
+	                    $customOpts.= '&nbsp;<strong><i>'. $optionValues['label'].'</i></strong>: ';
+	
+	                    $_printValue = isset($optionValues['print_value']) ? $optionValues['print_value'] : strip_tags($optionValues['value']);
+	                    $values = explode(', ', $_printValue);
+	                    foreach ($values as $value) {
+	                        if (is_array($value))
+	                          foreach ($value as $_value) 
+	                              $customOpts.= $_value;
+	                        else $customOpts.= $value; 
+	                    }
+	                    $customOpts.= '<br />';
+	                }
+				}	
+			} 
+			if (isset($options['attributes_info'])) {
+				foreach ($options['attributes_info'] as $optionValues) {
+					if ($optionValues['value']) {
+	                    $customOpts.= '&nbsp;<strong><i>'. $optionValues['label'].'</i></strong>: ';
+	
+	                    $_printValue = isset($optionValues['print_value']) ? $optionValues['print_value'] : strip_tags($optionValues['value']);
+	                    $values = explode(', ', $_printValue);
+	                    foreach ($values as $value) {
+	                        if (is_array($value))
+	                          foreach ($value as $_value) 
+	                              $customOpts.= $_value;
+	                        else $customOpts.= $value; 
+	                    }
+	                    $customOpts.= '<br />';
+	                }
+				}
+			}
+			$description = $_product['productdesc']."<br />";
+			$i++;
+			$class='';
+			if($first){
+				$first=false;
+				$class.='first';
+			}
+			if($i%2)
+			{
+				$class.=' even ';
+			} else $class.=' odd ';
+
+			$qtyHtml = '<table cellspacing="0" class="qty-table"><tbody><tr><td>'.$this->__('Ordered').':</td><td><strong>'.$qnty.'</strong</td></tr>';
+			if($_product->getQtyReturning()>0) $qtyHtml .= '<tr><td>'.$this->__('Returning').': </td><td><strong>'.$_product->getQtyReturning()*1 .'</strong></td></tr>';
+			if($_product->getQtyReturned()>0) $qtyHtml .= '<tr><td>'.$this->__('Returned').': </td><td><strong>'.$_product->getQtyReturned()*1 .'</strong></td></tr>';
+			if($_product->getQtyRefunded()>0) $qtyHtml .= '<tr><td>'.$this->__('Refunded').': </td><td><strong>'.$_product->getQtyRefunded()*1 .'</strong></td></tr>';
+			$qtyHtml.='</tbody></table>' ;
+		
+			$tableRow.='
+		        <tr class="'.$class.'">
+		            <td><div class="demoAfbeelding">';
+			 			if(!empty($obj))$tableRow.='<a target="_blank" href="'.$obj->getProductUrl().'"><img src="'.Mage::helper('catalog/image')->init($obj, 'thumbnail')->resize(76, 59).'" alt="'.$this->htmlEscape($_product['name']).'" border="0" width="76" height="59" /></a>';
+			$tableRow.='</div>
+					</td><td>';
+			 			if(!empty($obj))$tableRow.='<a target="_blank" href="'.$obj->getProductUrl().'">'.$this->htmlEscape($_product['name']).'</a>'; 
+			 			else $tableRow.= $this->htmlEscape($_product['name']); 
+						$tableRow.='<br />'.$description.$customOpts.'</td>
+		            <td>
+		            	<span class="price">'.Mage::helper('core')->currency($price).'</span>
+		            </td>
+		            <td align="center" class="a-center" width="100">
+		            	'.$qtyHtml.'
+		            </td>
+		            <td>
+		            	'.Mage::helper('core')->currency($totals).'
+		            </td>
+		            <td align="center" width="35" class="a-center">';
+		                if($vqnty>=1){
+		                	 if($vqnty>=2){} else {
+		                	 	 $tableRow.=$this->translate('1Stuks');
+							} 
+							$tableRow.='<input type="'; 
+							if($vqnty>=2)$tableRow.='text'; else $tableRow.='hidden';
+							$tableRow.='" class="returnAantalBox" name="aantal['.$lineNo.']" id="aantal-'.$lineNo.'" value="';
+							if(isset($_POST['aantal'][$lineNo])) $tableRow.= $_POST['aantal'][$lineNo]; else $tableRow.='1';
+							$tableRow.='"/>';
+						} else{
+							$tableRow.='<input type="hidden" class="returnAantalBox" name="aantal['.$lineNo.']" id="aantal-'.$lineNo.'" value="0" />';
+						}
+			$tableRow.='</td><td align="center" class="a-center last">';
+					if($vqnty>=1){
+						 $returnValid=true; 
+						 $tableRow.='<input value="'.$lineNo.'" name="product['.$lineNo.']"';
+						 if(isset($_POST['product'][$lineNo])) $tableRow.=' checked="yes" ';
+						 $tableRow.='type="checkbox"/> ';
+					}
+			$tableRow.='</td></tr>';
+		}
+	}
+}
+?>
+	
+<?php  echo $this->getMessagesBlock()->getGroupedHtml();?>
+<div class="returnContainer">
+	<div class="registered-users">
+		<div class="box-title"><h3><?php echo $this->translate('selectProducts'); ?></h3></div><?php echo $this->showSubTitle('selectproduct');?><br />
+		<?php if(is_array($allorders[$order['orderId']])) { ?>
+		<b><?php echo $this->translate('Recent RMAs on this order');?></b>
+		<table cellpadding="0" cellspacing="0" border="0"class="data-table selectprodstable">
+			<thead>
+	            <tr class="first last">
+	            	<th><?php echo $this->translate('RMA Type');?></th> 
+	            	<th><?php echo $this->translate('RMA #');?></th>
+	            	<th><?php echo $this->translate('Status');?></th>
+	            </tr>
+	        </thead>
+			<tbody>
+			<?php 
+				foreach($allorders[$order['orderId']] as $rma)
+				{
+					echo '<tr><td>'.Mage::getStoreConfig('rma/'.$rma['rma_context'].'/labelname').' </td><td>';
+					if($rma['rma_status_code']!='rma_cancelled') echo Mage::helper('rma')->getStatusLink($rma['rma_reference']); else echo $rma['rma_reference'];
+					echo '</td><td>'.Mage::helper('rma')->getStatusLabel($rma['rma_status_code']).'</td></tr> </li>';
+				}
+			?>
+			</tbody>
+		</table>
+		<br />
+		<?php }?>
+		<form action="" method="post">
+			<table cellpadding="0" cellspacing="0" border="0"class="data-table selectprodstable">
+		        <thead>
+		            <tr class="first last">
+		            	<th></th> 
+		            	<th><?php echo $this->translate('productname');?></th>
+		            	
+		            	<th><?php echo $this->translate('Prijs');?></th>
+		            	<th><?php echo $this->translate('Aantal');?></th>
+		            	<th><?php echo $this->translate('Subtotaal');?></th>
+						
+		                <th><?php echo $this->translate('Aantal');?></th>
+		                <th><?php echo $this->translate('selecteer')?></th>
+		            </tr>
+		        </thead>
+		        <?php echo $tableRow; ?>
+			</table>
+			<div class="floatLeft buttons buttons-set"> <button onclick="history.back()"class="returnBtnBig btn btn-cart add-to-cart button" type="button"  /><span><span><?php echo $this->translate('Terug')?></span></span></button></div>
+			<div class="floatRight buttons buttons-set"><?php if($returnValid){?><button class="returnBtnBig btn btn-cart add-to-cart button" type="submit"  /><span><span><?php echo $this->translate('Verder')?></span></span></button><?php }?></div>
+		</form>
+	</div>
+</div>

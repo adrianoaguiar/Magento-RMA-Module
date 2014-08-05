@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config>
+	<menu>
+        <sales>
+            <children>
+                <menurma translate="title" module="rma">
+                    <title>RMAs</title>
+                    <action>rma/adminhtml_rmaoverview</action>
+                    <sort_order>30</sort_order>
+                </menurma>
+            </children>
+        </sales>
+    </menu>
+	
+</config>	

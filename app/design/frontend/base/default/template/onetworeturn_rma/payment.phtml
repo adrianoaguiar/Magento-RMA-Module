@@ -1,0 +1,13 @@
+ <?php echo $this->getMessagesBlock()->getGroupedHtml();
+ $sessionXML 	= $this->getSession('xml');
+ $config = $this->getSession('Config');
+?>
+<div class="returnContainer">
+		<div class="registered-users">
+<div class="box-title"><h3><?php echo $this->__("Bedankt voor uw retour.");?></h3></div><div class="mediumText"> <b><?php echo $this->__("Uw RMA referentie nummer:");?></b> <i><?php echo $sessionXML['rmareference'];?></i><br /><br />
+<?php echo Mage::getStoreConfig('rma/returnoptions/thankstext'); ?><br />
+<?php if(isset($sessionXML['labellink']) && !empty($sessionXML['labellink']) && isset($config['labelurl']) && !empty($config['labelurl'])&& isset($config['labelview']) && $config['labelview']==true){ ?><iframe id="labelPreview" width="100%" border="0" height="712" style="padding:0;margin:0;border:0;overflow:hidden;" src="<?php echo $config['labelurl'];?>o2rlabel/html/labelcontainer.html?url=<?php echo urlencode($sessionXML['labellink']);?>"></iframe><?php }?>
+<?php ?>
+<div class="floatLeft buttons buttons-set"><button onclick="location.href='/12return/form/'"class="returnBtnBig btn btn-cart add-to-cart button" type="button"  /><span><span><?php echo $this->translate('newretour')?></span></span></button></div>
+</div><br /><br /><br /><br /> 
+</div></div>

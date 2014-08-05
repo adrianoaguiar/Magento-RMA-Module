@@ -1,0 +1,45 @@
+<?php echo $this->getMessagesBlock()->getGroupedHtml(); $sessionXML 	= $this->getSession('xml');?>
+<div class="returnContainer">
+	<div class="registered-users">
+		<div class="box-title"><h3><?php echo $this->translate('Vervoerders')?></h3></div><?php echo $this->showSubTitle('supplychain');?><br /><br />
+		<form action="" method="post">
+		<?php 
+		if(isset($sessionXML['returnoptions'])){
+			foreach($sessionXML['returnoptions']['returnoption'] as $returnoption){
+				
+				$img = Mage::helper('rma')->getImageUrl($returnoption['logourl']);
+				if(isset($returnoption['optionurl']))
+				{
+					$url1='<a href="'.$returnoption['optionurl'].'" target="_blank">'; 
+					$url2='</a>';
+				} else {
+					$url1='';
+					$url2='';
+				}
+	    	?>
+				<div class="orderBox">
+			        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+			            <tr>
+			            	<td rowspan="2" width="100"><div class="demoAfbeelding"><?php echo $url1;?><img src="<?php echo $img;?>" width="85" /><?php echo $url2;?></div></td>
+			                <td class="vervoerderTitel"><h4><?php echo $url1;?><strong><?php echo $returnoption['prompt'];?></strong><?php echo $url2;?></h4></td>
+			                <td align="right" class="vervoerderPrijs">
+			                	<?php if(!empty($returnoption['optionamount']) && !empty($returnoption['optionccy']) && $returnoption['optionamount']>0){
+			                		if($returnoption['optionccy']=='EUR')$returnoption['optionccy']='&euro;';
+			                	 echo '<strong> '.$returnoption['optionccy'].' '.$returnoption['optionamount'].'</strong>'; } //else { echo '<strong>'.$this->translate('gratis').'</strong>';}?>
+			                	
+			                </td>
+			            </tr>
+			            <tr>
+			                <td><?php if(isset($returnoption['instruction']))echo $returnoption['instruction'];?></td>
+			                <td class="rightTD" valign="bottom"><div class=" buttons buttons-set"><button name="id-<?php echo $returnoption['returnoptionid'];?>" class="returnBtnBig btn btn-cart add-to-cart button" type="submit"  /><span><span><?php echo $this->translate('selecteer')?></span></span></button></div></td>
+			            </tr>
+			        </table>
+				</div>  
+			<?php }
+			} else { ?>
+				<ul class="messages"><li class="error-msg"><ul><li><span><?php echo $this->translate('ErrorCallingReturnOptions');?></span></li></ul></li></ul>		
+		<?php }?>
+			<div class="floatLeft buttons buttons-set"> <button onclick="history.back()"class="returnBtnBig btn btn-cart add-to-cart button" type="button"  /><span><span><?php echo $this->translate('Terug')?></span></span></button></div>
+		</form>
+	</div>  
+</div>  

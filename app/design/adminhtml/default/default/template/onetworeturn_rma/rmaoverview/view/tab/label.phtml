@@ -1,0 +1,3 @@
+<?php $_rma = $this->getRma();?>
+<label for="labelUrl" style="height:23px;line-height:23px; display:block;float:left;margin-right:10px;font-weight:bold;">Label Url:</label><input onclick="this.select();" id="labelUrl" read-only name="label" value="<?php echo $_rma->getRmaLabellink() ?>" class="input-text" type="text" style="border-width: 1px;border-style: solid;border-color: #aaa #c8c8c8 #c8c8c8 #aaa;background: #fff;font: 12px arial, helvetica, sans-serif;width:450px;padding:3px 5px;margin-bottom:10px;float:left;">
+<iframe src="<?php echo $_rma->getRmaLabellink() ?>" width="100%" height="1140" border="0"></iframe>

@@ -1,0 +1,335 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <rma translate="label">
+            <label>RMA options - 12Return</label>
+            <tab>catalog</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>50</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            
+            <groups>
+		        <returnoptions translate="label">
+		          <label>General settings</label>
+		          <frontend_type>text</frontend_type>
+		          <sort_order>100</sort_order>
+		          <show_in_default>1</show_in_default>
+		          <show_in_website>1</show_in_website>
+		          <show_in_store>1</show_in_store>
+		          <fields>
+		          	<pluginenabled translate="label">
+                        <label>Plugin enabled</label>
+                        <frontend_type>select</frontend_type>
+              			<source_model>OneTwoReturn_RMA_Model_System_Config_Source_YesList</source_model>
+                        <sort_order>1</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>0</show_in_store>
+                    </pluginenabled>
+                    <debugmode translate="label">
+                        <label>Debug enabled</label>
+                        <frontend_type>select</frontend_type>
+              			<source_model>OneTwoReturn_RMA_Model_System_Config_Source_YesList</source_model>
+                        <sort_order>1</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>0</show_in_store>
+                    </debugmode>
+                    <serverhost translate="label">
+                        <label>12Return server</label>
+                        <frontend_type>select</frontend_type>
+                        <source_model>OneTwoReturn_RMA_Model_System_Config_Source_ServerList</source_model>
+                        <sort_order>4</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </serverhost>
+                    
+                    <processing translate="label">
+                        <label>RMA processing</label>
+                        <frontend_type>select</frontend_type>
+              			<source_model>OneTwoReturn_RMA_Model_System_Config_Source_ProcessingList</source_model>
+                        <sort_order>5</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>0</show_in_store>
+                    </processing>
+                    <logintype translate="label">
+                        <label>Authentication</label>
+                        <frontend_type>select</frontend_type>
+                        <source_model>OneTwoReturn_RMA_Model_System_Config_Source_AdminList</source_model>
+                        <sort_order>6</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </logintype>
+                    <useaccountifpossible translate="label">
+                    	<label>Use account if possible</label>
+                    	<frontend_type>select</frontend_type>
+                    	<source_model>OneTwoReturn_RMA_Model_System_Config_Source_YesList</source_model>
+                    	<sort_order>7</sort_order>
+                    	<show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>0</show_in_store>
+                    	<depends>
+                        	<logintype>order</logintype>
+						</depends>
+					</useaccountifpossible>
+					<pricevat translate="label">
+                        <label>Show product prices</label>
+                        <frontend_type>select</frontend_type>
+              			<source_model>OneTwoReturn_RMA_Model_System_Config_Source_VatList</source_model>
+                        <sort_order>49</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>0</show_in_store>
+                    </pricevat>
+                    <labelview translate="label">
+                        <label>Display label</label>
+                        <frontend_type>select</frontend_type>
+              			<source_model>OneTwoReturn_RMA_Model_System_Config_Source_YesList</source_model>
+                        <sort_order>50</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>0</show_in_store>
+                    </labelview>
+                    <introtext translate="label">
+                        <label>Introduction text</label>
+                        <frontend_type>textarea</frontend_type>
+                        <sort_order>51</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </introtext>
+                    <thankstext translate="label">
+                        <label>RMA completed message</label>
+                        <frontend_type>textarea</frontend_type>
+                        <sort_order>52</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </thankstext>
+                    <tosurl translate="label">
+                        <label>Terms of use URL</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>53</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </tosurl>
+                </fields>
+		        </returnoptions>
+		        
+		        <view translate="label">
+		          <label>View and Exchange Returns</label>
+		          <frontend_type>text</frontend_type>
+		          <sort_order>101</sort_order>
+		          <show_in_default>1</show_in_default>
+		          <show_in_website>1</show_in_website>
+		          <show_in_store>1</show_in_store>
+		          <fields>
+		          	<enabled translate="label">
+                        <label>RMA Type enabled</label>
+                        <frontend_type>select</frontend_type>
+              			<source_model>OneTwoReturn_RMA_Model_System_Config_Source_YesList</source_model>
+                        <sort_order>1</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </enabled>
+                    <labelname translate="label">
+                        <label>Frontend label</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>50</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </labelname>
+                    <context translate="label">
+                        <label>Context</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>51</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </context>
+                    <key translate="label">
+                        <label>Key</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>52</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </key>
+                    <selectiverma translate="label">
+                        <label>Return authorisation</label>
+                        <frontend_type>select</frontend_type>
+                        <source_model>OneTwoReturn_RMA_Model_System_Config_Source_RmaList</source_model>
+                        <sort_order>53</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>0</show_in_store>
+                    </selectiverma>
+                    <allowstatus translate="label">
+                            <label>Allow RMA for order status</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>OneTwoReturn_RMA_Model_System_Config_Source_StatusList</source_model>
+                            <sort_order>55</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                    </allowstatus> 
+                    <orderdays translate="label">
+                        <label>Return period in days</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>56</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </orderdays>
+                    <daysfrom>
+                    	<label>Calculate period from</label>
+                        <frontend_type>select</frontend_type>
+              			<source_model>OneTwoReturn_RMA_Model_System_Config_Source_FromList</source_model>
+                        <sort_order>57</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </daysfrom>
+                </fields>
+		        </view>
+		        
+		        <warranty translate="label">
+		          <label>Warranty Returns</label>
+		          <frontend_type>text</frontend_type>
+		          <sort_order>102</sort_order>
+		          <show_in_default>1</show_in_default>
+		          <show_in_website>1</show_in_website>
+		          <show_in_store>1</show_in_store>
+		          <fields>
+		          	<enabled translate="label">
+                        <label>RMA Type enabled</label>
+                        <frontend_type>select</frontend_type>
+              			<source_model>OneTwoReturn_RMA_Model_System_Config_Source_YesList</source_model>
+                        <sort_order>1</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </enabled>
+                    <labelname translate="label">
+                        <label>Frontend label</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>50</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </labelname>
+                    <context translate="label">
+                        <label>Context</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>51</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </context>
+                    <key translate="label">
+                        <label>Key</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>52</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </key>
+                    <selectiverma translate="label">
+                        <label>Return authorisation</label>
+                        <frontend_type>select</frontend_type>
+                        <source_model>OneTwoReturn_RMA_Model_System_Config_Source_RmaList</source_model>
+                        <sort_order>53</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>0</show_in_store>
+                    </selectiverma>
+                    <allowstatus translate="label">
+                            <label>Allow RMA for order status</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>OneTwoReturn_RMA_Model_System_Config_Source_StatusList</source_model>
+                            <sort_order>55</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                    </allowstatus> 
+                    <orderdays translate="label">
+                        <label>Warranty period in days</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>56</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </orderdays>
+                    <daysfrom>
+                    	<label>Calculate period from</label>
+                        <frontend_type>select</frontend_type>
+              			<source_model>OneTwoReturn_RMA_Model_System_Config_Source_FromList</source_model>
+                        <sort_order>57</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store> 
+                    </daysfrom>
+                </fields>
+		        </warranty>
+		        <advanced translate="label">
+		          <label>Advanced settings - 12Return cloudplatform</label>
+		          <frontend_type>text</frontend_type>
+		          <sort_order>108</sort_order>
+		          <show_in_default>1</show_in_default>
+		          <show_in_website>1</show_in_website>
+		          <show_in_store>1</show_in_store>
+		          <fields>
+		          	<statusurl translate="label">
+                        <label>Status url</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>56</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </statusurl>
+                    <productionurl translate="label">
+                        <label>Production Url</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>57</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </productionurl>
+                    <productionport translate="label">
+                        <label>Production Port</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>58</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </productionport>
+                    <testurl translate="label">
+                        <label>Test url</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>59</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </testurl>
+                    <testport translate="label">
+                        <label>Test port</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>60</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </testport>
+		          </fields>
+		        </advanced>
+	     	</groups>
+        </rma>
+    </sections>
+</config>

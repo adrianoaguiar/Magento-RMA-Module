@@ -1,0 +1,128 @@
+OneTwoReturn_RMA::selectOrder,Selecteer een order
+OneTwoReturn_RMA::notLoggedIn,U bent niet ingelogd
+OneTwoReturn_RMA::postcodeDoesNotMatch,De postcode komt niet overeen met de order
+OneTwoReturn_RMA::orderDoesNotExists,De order bestaat niet
+OneTwoReturn_RMA::noOrdersAvailable,Er zijn geen orders die geretourneerd kunnen worden
+OneTwoReturn_RMA::notFilledInRequiredInfo,Vul alle benodigde gegevens in
+OneTwoReturn_RMA::orderCanNotBeReturned,Er kunnen geen producten op deze order meer geretourneerd worden
+OneTwoReturn_RMA::selectProducts,Selecteer de producten die u wilt retourneren
+OneTwoReturn_RMA::order,Order
+OneTwoReturn_RMA::datum,Datum
+OneTwoReturn_RMA::Postcode,Postcode
+OneTwoReturn_RMA::Verder,Verder
+OneTwoReturn_RMA::orderNummer,Ordernummer
+OneTwoReturn_RMA::verstuur,Verstuur
+OneTwoReturn_RMA::orderNotCompleted,Deze order is niet volledig
+OneTwoReturn_RMA::systemError,Er ging iets mis, probeert u het nogmaals
+OneTwoReturn_RMA::SelectAProduct,U dient de producten te selecteren die u wilt retourneren
+OneTwoReturn_RMA::MiniumQuantity,U moet tenminste 1 product retourneren
+OneTwoReturn_RMA::MaxiumQuantity,U kunt niet meer producten retourneren dan u besteld heeft
+OneTwoReturn_RMA::noProductsAvailable,Er zijn geen producten beschikbaar voor deze order
+OneTwoReturn_RMA::Prijsperstuk,Prijs per stuk
+OneTwoReturn_RMA::Aantal,Aantal
+OneTwoReturn_RMA::Subtotaal,Subtotaal
+OneTwoReturn_RMA::Verder,Verder
+OneTwoReturn_RMA::CurlError,Er is een verbindingsfout met de API:
+OneTwoReturn_RMA::missingField,Niet alle informatie voor dit product is opgeslagen, vraag de administrator om de volgende gegevens toe te voegen:
+OneTwoReturn_RMA::MissingFormField,U dient de volgende vraag te beantwoorden:
+OneTwoReturn_RMA::requiredFields,De volgende velden zijn verplicht
+OneTwoReturn_RMA::RetourInformatie,Retourinformatie
+OneTwoReturn_RMA::KlantGegevens,Klantgegevens
+OneTwoReturn_RMA::Naam,Naam
+OneTwoReturn_RMA::Stad,Stad
+OneTwoReturn_RMA::Adres,Adres
+OneTwoReturn_RMA::Telefoon,Telefoon
+OneTwoReturn_RMA::Postcode,Postcode
+OneTwoReturn_RMA::Fax,Fax
+OneTwoReturn_RMA::Email,E-mail
+OneTwoReturn_RMA::Mobiel,Mobiel
+OneTwoReturn_RMA::Land,Land
+OneTwoReturn_RMA::Nederland,Nederland
+OneTwoReturn_RMA::Bedrijf,Bedrijf
+OneTwoReturn_RMA::ServiceKosten,Servicekosten
+OneTwoReturn_RMA::Voorwaarden,Voorwaarden
+OneTwoReturn_RMA::acceptTerms,Ik accepteer de voorwaarden
+OneTwoReturn_RMA::TotaleKosten,Totale kosten
+OneTwoReturn_RMA::selecteer,Selecteer
+OneTwoReturn_RMA::Straat,Straat
+OneTwoReturn_RMA::Huisnummer,Huisnummer
+OneTwoReturn_RMA::RetourKosten,Retourkosten
+OneTwoReturn_RMA::FieldToLong,Het volgende veld is te lang:
+OneTwoReturn_RMA::WrongSyntax,Het volgende veld bevat fouten:
+OneTwoReturn_RMA::RecoveryAmount,Retourkosten (indicatie - geen betaling nodig)
+OneTwoReturn_RMA::Vervoerders,Retouropties
+OneTwoReturn_RMA::ErrorCallingReturnOptions,Er ging iets mis met het opvragen van de retouropties
+OneTwoReturn_RMA::ReturnIdMissing,Er ging iets mis met het doorgeven van het ID
+OneTwoReturn_RMA::orderNotValidForRma,U dient toestemming te hebben om iets te kunnen retourneren
+OneTwoReturn_RMA::notValidCountry,Retourneren vanuit uw land is niet mogelijk
+OneTwoReturn_RMA::Checkout,Bevestiging
+OneTwoReturn_RMA::noActiveReturnType,U dient tenminste 1 retouroptie te selecteren
+OneTwoReturn_RMA::ReturnType,Retouroptie
+OneTwoReturn_RMA::acceptVoorwaarden,U dient de retourvoorwaarden te accepteren
+OneTwoReturn_RMA::errorGettingStatus,Er ging iets mis bij het opvragen van de status
+OneTwoReturn_RMA::Selecteer,Selecteer
+OneTwoReturn_RMA::TeRetournerenArtikelen,Te retourneren producten
+OneTwoReturn_RMA::Prijs,Prijs
+OneTwoReturn_RMA::Totaal,Totaal
+OneTwoReturn_RMA::Vervoerskosten,Transportkosten
+OneTwoReturn_RMA::gratis,Gratis
+OneTwoReturn_RMA::RetourStatusenOrder,Retourstatus van de order
+OneTwoReturn_RMA::RetourStatusenProduct,Retourstatus van dit product:
+OneTwoReturn_RMA::RMAreferentie:,Retournummer:
+OneTwoReturn_RMA::status,Status
+OneTwoReturn_RMA::noOrdersAvailable,Er zijn geen orders die geretourneerd kunnen worden
+OneTwoReturn_RMA::1Stuks,1
+OneTwoReturn_RMA::LoginOrder,Login
+OneTwoReturn_RMA::LoginOrderText,Vul ordernummer en postcode in om producten van deze order te retourneren
+OneTwoReturn_RMA::orderTypeChoose,Selecteer het type retour
+OneTwoReturn_RMA::selectOrderType,Wat voor type retour wilt u aanmelden?
+OneTwoReturn_RMA::view,Retourrecht
+OneTwoReturn_RMA::warranty,Garantieretour
+OneTwoReturn_RMA::BTW,BTW
+OneTwoReturn_RMA::Re-stock,Retourrecht
+OneTwoReturn_RMA::Repair,Garantieretour
+OneTwoReturn_RMA::Type,Type
+OneTwoReturn_RMA::Parts recovery,Parts recovery
+OneTwoReturn_RMA::Recycling,Recycling
+OneTwoReturn_RMA::Re-use,Re-use
+OneTwoReturn_RMA::Refurbishment,Re-furbishment
+OneTwoReturn_RMA::Re-manufacturing,Re-manufacturing
+OneTwoReturn_RMA::Re-marketing,Re-marketing
+OneTwoReturn_RMA::Scrap,Scrap
+OneTwoReturn_RMA::Swap,Swap
+OneTwoReturn_RMA::Warranty,Warranty
+OneTwoReturn_RMA::Warranty redemption,Warranty redemption
+OneTwoReturn_RMA::Terug,Terug
+OneTwoReturn_RMA::Order selectie,Orderselectie
+OneTwoReturn_RMA::Producten,Producten
+OneTwoReturn_RMA::Vervoerders,Retouropties
+OneTwoReturn_RMA::Checkout,Bevestiging
+OneTwoReturn_RMA::Uw RMA referentie nummer:,Uw retournummer:
+OneTwoReturn_RMA::Bedankt voor uw retour.,Bedankt voor het aanmelden van uw retour
+OneTwoReturn_RMA::noActiveSupply,Kies een vervoerder
+OneTwoReturn_RMA::Nieuwe retour,Nieuwe retour
+OneTwoReturn_RMA::errorGettingCountries,Het is niet gelukt om de landeninformatie op te halen, probeer het opnieuw
+OneTwoReturn_RMA::transporttationsCosts,Transportkosten
+OneTwoReturn_RMA::productname,Productnaam
+OneTwoReturn_RMA::newretour,Nieuwe retour
+OneTwoReturn_RMA::supplychain,Retouropties
+OneTwoReturn_RMA::orderProduct,Product
+OneTwoReturn_RMA::BTW,BTW
+OneTwoReturn_RMA::STK,Re-stock
+OneTwoReturn_RMA::RPR,Repair
+OneTwoReturn_RMA::type,Type
+OneTwoReturn_RMA::PRY,Parts recovery
+OneTwoReturn_RMA::REC,Recycling
+OneTwoReturn_RMA::REU,Re-use
+OneTwoReturn_RMA::RFT,Refurbishment
+OneTwoReturn_RMA::RMG,Re-manufacturing
+OneTwoReturn_RMA::RMK,Re-marketing
+OneTwoReturn_RMA::SCR,Scrap
+OneTwoReturn_RMA::SWP,Swap
+OneTwoReturn_RMA::WAR,Warranty
+OneTwoReturn_RMA::WRN,Warranty redemption
+OneTwoReturn_RMA::orderSelectie,Order
+OneTwoReturn_RMA::Ordered,Besteld
+OneTwoReturn_RMA::Returning,Opgestuurd
+OneTwoReturn_RMA::Returned,Geretourneerd
+OneTwoReturn_RMA::error-rma-allready-created,U heeft deze RMA al aangemeld. U ontvangt het retourlabel per email.

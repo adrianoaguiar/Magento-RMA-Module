@@ -1,0 +1,110 @@
+<?php echo $this->getMessagesBlock()->getGroupedHtml(); 
+ 	$sessionXML 	= $this->getSession('xml');
+	$tempAnswerPost 	= $this->getSession('tempAnswerPost');
+?>
+<div class="returnContainer">
+		<div class="registered-users">
+<div class="box-title"><h3><?php echo $this->translate('RetourInformatie')?></h3></div>
+<?php echo $this->showSubTitle('retourinformatie');?><br /><br />
+
+
+<div class="fullWidth">
+	<form action="" method="post">
+		<table cellpadding="0" cellspacing="0" border="0" width="100%">
+		<ul class="form-list">
+			<?php 
+			$i=0;
+			
+			foreach($sessionXML['questions']['question'] as $data)
+				 {
+				 	$i++;
+				 	if($data['answer']['optional']=='N')
+				 	{
+				 		$req='<label class="required"><em>*</em>'; 
+						$class=' required-entry ';
+				 	} else{
+				 		$class='';
+						$req='<label>';
+				 	} 
+				 	
+				 	echo'<tr>
+					    	<td width="40%">'.$req.$data['questiondesc'].'</label> <br /><br /></td>
+					    	<td width="5%"></td>
+					    	<td>';
+					    	if($data['answer']['datatype']=='VARCHAR2')
+							{
+								if(isset($data['answer']['items']) && isset($data['answer']['items']['item']))$num = count($data['answer']['items']['item']); else $num=0;
+								if($num==0)
+								{
+									if($data['answer']['datalength']<25)
+									{
+										if(isset($tempAnswerPost[$data['questioncode']]) &&!empty($tempAnswerPost[$data['questioncode']]))$data['questionvalue']=$tempAnswerPost[$data['questioncode']];else $data['questionvalue']='';
+										echo ' <input type="text" class="input-text '.$class.'" name="'.$data['questioncode'].'" id="'.$data['questioncode'].'" value="'.$data['questionvalue'].'" /> &nbsp;';	
+									} else {
+										if(isset($tempAnswerPost[$data['questioncode']]) &&!empty($tempAnswerPost[$data['questioncode']]))$data['questionvalue']=$tempAnswerPost[$data['questioncode']];else $data['questionvalue']='';
+										$t=str_replace(" ","",$data['questionvalue']);
+										if(empty($t))$data['questionvalue']='';
+										echo ' <textarea rows="7" cols="70" class="input-text '.$class.'" name="'.$data['questioncode'].'" id="'.$data['questioncode'].'" />'.$data['questionvalue'].'</textarea>';		
+										}
+								}elseif($num==1)
+								{
+									
+								}elseif($num==2)
+								{
+									foreach($data['answer']['items']['item'] as $answer)
+									{
+										if(isset($tempAnswerPost[$data['questioncode']]))
+										{
+											if($answer['itemcode']==$tempAnswerPost[$data['questioncode']]) $sel =' checked '; else $sel ='';
+										} else {
+											$sel ='';
+										}
+										echo $answer['itemdesc'].' <input type="radio" '.$sel.' class="'.$class.'" name="'.$data['questioncode'].'" id="'.$data['questioncode'].'" value="'.$answer['itemcode'].'" /> &nbsp;';
+									}	
+								}elseif($num>2)
+								{
+									echo'<select name="'.$data['questioncode'].'" id="'.$data['questioncode'].'"."">';
+									foreach($data['answer']['items']['item'] as $answer)
+									{
+										if(isset($tempAnswerPost[$data['questioncode']]))
+										{
+											if($answer['itemcode']==$tempAnswerPost[$data['questioncode']]) $sel =' selected '; else $sel ='';
+										} else {
+											$sel ='';
+										}
+										echo ' <option'.$sel.' class="input-text"  value="'.$answer['itemcode'].'" />'.$answer['itemdesc'].'</option>';
+									}
+								}else {
+									
+								}
+							} elseif($data['answer']['datatype']=='DATE')
+							{
+
+								if(isset($tempAnswerPost[$data['questioncode']]) &&!empty($tempAnswerPost[$data['questioncode']]))$data['questionvalue']=$tempAnswerPost[$data['questioncode']];else $data['questionvalue']='';
+								echo '<input type="text" class="input-text  '.$class.'" name="'.$data['questioncode'].'" id="dp-'.$i.'" value="'.$data['questionvalue'].'" /> &nbsp; <img title="Select date" id="_dob_trig" src="'.$this->getSkinUrl('images/calendar.gif').'" class="v-middle">';
+								echo '<script type="text/javascript">
+										Calendar.setup({
+										inputField : "dp-'.$i.'",
+										ifFormat : "%d-%m-%Y",
+										button : "_dob_trig",
+										align : "Bl",
+										singleClick : true
+										});
+									  </script>';
+							}else {
+								if(isset($tempAnswerPost[$data['questioncode']]) &&!empty($tempAnswerPost[$data['questioncode']]))$data['questionvalue']=$tempAnswerPost[$data['questioncode']];else $data['questionvalue']='';
+								echo ' <input type="text" class="input-text '.$class.'" name="'.$data['questioncode'].'" id="'.$data['questioncode'].'" value="'.$data['questionvalue'].'" /> &nbsp;';	
+							}
+					    	echo'</td>
+					    </tr>';
+				 }
+					echo"<tr><td colspan='2'><span class='requiredAnswer'>*</span> <i>".$this->translate('requiredFields')."</i></td></tr>";
+			?>
+			</ul>
+		 </table>
+		 
+		<div class="floatLeft  buttons buttons-set"> <button onclick="history.back()"class="returnBtnBig btn btn-cart add-to-cart button" type="button"  /><span><span><?php echo $this->translate('Terug')?></span></span></button></div>
+	<div class="floatRight  buttons buttons-set"><button class="returnBtnBig btn btn-cart add-to-cart button" type="submit"  /><span><span><?php echo $this->translate('Verder')?></span></span></button></div>
+	</form>
+</div>
+</div></div>

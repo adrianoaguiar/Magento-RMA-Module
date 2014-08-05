@@ -1,0 +1,24 @@
+<?php echo $this->getMessagesBlock()->getGroupedHtml(); ?> 
+<div class="returnContainer">
+		<div class="registered-users">
+			<div class="page-title"><h1><?php echo $this->translate('selectOrderType');?></h1></div>
+			<br /><br />
+			<table width="100%" cellpadding="0" cellspacing="0">
+				<tr>
+					<td width="46%">
+							<p><?php echo Mage::getStoreConfig('rma/returnoptions/introtext'); ?></p>
+					</td><td width="8%"></td><td width="46%">
+						<b><?php echo $this->translate('orderTypeChoose'); ?></b><br /><br />
+							<form action="" method="post">
+								<?php
+									 $thisConfig		= $this->getSession('Config');
+									 foreach($thisConfig['returnType'] as $name=>$returnType)if($returnType['enabled'])echo'<input name="type" type="radio" id="'.$returnType.'" value="'.$name.'" /> <label for="'.$returnType.'">'.$returnType['labelname'].'</label><br />';
+								?>
+								<br /><br />
+								<div class="floatRight buttons buttons-set" style="margin-right:150px !important;"><button class="returnBtnBig btn btn-cart add-to-cart button" type="submit"  /><span><span><?php echo $this->translate('Verder')?></span></span></button></div>
+							</form>
+					</td>
+			</tr>
+			</table>
+	</div>
+</div>

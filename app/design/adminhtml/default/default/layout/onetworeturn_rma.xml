@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+	<rma_adminhtml_rmaoverview_grid>
+        <update handle="formkey"/>
+        <block type="rma/adminhtml_rmaoverview_grid" name="adminhtml_rmaoverview_grid" output="toHtml"></block>
+    </rma_adminhtml_rmaoverview_grid>
+    
+    <rma_adminhtml_rmaoverview_label>
+        <update handle="formkey"/>
+        <block type="rma/adminhtml_rmaoverview_view_tab_label" name="adminhtml_rmaoverview_view_tab_label" output="toHtml"></block>
+    </rma_adminhtml_rmaoverview_label>
+
+    
+	<rma_adminhtml_rmaoverview_index>
+		<reference name="content">
+			<block type="rma/adminhtml_rmaoverview" name="rma_overview"></block>
+		</reference>
+	</rma_adminhtml_rmaoverview_index>
+	
+    <rma_adminhtml_rmaoverview_view>
+        <reference name="content">
+        	<block type="rma/adminhtml_rmaoverview_view" name="rma_view" template="widget/form/container.phtml">
+		        <block type="rma/adminhtml_rmaoverview_view_form" name="form" template="onetworeturn_rma/rmaoverview/view/form.phtml"></block>
+			</block>
+        </reference>
+		<reference name="left">
+            <block type="rma/adminhtml_rmaoverview_view_tabs" name="rma_tabs">
+            	<block type="rma/adminhtml_rmaoverview_view_info" name="rma_info" template="onetworeturn_rma/rmaoverview/view/info.phtml">
+			        <block type="rma/adminhtml_rmaoverview_view_table" name="rma_table" template="onetworeturn_rma/rmaoverview/view/table.phtml">
+			        	<block type="rma/adminhtml_rmaoverview_view_items" name="rma_items" template="onetworeturn_rma/rmaoverview/view/items.phtml">
+			        		<action method="addItemRender"><type>default</type><block>adminhtml/sales_order_view_items_renderer_default</block><template>sales/order/view/items/renderer/default.phtml</template></action>
+		                        <action method="addColumnRender"><column>qty</column><block>rma/Adminhtml_Rmaoverview_View_Items_Column_Qty</block><template>onetworeturn_rma/rmaoverview/view/items/column/qty.phtml</template></action>
+		                        <action method="addColumnRender"><column>name</column><block>adminhtml/sales_items_column_name</block><template>sales/items/column/name.phtml</template></action>
+		                        <action method="addColumnRender"><column>name</column><block>adminhtml/sales_items_column_name_grouped</block><template>sales/items/column/name.phtml</template><type>grouped</type></action>
+		                       <block type="core/text_list" name="order_item_extra_info"></block>
+			        	</block>
+			        </block>
+		        </block>
+            </block>
+        </reference>
+    </rma_adminhtml_rmaoverview_view>
+    
+    <adminhtml_sales_order_view>
+    	<!-- override the qty.phtml template to set the orderitem statusses in correct order -->
+    	<reference name="order_items">
+			<action method="addColumnRender"><column>qty</column><block>rma/adminhtml_Sales_Items_Column_Qty</block><template>onetworeturn_rma/sales/order/view/items/column/qty.phtml</template></action>            
+    	</reference>
+    	<reference name="sales_order_tabs">
+                <action method="addTab"><name>rma</name><block>rma/adminhtml_Sales_Order_View_Tab_Rma</block></action>
+        </reference>
+    </adminhtml_sales_order_view>
+    
+    <adminhtml_customer_edit>
+    	<reference name="customer_edit_tabs">
+                <action method="addTab"><name>rma</name><block>rma/adminhtml_Customer_Edit_Tab_Rma</block></action>
+        </reference>
+    </adminhtml_customer_edit>
+    
+    <adminhtml_sales_order_creditmemo_new>
+    	<!-- override the qty.phtml template to set the orderitem statusses in correct order -->
+    	<reference name="order_items">
+			<action method="addColumnRender"><column>qty</column><block>rma/adminhtml_Sales_Items_Column_Qty</block><template>onetworeturn_rma/sales/order/creditmemo/create/items/column/qty.phtml</template></action>            
+    	</reference>
+    	
+    	<reference name="order_items">
+        	<action method="setTemplate">               
+				<template>onetworeturn_rma/sales/order/creditmemo/create/items.phtml</template>
+			</action>
+			<action method="addItemRender"><type>default</type><block>adminhtml/sales_items_renderer_default</block><template>onetworeturn_rma/sales/order/creditmemo/create/items/renderer/default.phtml</template></action>
+        </reference>
+
+    </adminhtml_sales_order_creditmemo_new>
+    
+    <adminhtml_sales_order_creditmemo_updateqty>
+    	<reference name="order_items">
+			<action method="addColumnRender"><column>qty</column><block>rma/adminhtml_Sales_Items_Column_Qty</block><template>onetworeturn_rma/sales/order/creditmemo/create/items/column/qty.phtml</template></action>            
+    	</reference>
+    	<reference name="order_items">
+        	<action method="setTemplate">               
+				<template>onetworeturn_rma/sales/order/creditmemo/create/items.phtml</template>
+			</action>
+		</reference>
+    </adminhtml_sales_order_creditmemo_updateqty>
+</layout>

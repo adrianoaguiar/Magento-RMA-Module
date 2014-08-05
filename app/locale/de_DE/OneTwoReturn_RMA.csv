@@ -1,0 +1,127 @@
+﻿OneTwoReturn_RMA::selectOrder,Wahlen Sie eine Bestellung aus
+OneTwoReturn_RMA::notLoggedIn,Sie sind nicht eingeloggt!
+OneTwoReturn_RMA::postcodeDoesNotMatch,Die PLZ stimmt nicht mit der der Bestellung überein
+OneTwoReturn_RMA::orderDoesNotExists,Die Bestellung existiert nicht
+OneTwoReturn_RMA::noOrdersAvailable,Es gibt zurzeit keine Bestellungen, welche retourniert werden können
+OneTwoReturn_RMA::notFilledInRequiredInfo,Geben Sie alle Informationen ein.
+OneTwoReturn_RMA::orderCanNotBeReturned,Produkte dieser Bestellung können nicht retourniert werden
+OneTwoReturn_RMA::selectProducts,Wahlen Sie die Produkte aus die retourniert werden
+OneTwoReturn_RMA::order,Bestellung
+OneTwoReturn_RMA::datum,Datum
+OneTwoReturn_RMA::Postcode,PLZ
+OneTwoReturn_RMA::Verder,Weiter
+OneTwoReturn_RMA::orderNummer,Bestellnummer
+OneTwoReturn_RMA::verstuur,Versenden
+OneTwoReturn_RMA::orderNotCompleted,Diese Bestellung ist nicht komplett
+OneTwoReturn_RMA::systemError,Es ist ein unbekanntes Problem aufgetreten, versuchen Sie es erneut
+OneTwoReturn_RMA::SelectAProduct,Sie müssen ein Produkt auswahlen
+OneTwoReturn_RMA::MiniumQuantity,Sie müssen mindestens 1 Produkt retournieren
+OneTwoReturn_RMA::MaxiumQuantity,Sie können nicht mehr Produkte retournieren, als Sie bestellt haben
+OneTwoReturn_RMA::noProductsAvailable,Bei dieser Bestellung sind keine Produkte verfügbar
+OneTwoReturn_RMA::Prijsperstuk,Preis pro Stück
+OneTwoReturn_RMA::Aantal,Anzahl
+OneTwoReturn_RMA::Subtotaal,Zwischensumme 
+OneTwoReturn_RMA::Verder,Weiter
+OneTwoReturn_RMA::CurlError,Bei der Verbindungsherstellung mit der Programmierschnittstelle ist ein Fehler aufgetreten: 
+OneTwoReturn_RMA::missingField,Nicht alle benotigten Daten sind bei diesem Produkt gespeichert, bitten Sie Ihren Verwalter, folgende Daten hinzuzufügen: 
+OneTwoReturn_RMA::MissingFormField,Bei dieser Frage muss eine Antwort eingegeben werden: 
+OneTwoReturn_RMA::requiredFields,Diese Felder sind Pflichtfelder 
+OneTwoReturn_RMA::RetourInformatie,Retourinformation
+OneTwoReturn_RMA::KlantGegevens,Kundendaten
+OneTwoReturn_RMA::Naam,Name
+OneTwoReturn_RMA::Stad,Stadt
+OneTwoReturn_RMA::Adres,Adresse
+OneTwoReturn_RMA::Telefoon,Telefon
+OneTwoReturn_RMA::Postcode,PLZ
+OneTwoReturn_RMA::Fax,Fax
+OneTwoReturn_RMA::Email,E-Mail
+OneTwoReturn_RMA::Mobiel,Mobil
+OneTwoReturn_RMA::Land,Land
+OneTwoReturn_RMA::Nederland,Niederlande
+OneTwoReturn_RMA::Bedrijf,Betrieb
+OneTwoReturn_RMA::ServiceKosten,Servicekosten
+OneTwoReturn_RMA::Voorwaarden,Bedingungen
+OneTwoReturn_RMA::acceptTerms,Ich akzeptiere die Bedingungen
+OneTwoReturn_RMA::TotaleKosten,Gesamtkosten
+OneTwoReturn_RMA::selecteer,Ausw&auml
+OneTwoReturn_RMA::Straat,Straße
+OneTwoReturn_RMA::Huisnummer,Hausnummer
+OneTwoReturn_RMA::RetourKosten,Retourkosten
+OneTwoReturn_RMA::FieldToLong,Das folgende Feld ist zu lang: 
+OneTwoReturn_RMA::WrongSyntax,Das folgende Feld enth&auml
+OneTwoReturn_RMA::RecoveryAmount,Retourbetrag, zur Indikation ist keine Bezahlung erforderlich
+OneTwoReturn_RMA::Vervoerders,Transporteure
+OneTwoReturn_RMA::ErrorCallingReturnOptions,Es ist ein Fehler beim Aufrufen der Transporteure aufgetreten
+OneTwoReturn_RMA::ReturnIdMissing,Mit der mitgegebenen ID stimmt etwas nicht
+OneTwoReturn_RMA::orderNotValidForRma,Um Produkte zu retournieren, muss der Betreiber dies zuerst für die betreffende Bestellung ermächtigen
+OneTwoReturn_RMA::notValidCountry,Sie haben ein Produkt in einem Land bestellt, das nicht von unserem automatischen Retourprozedur unterstützt wird
+OneTwoReturn_RMA::Checkout,Checkout
+OneTwoReturn_RMA::noActiveReturnType,Es muss mindestens 1 Retourenart aktiviert sein
+OneTwoReturn_RMA::ReturnType,Retourenart
+OneTwoReturn_RMA::acceptVoorwaarden,Sie müssen die Bedingungen akzeptieren!
+OneTwoReturn_RMA::errorGettingStatus,Es ist ein Fehler beim Aufrufen des Status aufgetreten
+OneTwoReturn_RMA::Selecteer,Wählen
+OneTwoReturn_RMA::TeRetournerenArtikelen,Zu retournierende Artikel
+OneTwoReturn_RMA::Prijs,Preis
+OneTwoReturn_RMA::Totaal,Total
+OneTwoReturn_RMA::Vervoerskosten,Versandkosten
+OneTwoReturn_RMA::gratis,Gratis
+OneTwoReturn_RMA::RetourStatusenOrder,Retourstatus dieser Bestellung:
+OneTwoReturn_RMA::RetourStatusenProduct,Retourstatus dieses Produktes:
+OneTwoReturn_RMA::RMAreferentie:,RMA-Nummer:
+OneTwoReturn_RMA::status,Status
+OneTwoReturn_RMA::noOrdersAvailable,Es sind keine Bestellungen zu Retournieren vorhanden.
+OneTwoReturn_RMA::1Stuks,1
+OneTwoReturn_RMA::LoginOrder,Einloggen
+OneTwoReturn_RMA::LoginOrderText,Geben Sie hierunter Ihre Bestellnummer und PLZ ein, um Produkte der betreffenden Bestellung zu retournieren
+OneTwoReturn_RMA::orderTypeChoose,Wahlen Sie Retourart
+OneTwoReturn_RMA::selectOrderType,Welchen Typ Retoure wollen Sie aufgeben?
+OneTwoReturn_RMA::view,Sichtretour und/oder eintauschen
+OneTwoReturn_RMA::warranty,Garantieretoure
+OneTwoReturn_RMA::BTW,MwSt.
+OneTwoReturn_RMA::Re-stock,Sichtretour und/oder eintauschen
+OneTwoReturn_RMA::Repair,Garantieretoure
+OneTwoReturn_RMA::Type,Typ
+OneTwoReturn_RMA::Parts recovery,Teileersatz
+OneTwoReturn_RMA::Recycling,Recycling
+OneTwoReturn_RMA::Re-use,Wiederverwendung
+OneTwoReturn_RMA::Refurbishment,Sanierung
+OneTwoReturn_RMA::Re-manufacturing,Remanufacturing
+OneTwoReturn_RMA::Re-marketing,Re-marketing
+OneTwoReturn_RMA::Scrap,Verschrotten
+OneTwoReturn_RMA::Swap,Tauschen
+OneTwoReturn_RMA::Warranty,Garantieretoure
+OneTwoReturn_RMA::Warranty redemption,Garantieauszahlung
+OneTwoReturn_RMA::Terug,Zurück
+OneTwoReturn_RMA::Order selectie,Bestellungsauswahl
+OneTwoReturn_RMA::Producten,Produkte
+OneTwoReturn_RMA::Vervoerders,Transporteure
+OneTwoReturn_RMA::Checkout,Checkout
+OneTwoReturn_RMA::Uw RMA referentie nummer:,Ihre RMA-Referenznummer:
+OneTwoReturn_RMA::Bedankt voor uw retour.,Vielen Dank für Ihre Retour
+OneTwoReturn_RMA::noActiveSupply,Bitte wahlen
+OneTwoReturn_RMA::Nieuwe retour,Neue Rücksendung
+OneTwoReturn_RMA::errorGettingCountries,Fehler beim Öffnen der Daten
+OneTwoReturn_RMA::transporttationsCosts,Versandkosten
+OneTwoReturn_RMA::productname,Produkte
+OneTwoReturn_RMA::newretour,Neue Rücksendung
+OneTwoReturn_RMA::supplychain,Transporteure
+OneTwoReturn_RMA::orderProduct,Produkte
+OneTwoReturn_RMA::BTW,MwSt.
+OneTwoReturn_RMA::STK,Sichtretour und/oder eintauschen
+OneTwoReturn_RMA::RPR,Garantieretoure
+OneTwoReturn_RMA::type,Typ
+OneTwoReturn_RMA::PRY,Teileersatz
+OneTwoReturn_RMA::REC,Recycling
+OneTwoReturn_RMA::REU,Wiederverwendung
+OneTwoReturn_RMA::RFT,Sanierung
+OneTwoReturn_RMA::RMG,Remanufacturing
+OneTwoReturn_RMA::RMK,Re-marketing
+OneTwoReturn_RMA::SCR,Verschrotten
+OneTwoReturn_RMA::SWP,Tauschen
+OneTwoReturn_RMA::WAR,Garantieretoure
+OneTwoReturn_RMA::WRN,Garantieauszahlung
+OneTwoReturn_RMA::orderSelectie,Bestellung
+OneTwoReturn_RMA::Ordered,Besteld
+OneTwoReturn_RMA::Returning,Rückkehr
+OneTwoReturn_RMA::Returned,zurück

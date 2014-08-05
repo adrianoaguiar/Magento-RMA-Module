@@ -1,0 +1,212 @@
+.breadCrumb_rma.breadcrumbs {
+	margin-top:0;
+}
+input[type=text].returnAantalBox {
+	width:40px;
+	text-align:center;
+}
+input[type=text].input-text {
+	width:200px;
+}
+#_dob_trig{display:inline-block;}
+.returnContainer {
+	padding:15px;
+}
+.returnContainer h1, .returnContainer h3 {
+	font-size: 2em !important;
+	line-height: 18px !important;
+	margin-bottom: 6px !important;
+}
+.returnContainer label {
+	margin-right:0px !important;
+	margin-left:0px !important;
+	float:none !important;
+}
+
+.returnContainer p {
+	
+}
+.data-table td .qty-table tr td{
+	border:0 !important;
+	padding:0 10px 0 0;
+}
+.returnContainer td { 
+	vertical-align: top;
+}
+.orderBox {
+	width:98%;
+	border:1px solid #999;
+	padding:1%;
+	margin-bottom:20px;
+}
+
+.serviceBox {
+	width:98%;
+	border:1px solid #999;
+	padding:1%;
+	margin-bottom:20px;
+}
+.totaalKostenContainer {
+	width:100%;
+}
+.subLine {
+	border:0;
+	height:1px;
+	background: #999;
+	width:75%;
+}
+	
+.rightTD {
+	font-size:18px;
+	height:20px;
+	text-align:right;
+}
+
+.checkoutRight {
+	font-size:14px;
+	height:20px;
+	text-align:right;
+}
+
+.checkoutRightSum {
+	font-size:16px;
+	height:20px;
+	text-align:right;
+	border-top:1px solid #999;
+	padding-top:12px;
+	padding-bottom:15px;
+}
+
+.vervoerderTitel {
+	font-size:15px;
+}
+.serviceTitel {
+	font-size:17px;
+	padding-bottom:10px;
+}
+
+
+.orderBox .rightTDsmall {
+	height:20px;
+	text-align:right;
+}
+
+.returnBtn {
+	border:1px solid #888;
+	background: #efefef;
+	padding:1px 10px 1px 10px;
+	cursor:pointer;
+}
+
+.returnBtnBig {
+	border:1px solid #888;
+	background: #efefef;
+	padding:3px 15px 3px 15px;
+	cursor:pointer;
+	font-size:14px;
+}
+.returnAantalBox {
+	width:30px;
+}
+.demoAfbeelding {
+	border:2px solid #888;
+	background: #efefef;
+	text-align:center;
+	font-size:10px;
+	float:left;
+}
+
+.mediumText
+{
+	font-size:14px;
+}
+.subTitle { 
+	font-size:11px;
+	margin-top:-5px;
+}
+.data-table,
+.data-table td,
+.data-table th,
+.data-table tr,
+.data-table tr td{
+	box-sizing: border-box;
+}
+
+.floatRight {
+	float:right;
+	margin-top:30px;
+}
+.floatLeft {
+	float:left;
+	margin-top:30px;
+}
+
+.halfWidth {
+	width:50%;
+}
+.totaalKosten {
+	font-size:12px;
+	font-weight:bold;
+}
+.subtotaalKosten
+{
+	font-size:12px;
+}
+.totaalBTWKosten {
+	font-size:12px;
+}
+
+.vervoerderPrijs{
+	font-size:15px;
+	padding-bottom:4px;
+}
+.breadCrumb_returnmodule{
+	margin:0; padding:0;
+	margin-bottom:15px;
+	font-size:11px;
+}
+
+.returnContainer .buttons,
+.returnContainer .buttons-set {
+	margin:0;
+	padding:0;
+	border:0;
+	clear:none;
+	margin-top:30px;
+}
+.returnContainer .buttons-set button.button
+{
+	margin:0;
+}
+.returnContainer .buttons.nomargin{
+	margin:0;
+}
+.returnContainer  .sep {
+	padding-right:2px;
+	padding-left:2px;
+}
+.clearfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden; 
+	line-height: 0;
+	height: 0;
+}
+ 
+.clearfix {
+	display: inline-block;
+	margin-bottom:10px;
+}
+ 
+html[xmlns] .clearfix {
+	display: block;
+}
+ 
+* html .clearfix {
+	height: 1%;
+}
+.box-title {
+	display:block;
+	clear:both;
+}

@@ -1,0 +1,194 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    
+    <customer_account translate="label">
+    	<reference name="head">
+			<action method="addCss"><stylesheet>css/rma.css</stylesheet></action>
+		</reference>
+        <reference name="customer_account_navigation" >
+                <action method="addLink" translate="label" module="customer">
+                	<name>rma</name>
+                	<path>12return/form/</path>
+                	<label>Return or Exchange products</label>
+                </action>
+        </reference>
+        <reference name="content">
+   			<block type="core/template" name="ordernumber_rma" template="onetworeturn_rma/ordernumber.phtml"/>
+   		</reference>  
+    </customer_account>
+    
+    <sales_order_view translate="label">
+    	<reference name="order_items">
+		     <action method="addItemRender">
+                <type>default</type>
+                <block>sales/order_item_renderer_default</block>
+                <template>onetworeturn_rma/sales/default.phtml</template>
+            </action>
+		</reference>
+	</sales_order_view>
+
+    
+    <rma_form_index>
+    	<reference name="head">
+			<action method="addCss"><stylesheet>css/rma.css</stylesheet></action>
+		</reference>
+    	<update handle="customer_account"/>
+        <reference name="content">
+            <block type="rma/rma"  name="authenticate_rma" template="onetworeturn_rma/authenticate.phtml" />
+       </reference>
+    </rma_form_index>
+    
+    <rma_form_order>
+    	<reference name="head">
+			<action method="addCss"><stylesheet>css/rma.css</stylesheet></action>
+		</reference>
+    	<update handle="customer_account"/>
+        <reference name="content">
+            <block type="rma/rma"  name="authenticate_rma" template="onetworeturn_rma/authenticate.phtml" />
+       </reference>
+    </rma_form_order> 
+    
+    <rma_form_authenticate>
+    	<reference name="head">
+			<action method="addCss"><stylesheet>css/rma.css</stylesheet></action>
+		</reference>
+    	<update handle="customer_account"/>
+        <reference name="content">
+            <block type="rma/rma"  name="authenticate_rma" template="onetworeturn_rma/authenticate.phtml" />
+       </reference>
+    </rma_form_authenticate>
+    
+    <rma_form_selectorder>
+    	<reference name="head">
+			<action method="addCss"><stylesheet>css/rma.css</stylesheet></action>
+		</reference>
+    	<update handle="customer_account"/>
+        <reference name="content">
+            <block type="rma/rma"  name="selectorder_rma" template="onetworeturn_rma/selectorder.phtml" />
+       </reference>
+    </rma_form_selectorder>
+    
+    <rma_form_select>
+    	<reference name="head">
+			<action method="addCss"><stylesheet>css/rma.css</stylesheet></action>
+		</reference>
+    	<update handle="customer_account"/>
+        <reference name="content">
+            <block type="rma/rma"  name="select_rma" template="onetworeturn_rma/select.phtml" />
+       </reference>
+    </rma_form_select> 
+    
+    <rma_form_selectproduct>
+    	<reference name="head">
+			<action method="addCss"><stylesheet>css/rma.css</stylesheet></action>
+		</reference>
+    	<update handle="customer_account"/>
+        <reference name="content">
+            <block type="rma/rma"  name="selectproduct_rma" template="onetworeturn_rma/selectproduct.phtml" />
+       </reference>
+    </rma_form_selectproduct>
+    
+    <rma_form_retourinformatie>
+    	<reference name="head">
+			<action method="addCss"><stylesheet>css/rma.css</stylesheet></action>
+			<action method="addItem"><type>js_css</type><name>calendar/calendar-win2k-1.css</name><params></params></action>
+	   		<action method="addItem"><type>js</type><name>calendar/calendar.js</name></action>
+	   		<action method="addItem"><type>js</type><name>calendar/calendar-setup.js</name></action>
+		</reference>
+        <reference name="content">
+            <block type="rma/rma"  name="retourinformatie_rma" template="onetworeturn_rma/retourinformatie.phtml" />
+            <block type="core/html_calendar" name="head.calendar" as="calendar" template="page/js/calendar.phtml"></block>
+       </reference>
+       
+	   
+    </rma_form_retourinformatie>
+    
+    <rma_form_servicekosten>
+    	<reference name="head">
+			<action method="addCss"><stylesheet>css/rma.css</stylesheet></action>
+		</reference>
+    	<update handle="customer_account"/>
+        <reference name="content">
+            <block type="rma/rma"  name="servicekosten_rma" template="onetworeturn_rma/servicekosten.phtml" />
+       </reference>
+    </rma_form_servicekosten>
+    
+    <rma_form_klantgegevens>
+    	<reference name="head">
+			<action method="addCss"><stylesheet>css/rma.css</stylesheet></action>
+		</reference>
+    	<update handle="customer_account"/>
+        <reference name="content">
+            <block type="rma/rma"  name="klantgegevens_rma" template="onetworeturn_rma/klantgegevens.phtml" />
+       </reference>
+    </rma_form_klantgegevens>
+    
+    <rma_form_supplychain>
+    	<reference name="head">
+			<action method="addCss"><stylesheet>css/rma.css</stylesheet></action>
+		</reference>
+    	<update handle="customer_account"/>
+        <reference name="content">
+            <block type="rma/rma"  name="supplychainn_rma" template="onetworeturn_rma/supplychain.phtml" />
+       </reference>
+    </rma_form_supplychain>
+    
+    <rma_form_checkout>
+    	<reference name="head">
+			<action method="addCss"><stylesheet>css/rma.css</stylesheet></action>
+		</reference>
+        <reference name="content">
+            <block type="rma/rma"  name="checkout_rma" template="onetworeturn_rma/checkout.phtml" />
+       </reference>
+    </rma_form_checkout>
+    
+    <rma_form_payment>
+    	<reference name="head">
+			<action method="addCss"><stylesheet>css/rma.css</stylesheet></action>
+		</reference>
+
+    	<update handle="customer_account"/>
+        <reference name="content">
+            <block type="rma/rma"  name="checkout_rma" template="onetworeturn_rma/payment.phtml" />
+       </reference>
+    </rma_form_payment>
+    
+    <customer_logged_out>    	
+    	<rma_form_select>
+    		<remove name="customer_account_navigation" />		
+        	<reference name="content">
+            	<block type="rma/rma"  name="select_rma" template="onetworeturn_rma/select.phtml" />
+       		</reference>
+    	</rma_form_select>
+    	
+    	<rma_form_selectorder>
+    		<remove name="customer_account_navigation" />		
+	        <reference name="content">
+	            <block type="rma/rma"  name="selectorder_rma" template="onetworeturn_rma/selectorder.phtml" />
+	       </reference>
+	    </rma_form_selectorder>
+	    
+	    <rma_form_selectproduct>
+	    	<remove name="customer_account_navigation" />	
+	        <reference name="content">
+	            <block type="rma/rma"  name="selectproduct_rman" template="onetworeturn_rma/selectproduct.phtml" />
+	       </reference>
+	    </rma_form_selectproduct>
+    	
+	</customer_logged_out>
+    
+    
+    <rma_form_allow>
+        <reference name="content">
+            <block type="rma/rma"  name="allow_rma"/>
+       </reference>
+    </rma_form_allow>
+    
+    <rma_form_disallow>
+        <reference name="content">
+            <block type="rma/rma"  name="disallow_rma"/>
+       </reference>
+    </rma_form_disallow>
+    
+    
+</layout>

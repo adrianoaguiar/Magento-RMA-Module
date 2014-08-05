@@ -1,0 +1,15 @@
+<div class="ordernumber">
+    <ul>
+        <?php
+            $rmaInfo = Mage::helper('rma')->getSessionData('rmainfo');
+            if(isset($rmaInfo["ordernumber"]))
+            {
+                echo "<li>" . $this->__('Ordernummer:') . " " . $rmaInfo["ordernumber"] . "</li>";
+            }
+            if(isset($rmaInfo["created_at"]))
+            {
+                echo "<li>" . $this->__('Datum:') . " " . Mage::helper('core')->formatDate($rmaInfo["created_at"], 'short', false) . "</li>";
+            }
+        ?>
+    </ul>
+</div>

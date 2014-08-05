@@ -1,0 +1,243 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php 
+$_order 		= $this->getOrder();
+$_rma 			= $this->getRma();
+$_address 		= $this->getAddress();
+$_conditions 	= $this->getConditions();
+
+$orderAdminDate = $this->formatDate($_order->getCreatedAtDate(), 'medium', true);
+$orderStoreDate = $this->formatDate($_order->getCreatedAtStoreDate(), 'medium', true);
+$rmaStoreDate 	= $this->formatDate($_rma->getRmaCreatedate(), 'medium', true);
+?>
+<div class="box-left">
+    <!--Order Information-->
+    <div class="entry-edit">
+        <?php if ($_order->getEmailSent()):
+            $_email = Mage::helper('sales')->__('the order confirmation email was sent');
+        else:
+            $_email = Mage::helper('sales')->__('the order confirmation email is not sent');
+        endif; ?>
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account"><?php echo Mage::helper('sales')->__('RMA Information') ?> </h4>
+        </div>
+        <div class="fieldset">
+            <table cellspacing="0" class="form-list">
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('RMA #') ?></label></td>
+                <td class="value"><strong><?php echo $_rma->getRmaReference() ?></strong></td>
+            </tr>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('RMA Date') ?></label></td>
+                <td class="value"><strong><?php echo $rmaStoreDate ?></strong></td>
+            </tr>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('RMA Status') ?></label></td>
+                <td class="value"><strong><span id="order_status"><?php echo $this->getRmaStatusLabel(); ?></span></strong></td>
+            </tr>
+			<tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Returned to') ?></label></td>
+                <td class="value"><strong><?php echo $this->getOrderStoreName($_rma->getRmaStoreId()) ?></strong></td>
+            </tr>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Customer Name') ?></label></td>
+                <td class="value">
+                <?php if ($_customerUrl=$this->getCustomerViewUrl($_rma->getRmaCustomerId())) : ?>
+                    <a href="<?php echo $_customerUrl ?>" target="_blank"><strong><?php echo $this->escapeHtml($_address->getRmaCustomerName()) ?></strong></a>
+                <?php else: ?>
+                    <strong><?php echo $this->escapeHtml($_address->getRmaCustomerName()) ?></strong>
+                <?php endif; ?>
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Email') ?></label></td>
+                <td class="value"><a href="mailto:<?php echo $_address->getRmaCustomerEmail(); ?>"><strong><?php echo $_address->getRmaCustomerEmail(); ?></strong></a></td>
+            </tr>
+            <?php if ($_groupName = $this->getCustomerGroupName($_order->getCustomerGroupId())) : ?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Customer Group') ?></label></td>
+                <td class="value"><strong><?php echo $_groupName ?></strong></td>
+            </tr>
+            <?php endif; ?>
+            <?php foreach ($this->getCustomerAccountData() as $data):?>
+            <tr>
+                <td class="label"><label><?php echo $data['label'] ?></label></td>
+                <td class="value"><strong><?php echo $data['value'] ?></strong></td>
+            </tr>
+            <?php endforeach;?>
+            <?php if($_rma->getRmaIp() && $this->shouldDisplayCustomerIp($_rma->getRmaStoreId())): ?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Placed from IP') ?></label></td>
+                <td class="value"><strong><?php echo $_rma->getRmaIp(); ?></strong></td>
+            </tr>
+            <?php endif; ?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('RMA Context') ?></label></td>
+                <td class="value"><strong><?php echo $this->getRmaContext() ?></strong></td>
+            </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="box-right">
+    <!--Account Information-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account"><?php echo Mage::helper('sales')->__('Order Information') ?></h4>
+        </div>
+        <div class="fieldset">
+            <div class="hor-scroll">
+                <table cellspacing="0" class="form-list">
+                <tr>
+	                <td class="label"><label><?php echo Mage::helper('sales')->__('Order') ?></label></td>
+	                <td class="value"><strong><a href="<?php echo $this->getUrl('adminhtml/sales_order/view', array('order_id' => $_rma->getRmaOrderEntityId())); ?>"><?php echo $_rma->getRmaOrderIncrementId(); ?></a></strong></td>
+	            </tr>
+                <tr>
+	                <td class="label"><label><?php echo Mage::helper('sales')->__('Order Date') ?></label></td>
+	                <td class="value"><strong><?php echo $orderAdminDate ?></strong></td>
+	            </tr>
+	            <tr>
+	                <td class="label"><label><?php echo Mage::helper('sales')->__('Order Status') ?></label></td>
+	                <td class="value"><strong><span id="order_status"><?php echo $_order->getStatusLabel() ?></span></strong></td>
+	            </tr>
+	            <tr>
+	                <td class="label"><label><?php echo Mage::helper('sales')->__('Purchased From') ?></label></td>
+	                <td class="value"><strong><?php echo $this->getOrderStoreName($_order->getStoreId()) ?></strong></td>
+	            </tr>
+	            <tr>
+                    <td class="label"><label><?php echo Mage::helper('sales')->__('Customer Name') ?></label></td>
+                    <td class="value">
+                    <?php if ($_customerUrl=$this->getCustomerViewUrl($_order->getCustomerId())) : ?>
+                        <a href="<?php echo $_customerUrl ?>" target="_blank"><strong><?php echo $this->escapeHtml($_order->getCustomerName()) ?></strong></a>
+                    <?php else: ?>
+                        <strong><?php echo $this->escapeHtml($_order->getCustomerName()) ?></strong>
+                    <?php endif; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('sales')->__('Email') ?></label></td>
+                    <td class="value"><a href="mailto:<?php echo $_order->getCustomerEmail() ?>"><strong><?php echo $_order->getCustomerEmail() ?></strong></a></td>
+                </tr>
+                <?php if ($_groupName = $this->getCustomerGroupName($_order->getCustomerGroupId())) : ?>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('sales')->__('Customer Group') ?></label></td>
+                    <td class="value"><strong><?php echo $_groupName ?></strong></td>
+                </tr>
+                <?php endif; ?>
+                <?php foreach ($this->getCustomerAccountData() as $data):?>
+                <tr>
+                    <td class="label"><label><?php echo $data['label'] ?></label></td>
+                    <td class="value"><strong><?php echo $data['value'] ?></strong></td>
+                </tr>
+                <?php endforeach;?>
+                <?php if($_order->getRemoteIp() && $this->shouldDisplayCustomerIp($_order->getStoreId())): ?>
+	            <tr>
+	                <td class="label"><label><?php echo Mage::helper('sales')->__('Placed from IP') ?></label></td>
+	                <td class="value"><strong><?php echo $_order->getRemoteIp(); echo ($_order->getXForwardedFor())?' (' . $this->escapeHtml($_order->getXForwardedFor()) . ')':''; ?></strong></td>
+	            </tr>
+	            <?php endif; ?>
+	            <?php if($_order->getGlobalCurrencyCode() != $_order->getBaseCurrencyCode()): ?>
+	            <tr>
+	                <td class="label"><label><?php echo Mage::helper('sales')->__('%s / %s rate:', $_order->getGlobalCurrencyCode(), $_order->getBaseCurrencyCode()) ?></label></td>
+	                <td class="value"><strong><?php echo $_order->getBaseToGlobalRate() ?></strong></td>
+	            </tr>
+	            <?php endif; ?>
+	            <?php if($_order->getBaseCurrencyCode() != $_order->getOrderCurrencyCode()): ?>
+	            <tr>
+	                <td class="label"><label><?php echo Mage::helper('sales')->__('%s / %s rate:', $_order->getOrderCurrencyCode(), $_order->getBaseCurrencyCode()) ?></label></td>
+	                <td class="value"><strong><?php echo $_order->getBaseToOrderRate() ?></strong></td>
+	            </tr>
+	            <?php endif; ?>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="clear"></div>
+<div class="box-left">
+    <!--Billing Address-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-billing-address"><?php echo Mage::helper('sales')->__('RMA Sender Address') ?></h4>
+     
+            <?php //echo"<pre>";die(print_r($_address->getFormated(true))); ?>
+        </div>
+        <fieldset>
+            <address>
+            	<?php echo $_address->getRmaCustomerName(); ?><br>
+				<?php echo $_address->getRmaCustomerStreet(); ?> <?php echo $_address->getRmaCustomerHouseno(); ?><br>
+				<?php echo $_address->getRmaCustomerCity(); ?>,  <?php echo $_address->getRmaCustomerPostal(); ?><br>
+				<?php echo $_address->getRmaCustomerCountry(); ?><br>
+				T: <?php echo $_address->getRmaCustomerPhone(); ?> <br>
+				
+				<?php $company = $_address->getRmaCustomerCompany(); if(!empty($company)) echo "<br>".$company; ?>
+			</address>
+        </fieldset>
+    </div>
+</div>
+<div class="box-right">
+    <!--Billing Address-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-billing-address"><?php echo Mage::helper('sales')->__('Order Billing Address') ?></h4>
+        </div>
+        <fieldset>
+            <address><?php echo $_order->getBillingAddress()->getFormated(true) ?></address>
+        </fieldset>
+    </div>
+</div>
+<div class="clear"></div>
+<div class="box-left">
+    <!--Billing Address-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-billing-address"><?php echo Mage::helper('sales')->__('RMA Return Conditions') ?></h4>
+        </div>
+        <fieldset>
+        	<table>
+			<?php foreach($_conditions->getData() as $cond)echo"<tr><td>".$cond['rma_conditions_questiondesc']."</td><td width='10'></td><td>".$cond['rma_conditions_itemdesc']."</td></tr>";?>
+			</table>
+        </fieldset>
+    </div>
+</div>
+<?php if (!$this->getOrder()->getIsVirtual()): ?>
+<div class="box-right">
+    <!--Shipping Address-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-shipping-address"><?php echo Mage::helper('sales')->__('Order Shipping Address') ?></h4>
+        </div>
+        <fieldset>
+            <address><?php echo $_order->getShippingAddress()->getFormated(true) ?></address>
+        </fieldset>
+    </div>
+</div>
+<div class="clear"></div>
+<?php endif; ?>
+<?php echo $this->getChildHtml('rma_table'); ?>
