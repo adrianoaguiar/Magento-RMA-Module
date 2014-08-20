@@ -53,13 +53,13 @@ class OneTwoReturn_RMA_Adminhtml_RmaprocessController extends Mage_Adminhtml_Con
     private function redirect()
     {
         $prefix = Mage::getConfig()->getNode('admin/routers/adminhtml/args/frontName');
-        Mage::app()->getResponse()->setRedirect($this->getUrl("/adminhtml_rmaoverview/view/",array("rma_id"=>$this->getRma()->getRmaId(), 'order_id' =>$this->getRma()->getRmaOrderEntityId())));
+        Mage::app()->getResponse()->setRedirect(Mage::helper('adminhtml')->getUrl("12return/adminhtml_rmaoverview/view/",array("rma_id"=>$this->getRma()->getRmaId(), 'order_id' =>$this->getRma()->getRmaOrderEntityId())));
     }
 	
 	private function ajaxRedirect()
     {
         $prefix = Mage::getConfig()->getNode('admin/routers/adminhtml/args/frontName');
-    	echo json_encode(array('ajaxExpired'=>true,'ajaxRedirect'=>$this->getUrl("/adminhtml_rmaoverview/view/",array("rma_id"=>$this->getRma()->getRmaId(), 'order_id' =>$this->getRma()->getRmaOrderEntityId()))));
+    	echo json_encode(array('ajaxExpired'=>true,'ajaxRedirect'=>Mage::helper('adminhtml')->getUrl("12return/adminhtml_rmaoverview/view/",array("rma_id"=>$this->getRma()->getRmaId(), 'order_id' =>$this->getRma()->getRmaOrderEntityId()))));
 		exit;
     }
 	

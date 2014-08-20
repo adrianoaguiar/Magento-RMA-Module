@@ -4,7 +4,7 @@ class OneTwoReturn_RMA_Helper_Api extends Mage_Core_Helper_Abstract
 {
     private $helper;
     const 	VERSION	        = 'MAGPL1.1';
-	const 	TIMEOUT			= 15;  
+	private $TIMEOUT			= 15;  
 	const 	PREFIXURL		= '/o2r/osc/REST/';  
 	private $logname		= '12Return_API.log';
 	
@@ -143,8 +143,8 @@ class OneTwoReturn_RMA_Helper_Api extends Mage_Core_Helper_Abstract
         curl_setopt($this->curl,CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded')); //Set Content type
         curl_setopt($this->curl,CURLOPT_FORBID_REUSE, 1);     //to force the connection to explicitly close when it has finished processing, and not be pooled for reuse
         curl_setopt($this->curl,CURLOPT_FRESH_CONNECT, 1);    //to force the use of a new connection instead of a cached one.
-        curl_setopt($this->curl,CURLOPT_CONNECTTIMEOUT, TIMEOUT);      //The number of seconds to wait while trying to connect. Use 0 to wait indefinitely.
-        curl_setopt($this->curl,CURLOPT_TIMEOUT, TIMEOUT);
+        curl_setopt($this->curl,CURLOPT_CONNECTTIMEOUT, $this->TIMEOUT);      //The number of seconds to wait while trying to connect. Use 0 to wait indefinitely.
+        curl_setopt($this->curl,CURLOPT_TIMEOUT, $this->TIMEOUT);
         curl_setopt($this->curl,CURLOPT_PORT, $this->port); 
         curl_setopt($this->curl,CURLOPT_CUSTOMREQUEST, "POST");  
         curl_setopt($this->curl, CURLOPT_USERAGENT, "curl/7.23.1 (x86_64-unknown-linux-gnu) libcurl/7.23.1 OpenSSL/0.9.8b zlib/1.2.3");
