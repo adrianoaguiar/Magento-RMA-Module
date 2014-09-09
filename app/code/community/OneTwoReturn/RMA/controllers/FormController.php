@@ -1784,6 +1784,19 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 		$this->Config['tosurl']= Mage::getStoreConfig('rma/returnoptions/tosurl');
 		$this->Config['version']=$this->version;
 		$this->Config['language']=Mage::app()->getLocale()->getLocaleCode();
+		$this->Config['statusurl']=Mage::getStoreConfig('rma/advanced/statusurl');
+		
+		$this->Config['created_notify']=Mage::getStoreConfig('rma/communication/created_notify');
+		$this->Config['created_view']=Mage::getStoreConfig('rma/communication/created_view');
+		$this->Config['created_message']=Mage::getStoreConfig('rma/communication/created_message');
+		
+		$this->Config['completed_notify']=Mage::getStoreConfig('rma/communication/completed_notify');
+		$this->Config['completed_view']=Mage::getStoreConfig('rma/communication/completed_view');
+		$this->Config['completed_message']=Mage::getStoreConfig('rma/communication/completed_message');
+		
+		$this->Config['cancelled_notify']=Mage::getStoreConfig('rma/communication/cancelled_notify');
+		$this->Config['cancelled_view']=Mage::getStoreConfig('rma/communication/cancelled_view');
+		$this->Config['cancelled_message']=Mage::getStoreConfig('rma/communication/cancelled_message');
 		
 		$this->addToSession('Config',$this->Config);		//Sla de instellingen op in een sessie
 
@@ -1837,9 +1850,14 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 	{
 		
 		$order = Mage::getModel('sales/order')->loadByIncrementID($orderSession['orderId']);
-		$order->setStatus('rma_created', true);
-        $order->addStatusHistoryComment('12Return RMA request created.<br /><br /> RMA Reference number:' . $response["rmareference"]."<br /> Check status at: https://status.12return.eu/" . $response["rmareference"].'<br />RMA Label: ' . $response["labellink"]);
+		$notify=$this->Config['created_notify'];
+		$visible=$this->Config['created_view'];
+
+        $comment=str_replace('{LINK_LABEL}',$response["labellink"],str_replace('{RMAREF}',$response["rmareference"],str_replace('{LINK_STATUS}',$this->Config['statusurl'],$this->Config['created_message'])));
+        $order->addStatusHistoryComment($comment,'rma_created')->setIsVisibleOnFront($visible)->setIsCustomerNotified($notify);
 		$order->save();
+		$order->sendOrderUpdateEmail($notify, $comment);
+		
 		if(Mage::getSingleton('customer/session')->isLoggedIn()) {
      		$customerData 	= Mage::getSingleton('customer/session')->getCustomer();
 			$cid			= $customerData->getId();

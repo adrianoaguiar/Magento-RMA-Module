@@ -225,6 +225,17 @@
 				<allowstatus>complete,rma_cancelled,rma_complete,rma_created,processing,closed</allowstatus>
 				<daysfrom>lastshipment</daysfrom>
 			</warranty>
+			<communication>
+				<created_notify>0</created_notify>
+				<created_view>1</created_view>
+				<completed_notify>1</completed_notify>
+				<completed_view>1</completed_view>
+				<cancelled_notify>1</cancelled_notify>
+				<cancelled_view>1</cancelled_view>
+				<created_message><![CDATA[We have created your return with number {RMAREF}.You have received a separate mail with the return label. If you want to reprint the label you can also do it here {LINK_LABEL}.Thank you for using our returns service. We will keep you updated about the further returns processing.]]></created_message>
+				<completed_message><![CDATA[We have cancelled your return with number {RMAREF} as we have never received it.]]></completed_message>
+				<cancelled_message><![CDATA[We have received and checked your return with number {RMAREF}.]]></cancelled_message>
+			</communication>
 			<advanced>
 				<statusurl>https://status.12return.eu/{RMAREF}</statusurl>
 				<productionurl>https://ws.12return.eu</productionurl>
