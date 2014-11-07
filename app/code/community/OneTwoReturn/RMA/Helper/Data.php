@@ -89,6 +89,7 @@ class OneTwoReturn_RMA_Helper_Data extends Mage_Core_Helper_Abstract
 		$order->sendOrderUpdateEmail($notify, $comment);
 		
 		$rma->setData('rma_status_code',$newstatus)->save();
+		$rma->setData('rma_updatedate',date('Y-m-d H:i:s'))->save();
 		return true;
 	}
 	

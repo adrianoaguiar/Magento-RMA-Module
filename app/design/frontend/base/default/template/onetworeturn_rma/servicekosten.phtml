@@ -1,63 +1,64 @@
 <?php echo $this->getMessagesBlock()->getGroupedHtml(); $sessionXML = $this->getSession('xml');?>
 <div class="returnContainer">
-	<div class="registered-users">
-		<div class="box-title"><h3><?php echo $this->translate('ServiceKosten')?></h3></div><?php echo $this->showSubTitle('servicekosten');?><br /><br />
-		<?php 
-		if(isset($sessionXML['reutilization']['reutilcosts']['reutilcost']))
-		{
-			$costs=array();
-			foreach($sessionXML['reutilization']['reutilcosts']['reutilcost'] as $data)
-			{
-				if($data['reutilamounttype']!='N' && $data['reutilamount']!='0')
-				{
-					if(empty($data['reutilccy']))$data['reutilccy']='EUR';
-					$costs[] = $data;
-				}
-				
-			}
-			if(empty($costs))$this->redirectTo('supplychain');
-			$data = Mage::getStoreConfig('rma/returnoptions/voorwaarden');
-			if(empty($data)) $voorwaarden=''; else $voorwaarden=Mage::getStoreConfig('rma/returnoptions/voorwaarden');
-		} else {
-			$this->redirectTo('supplychain');
-		}
-		
-		if(!empty($costs))
-		{
-			$totalPrice = 0;
-			foreach($costs as $cost)
-			{
-				$price= $cost['reutilamount'];
-				$totalPrice+=$price;
-			?>
-			<div class="serviceBox">
-			    <table cellpadding="0" cellspacing="0" border="0" width="100%">
-			        <tr>
-			            <td class="lefTD"><strong><?php if($cost['reutilamounttype']=='P')echo $this->translate('RetourKosten');else echo $this->translate('RecoveryAmount');?></strong></td>
-			            <td align="right" rowspan="2" class="rightTD"><?php echo Mage::helper('core')->currency($price); ?></td>
-			        </tr>
-			        <tr>
-			            <td></td>
-			        </tr>
-			    </table>
-			</div>
-			<?php }?>
-		<hr class="subLine" />
-		<form action="" method="post">
-			<div class="totaalKostenContainer">
-				<div class="floatRight">
-				    <span><?php echo $this->translate('TotaleKosten')?>: </span>
-				    <span class="totaalKosten"><?php echo Mage::helper('core')->currency($totalPrice); ?></span>
-				</div><br /><br /><br /><br style="clear:both" />
-				<div class="floatLeft  buttons buttons-set"> <button onclick="history.back()"class="returnBtnBig btn btn-cart add-to-cart button" type="button"  /><span><span><?php echo $this->translate('Terug')?></span></span></button></div>
-				<div class="floatRight buttons buttons-set">
-				<?php if(!empty($voorwaarden)){
-					echo '<a href="/'.$voorwaarden.'" target="_blank">'.$this->translate('Voorwaarden').'</a> &nbsp; &nbsp; &nbsp;&nbsp; <input type="checkbox" name="voorwaarden" value="true" id="true"/> &nbsp;'.$this->translate('acceptTerms');}
-				 	else {
-				 	echo '<input type="hidden" name="voorwaarden" value="true" id="true"/>';}?> 
-				 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <button class="returnBtnBig btn btn-cart add-to-cart button" type="submit"  /><span><span><?php echo $this->translate('Verder')?></span></span></button></div>
-			</div>
-		</form>
-		<?php } else $this->redirectTo('supplychain'); ?>
-	</div>
+    <div class="registered-users">
+        <div class="page-title"><h1><?php echo $this->translate('ServiceKosten');?></h1></div>
+        <?php echo $this->showSubTitle('servicekosten');?><br /><br />
+        <?php 
+        if(isset($sessionXML['reutilization']['reutilcosts']['reutilcost']))
+        {
+            $costs=array();
+            foreach($sessionXML['reutilization']['reutilcosts']['reutilcost'] as $data)
+            {
+                if($data['reutilamounttype']!='N' && $data['reutilamount']!='0')
+                {
+                    if(empty($data['reutilccy']))$data['reutilccy']='EUR';
+                    $costs[] = $data;
+                }
+                
+            }
+            if(empty($costs))$this->redirectTo('supplychain');
+            $data = Mage::getStoreConfig('rma/returnoptions/voorwaarden');
+            if(empty($data)) $voorwaarden=''; else $voorwaarden=Mage::getStoreConfig('rma/returnoptions/voorwaarden');
+        } else {
+            $this->redirectTo('supplychain');
+        }
+        
+        if(!empty($costs))
+        {
+            $totalPrice = 0;
+            foreach($costs as $cost)
+            {
+                $price= $cost['reutilamount'];
+                $totalPrice+=$price;
+            ?>
+            <div class="serviceBox">
+                <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                        <td class="lefTD"><strong><?php if($cost['reutilamounttype']=='P')echo $this->translate('RetourKosten');else echo $this->translate('RecoveryAmount');?></strong></td>
+                        <td align="right" rowspan="2" class="rightTD"><?php echo Mage::helper('core')->currency($price); ?></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            <?php }?>
+        <hr class="subLine" />
+        <form action="" method="post">
+            <div class="totaalKostenContainer">
+                <div class="floatRight">
+                    <span><?php echo $this->translate('TotaleKosten')?>: </span>
+                    <span class="totaalKosten"><?php echo Mage::helper('core')->currency($totalPrice); ?></span>
+                </div><br /><br /><br /><br style="clear:both" />
+                <div class="floatLeft  buttons buttons-set"> <button onclick="history.back()"class="returnBtnBig btn btn-cart add-to-cart button" type="button"  /><span><span><?php echo $this->translate('Terug')?></span></span></button></div>
+                <div class="floatRight buttons buttons-set">
+                <?php if(!empty($voorwaarden)){
+                    echo '<a href="/'.$voorwaarden.'" target="_blank">'.$this->translate('Voorwaarden').'</a> &nbsp; &nbsp; &nbsp;&nbsp; <input type="checkbox" name="voorwaarden" value="true" id="true"/> &nbsp;'.$this->translate('acceptTerms');}
+                    else {
+                    echo '<input type="hidden" name="voorwaarden" value="true" id="true"/>';}?> 
+                 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <button class="returnBtnBig btn btn-cart add-to-cart button" type="submit"  /><span><span><?php echo $this->translate('Verder')?></span></span></button></div>
+            </div>
+        </form>
+        <?php } else $this->redirectTo('supplychain'); ?>
+    </div>
 </div>

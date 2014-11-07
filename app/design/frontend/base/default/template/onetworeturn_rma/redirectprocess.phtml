@@ -1,0 +1,14 @@
+<?php 
+$redirectUrl 			= $this->getSession('tempRedirectUrl'); 
+$configXML 				= $this->getSession('Config');
+
+?>
+<div class="returnContainer">
+	<div class="registered-users">
+		<div class="page-title"><h1><?php echo $this->translate('Redirectprocess');?></h1></div>  
+		<?php echo $this->showSubTitle('externalprocess');?><br />
+		<?php if(!empty($configXML['dynamic_external_channel']))echo'<div class="category-description std">'.$configXML['dynamic_external_channel'].'</div>'; ?>
+		<iframe id="labelPreview" width="100%" border="0" align="top" height="800px" style="position:relative;padding:0;margin:0;border:0;overflow-x:hidden; " frameborder="0" scrolling="no" seamless src="<?php echo $redirectUrl?>"></iframe>
+	</div>
+	<div class="floatLeft buttons buttons-set"> <button onclick="history.back()"class="returnBtnBig btn btn-cart add-to-cart button" type="button"  /><span><span><?php echo $this->translate('Terug')?></span></span></button></div>
+</div>
