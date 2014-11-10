@@ -198,6 +198,58 @@
                         <show_in_website>1</show_in_website>
                         <show_in_store>1</show_in_store>
                     </daysfrom>
+                    <heading_dynamic translate="label">
+                        <label>Dynamic routing</label>
+                        <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                        <sort_order>58</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                     </heading_dynamic>
+                     <dynamic_enabled translate="label">
+                        <label>Dynamic routing enabled</label>
+                        <frontend_type>select</frontend_type>
+              			<source_model>OneTwoReturn_RMA_Model_System_Config_Source_YesList</source_model>
+                        <sort_order>59</sort_order>
+                        <show_in_default>1</show_in_default> 
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store> 
+                    </dynamic_enabled>
+                    <dynamic_attribute translate="label">
+                        <label>Product attribute to use for routing</label>
+                        <frontend_type>select</frontend_type>
+                        <source_model>OneTwoReturn_RMA_Model_System_Config_Source_AttributeList</source_model>
+                        <sort_order>60</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </dynamic_attribute> 
+                    <dynamic_options translate="comment">
+                            <label>Dynamic routing options</label> 
+                            <frontend_model>OneTwoReturn_RMA_Block_Adminhtml_System_Config_Form_Field_DynamicTableView</frontend_model>
+                            <backend_model>OneTwoReturn_RMA_Model_System_Config_Backend_Serialized_Array</backend_model>
+                            <sort_order>61</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>These values need to match with dynamic routing options at the 12return platform.</comment>
+                   </dynamic_options>
+                   <dynamic_external_channel translate="label">
+                        <label>External channel instruction</label>
+                        <frontend_type>textarea</frontend_type>
+                        <sort_order>62</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </dynamic_external_channel>
+                    <dynamic_product_selection translate="label">
+                        <label>Product selection instructions</label>
+                        <frontend_type>textarea</frontend_type>
+                        <sort_order>63</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </dynamic_product_selection>
                 </fields>
 		        </view>
 		        
@@ -277,7 +329,59 @@
                         <show_in_website>1</show_in_website>
                         <show_in_store>1</show_in_store> 
                     </daysfrom>
-                </fields>
+                    <heading_dynamic translate="label">
+                        <label>Dynamic routing</label>
+                        <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                        <sort_order>58</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                     </heading_dynamic>
+                     <dynamic_enabled translate="label">
+                        <label>Dynamic routing enabled</label>
+                        <frontend_type>select</frontend_type>
+              			<source_model>OneTwoReturn_RMA_Model_System_Config_Source_YesList</source_model>
+                        <sort_order>59</sort_order>
+                        <show_in_default>1</show_in_default> 
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store> 
+                    </dynamic_enabled>
+                    <dynamic_attribute translate="label">
+                        <label>Product attribute to use for routing</label>
+                        <frontend_type>select</frontend_type>
+                        <source_model>OneTwoReturn_RMA_Model_System_Config_Source_AttributeList</source_model>
+                        <sort_order>60</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </dynamic_attribute> 
+                    <dynamic_options translate="comment">
+                            <label>Dynamic routing options</label> 
+                            <frontend_model>OneTwoReturn_RMA_Block_Adminhtml_System_Config_Form_Field_DynamicTableWarranty</frontend_model>
+                            <backend_model>OneTwoReturn_RMA_Model_System_Config_Backend_Serialized_Array</backend_model>
+                            <sort_order>61</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>These values need to match with dynamic routing options at the 12return platform.</comment>
+                   </dynamic_options>
+                   <dynamic_external_channel translate="label">
+                        <label>External channel instruction</label>
+                        <frontend_type>textarea</frontend_type>
+                        <sort_order>62</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </dynamic_external_channel>
+                    <dynamic_product_selection translate="label">
+                        <label>Product selection instructions</label>
+                        <frontend_type>textarea</frontend_type>
+                        <sort_order>63</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </dynamic_product_selection>
+                  </fields>
 		        </warranty>
 		        <communication translate="label">
 		          <label>Customer communication settings</label>

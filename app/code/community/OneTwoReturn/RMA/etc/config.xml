@@ -216,6 +216,7 @@
 				<selectiverma>all</selectiverma>
 				<allowstatus>complete,rma_cancelled,rma_complete,rma_created,processing,closed</allowstatus>
 				<daysfrom>lastshipment</daysfrom>
+				<dynamic_enabled>0</dynamic_enabled>
 			</view>
 			<warranty>
 				<labelname>Warranty</labelname>
@@ -224,6 +225,7 @@
 				<selectiverma>all</selectiverma>
 				<allowstatus>complete,rma_cancelled,rma_complete,rma_created,processing,closed</allowstatus>
 				<daysfrom>lastshipment</daysfrom>
+				<dynamic_enabled>0</dynamic_enabled>
 			</warranty>
 			<communication>
 				<created_notify>0</created_notify>

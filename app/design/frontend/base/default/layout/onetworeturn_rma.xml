@@ -88,6 +88,15 @@
        </reference>
     </rma_form_selectproduct>
     
+    <rma_form_redirectprocess>
+    	<reference name="head">
+			<action method="addCss"><stylesheet>css/rma.css</stylesheet></action>
+		</reference>
+        <reference name="content">
+            <block type="rma/rma"  name="redirectprocess_rma" template="onetworeturn_rma/redirectprocess.phtml" />
+       </reference>
+    </rma_form_redirectprocess>
+    
     <rma_form_retourinformatie>
     	<reference name="head">
 			<action method="addCss"><stylesheet>css/rma.css</stylesheet></action>

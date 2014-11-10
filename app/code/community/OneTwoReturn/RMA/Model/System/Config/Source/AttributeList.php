@@ -8,8 +8,9 @@ class OneTwoReturn_RMA_Model_System_Config_Source_AttributeList
       foreach ($attributes as $attribute){
           $temp['value'] = $attribute->getAttributecode(); 
           $temp['label'] = $attribute->getFrontendLabel(); 
-          if(!empty($temp['label']))$arr[]= $temp;
+          if(!empty($temp['label']))$arr[$attribute->getFrontendLabel()]= $temp;
       }
+    ksort ($arr);
     return $arr;
   }
 }

@@ -166,6 +166,9 @@ input[type=text].input-text {
 	font-size:11px;
 }
 
+.breadCrumb_rma li { display:inline; }
+.breadCrumb_rma li strong { font-weight:bold; }
+
 .returnContainer .buttons,
 .returnContainer .buttons-set {
 	margin:0;
@@ -209,4 +212,14 @@ html[xmlns] .clearfix {
 .box-title {
 	display:block;
 	clear:both;
+}
+.disabledRow .demoAfbeelding,
+.disabledRow a,
+.disabledRow .returnAantalBox, 
+.disabledRow span,
+.disabledRow table,
+.disabledRow strong,
+.disabledRow i  {
+	opacity: 0.4;
+    filter: alpha(opacity=40); /* For IE8 and earlier */
 }

@@ -11,6 +11,9 @@ $i				= 0;
 $returnValid	=false;
 $allproducts 	= $_order->getAllItems();
 
+$lastGroup = false;
+$differentProdGroups = false;
+
 if(isset($allproducts) && !empty($allproducts) && is_array($allproducts))
 {
 	$lineNo=0;
@@ -40,15 +43,8 @@ if(isset($allproducts) && !empty($allproducts) && is_array($allproducts))
 			$rmaItems = Mage::helper('rma')->getRmaItemsByOrderItem($_product->getItemId())->getData();
 			if(is_array($rmaItems))
 			{
-				foreach($rmaItems as $ritem)
-				{
-					//echo($ritem['rma_items_qty_returning']).'-';
-					$count=$count+$ritem['rma_items_qty_returning']+$ritem['rma_items_qty_returned'];
-				}
-				
+				foreach($rmaItems as $ritem)$count=$count+$ritem['rma_items_qty_returning']+$ritem['rma_items_qty_returned'];
 				$vqnty= $qnty - $count;
-				//echo"<pre>";
-				//die(print_r(Mage::helper('rma')->getRmaItemsByOrderItem($_product->getItemId())->getData()));
 			} else $vqnty=$qnty;
 
 			
@@ -98,24 +94,53 @@ if(isset($allproducts) && !empty($allproducts) && is_array($allproducts))
 			{
 				$class.=' even ';
 			} else $class.=' odd ';
+            
+            $prodGroup='Default';
+            
+            if($config['dynamic_enabled'])
+            {
+                $multiProdGroups=' prodGrouped ';
+                $attribute_value = Mage::getResourceModel('catalog/product')->getAttributeRawValue($_product->getProductId(), $config['dynamic_attribute'], 0);
+
+                if(isset($config['dynamic_options']) && !empty($config['dynamic_options']) && is_array($config['dynamic_options']))
+                {
+                    foreach($config['dynamic_options'] as $attopt)
+                    {
+                        if(strtoupper($attopt['attr_value'])==strtoupper($attribute_value))
+                        {
+                            if($attopt['product_channel']==false || $attopt['product_channel']=='false') 
+                            {
+                                if(!empty($attopt['product_type']))$prodGroup = $attopt['product_type']; else $prodGroup=$attopt['attr_value'];
+                            } else {
+                                $prodGroup='CHANNEL_ROUTING_MAGE_'.$attopt['attr_value'];
+                            }
+                         }
+                    }
+                }
+            }  else $multiProdGroups='';
+            
+            if($lastGroup!=false && $lastGroup!=$prodGroup)  $differentProdGroups=true;
+            $lastGroup=$prodGroup;
 
 			$qtyHtml = '<table cellspacing="0" class="qty-table"><tbody><tr><td>'.$this->__('Ordered').':</td><td><strong>'.$qnty.'</strong</td></tr>';
 			if($_product->getQtyReturning()>0) $qtyHtml .= '<tr><td>'.$this->__('Returning').': </td><td><strong>'.$_product->getQtyReturning()*1 .'</strong></td></tr>';
 			if($_product->getQtyReturned()>0) $qtyHtml .= '<tr><td>'.$this->__('Returned').': </td><td><strong>'.$_product->getQtyReturned()*1 .'</strong></td></tr>';
 			if($_product->getQtyRefunded()>0) $qtyHtml .= '<tr><td>'.$this->__('Refunded').': </td><td><strong>'.$_product->getQtyRefunded()*1 .'</strong></td></tr>';
 			$qtyHtml.='</tbody></table>' ;
+            
 		
 			$tableRow.='
 		        <tr class="'.$class.'">
 		            <td><div class="demoAfbeelding">';
-			 			if(!empty($obj))$tableRow.='<a target="_blank" href="'.$obj->getProductUrl().'"><img src="'.Mage::helper('catalog/image')->init($obj, 'thumbnail')->resize(76, 59).'" alt="'.$this->htmlEscape($_product['name']).'" border="0" width="76" height="59" /></a>';
+			 			if(!empty($obj) && $obj instanceof Mage_Catalog_Model_Product)$tableRow.='<a target="_blank" href="'.$obj->getProductUrl().'"><img src="'.Mage::helper('catalog/image')->init($obj, 'thumbnail')->resize(76, 59).'" alt="'.$this->htmlEscape($_product['name']).'" border="0" width="76" height="59" /></a>';
+                        elseif(!empty($_product) && $_product instanceof Mage_Catalog_Model_Product)$tableRow.='<a target="_blank" href="'.$_product->getProductUrl().'"><img src="'.Mage::helper('catalog/image')->init($_product, 'thumbnail')->resize(76, 59).'" alt="'.$this->htmlEscape($_product['name']).'" border="0" width="76" height="59" /></a>';
 			$tableRow.='</div>
 					</td><td>';
 			 			if(!empty($obj))$tableRow.='<a target="_blank" href="'.$obj->getProductUrl().'">'.$this->htmlEscape($_product['name']).'</a>'; 
 			 			else $tableRow.= $this->htmlEscape($_product['name']); 
 						$tableRow.='<br />'.$description.$customOpts.'</td>
 		            <td>
-		            	<span class="price">'.Mage::helper('core')->currency($price).'</span>
+		            	'.Mage::helper('core')->currency($price).'
 		            </td>
 		            <td align="center" class="a-center" width="100">
 		            	'.$qtyHtml.'
@@ -139,7 +164,7 @@ if(isset($allproducts) && !empty($allproducts) && is_array($allproducts))
 			$tableRow.='</td><td align="center" class="a-center last">';
 					if($vqnty>=1){
 						 $returnValid=true; 
-						 $tableRow.='<input value="'.$lineNo.'" name="product['.$lineNo.']"';
+						 $tableRow.='<input value="'.$lineNo.'" name="product['.$lineNo.']" class="prodgroup-'.$prodGroup.'"';
 						 if(isset($_POST['product'][$lineNo])) $tableRow.=' checked="yes" ';
 						 $tableRow.='type="checkbox"/> ';
 					}
@@ -148,13 +173,19 @@ if(isset($allproducts) && !empty($allproducts) && is_array($allproducts))
 	}
 }
 ?>
-	
 <?php  echo $this->getMessagesBlock()->getGroupedHtml();?>
 <div class="returnContainer">
 	<div class="registered-users">
-		<div class="box-title"><h3><?php echo $this->translate('selectProducts'); ?></h3></div><?php echo $this->showSubTitle('selectproduct');?><br />
+		<div class="box-title"><h3><?php echo $this->translate('selectProducts'); ?></h3></div><?php echo $this->showSubTitle('selectproduct');?>
 		<?php if(is_array($allorders[$order['orderId']])) { ?>
+	   <?php 
+	        echo"<b>".$this->translate('There are products on this order with different return destinations')."</b>";
+            if($differentProdGroups && $config['dynamic_enabled'] && !empty($config['dynamic_product_selection']))echo'<div class="category-description std">'.$config['dynamic_product_selection'].'</div><br />'; else echo"<br />"; 
+        ?>
 		<b><?php echo $this->translate('Recent RMAs on this order');?></b>
+		
+		
+		
 		<table cellpadding="0" cellspacing="0" border="0"class="data-table selectprodstable">
 			<thead>
 	            <tr class="first last">
@@ -177,7 +208,7 @@ if(isset($allproducts) && !empty($allproducts) && is_array($allproducts))
 		<br />
 		<?php }?>
 		<form action="" method="post">
-			<table cellpadding="0" cellspacing="0" border="0"class="data-table selectprodstable">
+			<table cellpadding="0" cellspacing="0" border="0"class="data-table selectprodstable <?php echo $multiProdGroups;?>">
 		        <thead>
 		            <tr class="first last">
 		            	<th></th> 
@@ -198,3 +229,32 @@ if(isset($allproducts) && !empty($allproducts) && is_array($allproducts))
 		</form>
 	</div>
 </div>
+<script>window.jQuery || document.write('<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"><\/script>')</script>
+<script>
+var $j = jQuery.noConflict();
+$j( document ).ready(function() {
+  if($j('.prodGrouped').length>0)
+  {
+    $j ('.selectprodstable input:checkbox').on('change', function(){
+        var elclass = $j (this).attr('class');
+        if($j (this).is(':checked')){
+            $j ('.selectprodstable input:checkbox:not(.'+elclass+')').attr('checked', false).attr("disabled", true).parent().parent().addClass("disabledRow");
+        } else {
+            if($j ('.selectprodstable input.'+elclass+':checkbox:checked').length>0) 
+            {
+                
+            } else {
+                $j ('.selectprodstable input:checkbox:not(.'+elclass+')').attr("disabled", false).parent().parent().removeClass("disabledRow");;
+            }
+        }
+    });
+    
+    $j ('.selectprodstable input:checkbox').each(function(){
+        var elclass = $j (this).attr('class');
+        if($j (this).is(':checked')){
+            $j ('.selectprodstable input:checkbox:not(.'+elclass+')').attr('checked', false).attr("disabled", true).parent().parent().addClass("disabledRow");
+        }
+    });
+  }
+});
+</script>

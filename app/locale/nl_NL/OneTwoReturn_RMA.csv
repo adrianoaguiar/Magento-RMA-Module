@@ -126,3 +126,4 @@ OneTwoReturn_RMA::Ordered,Besteld
 OneTwoReturn_RMA::Returning,Opgestuurd
 OneTwoReturn_RMA::Returned,Geretourneerd
 OneTwoReturn_RMA::error-rma-allready-created,U heeft deze RMA al aangemeld. U ontvangt het retourlabel per email.
+OneTwoReturn_RMA::There are products on this order with different return destinations,Deze order bevat producten met verschillende retourbestemmingen
