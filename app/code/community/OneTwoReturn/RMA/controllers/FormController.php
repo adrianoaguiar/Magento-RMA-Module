@@ -206,18 +206,12 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 		
     }
 
-    public function redirectprocessAction()
-    {
-        $this->_initAction();
-        $this->renderLayout();
-    }
-
     public function selectproductAction()
     {
     	$this->_initAction();
 		$this->_initLayoutMessages('customer/session');
 		$this->resetSession('productstep');	
-
+				
     	if($this->checkIfLoggedIn())
     	{
 			    		
@@ -243,11 +237,7 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 					$_order 		= Mage::getModel('sales/order')->loadByIncrementID($order['orderId']);
 					$allproducts 	= $_order->getAllItems();
 					$allorders 		= $this->getSession('allorders');
-                    
-                    $prodGroups = false;
-                    $wrongGroups= false;
-                    $externalChannel = false;
-                    
+					
 					foreach($_POST['product'] as $product)
 					{
 						if(isset($_POST['aantal'][$product]) && !empty($_POST['aantal'][$product]) && $_POST['aantal'][$product]>=1)
@@ -278,33 +268,6 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 									}
 								}
 							}
-
-                            $prodGroup='Default';
-                            if($this->Config['dynamic_enabled'])
-                            {
-                                $attribute_value = Mage::getResourceModel('catalog/product')->getAttributeRawValue($_product->getProductId(), $this->Config['dynamic_attribute'], 0);
-                                
-                                foreach($this->Config['dynamic_options'] as $attopt)
-                                {
-                                    if(strtoupper($attopt['attr_value'])==strtoupper($attribute_value))
-                                    {
-                                        if($attopt['product_channel']==false || $attopt['product_channel']=='false') 
-                                        {
-                                            if(!empty($attopt['product_type']))$prodGroup = $attopt['product_type']; else $prodGroup=$attopt['attr_value'];
-                                        } else {
-                                            $externalChannel=str_replace("{increment_id}",$order['orderId'],$attopt['product_type']);
-                                            $prodGroup='CHANNEL_ROUTING_MAGE_'.$attopt['attr_value'];
-                                        }
-                                     }
-                                }
-                                if($prodGroups==false)$prodGroups = $prodGroup;
-                                else if($prodGroups!=$prodGroup)
-                                {
-                                    $error=true;
-                                    $wrongGroups=true;
-                                }
-                            } 
-                            
 							if($quantity>=$_POST['aantal'][$product]){
 								$products[$product]['aantal']=$_POST['aantal'][$product];
 								$products[$product]['data']=$_product;
@@ -320,39 +283,24 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 							$this->redirectTo('selectproduct');				//stuur terug naar het product
 						}
 					}
-
-                    
-                    
-                    if(strtolower($prodGroup)=='default')$prodGroup='O2RECOMPRT';
-                    
 					if(!$error && isset($products) && is_array($products))
 					{
-					    if($externalChannel!=false)
-                        {
-                            $this->addToSession('tempRedirectUrl',$externalChannel);
-                            $this->redirectTo('redirectprocess');
-                        }else {
-    						$return = $this->createProductDataset($products,$prodGroup);    //Prepare de dataset en vorm er een XML van.
-    						if($return==true)					//Alles is goed gegaan, dus maak een API call.
-    						{
-    							if($this->APIRequest('Questions'))
-    							{
-    								$this->addToSession('productstep','1');
-    								$this->redirectTo('retourinformatie');	//Alles is goed dus stuur door naar de volgende stap
-    							} else {
-    								$this->redirectTo('selectproduct');				//stuur terug naar het product
-    							}
-    						} else {	//Er was een error bij het maken van de xml, toon deze
-    							Mage::getSingleton('customer/session')->addError($this->translate('missingField').$return);
-    							$this->redirectTo('selectproduct');				//stuur terug naar het product
-    						}
-                        }
-					} elseif($wrongGroups)
-                    {
-                        Mage::getSingleton('customer/session')->addError($this->translate('WrongErrorGroups'));
-                        $this->redirectTo('selectproduct'); 
-                    }
-                }  else {
+						$return = $this->createProductDataset($products);    //Prepare de dataset en vorm er een XML van.
+						if($return==true)					//Alles is goed gegaan, dus maak een API call.
+						{
+							if($this->APIRequest('Questions'))
+							{
+								$this->addToSession('productstep','1');
+								$this->redirectTo('retourinformatie');	//Alles is goed dus stuur door naar de volgende stap
+							} else {
+								$this->redirectTo('selectproduct');				//stuur terug naar het product
+							}
+						} else {	//Er was een error bij het maken van de xml, toon deze
+							Mage::getSingleton('customer/session')->addError($this->translate('missingField').$return);
+							$this->redirectTo('selectproduct');				//stuur terug naar het product
+						}
+					}
+				} else {
 					Mage::getSingleton('customer/session')->addError($this->translate('SelectAProduct'));
 					$this->redirectTo('selectproduct');				//stuur terug naar het product
 				}
@@ -414,7 +362,6 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 				{
 					$this->createAnswerDataset($_POST);
 					$this->addToSession('infostep','1');
-                    $this->checkCountries(true);
 					$this->redirectTo('klantgegevens');	
 				} else $this->redirectTo('retourinformatie');
     		 }
@@ -540,17 +487,16 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 			{
 				Mage::getSingleton('customer/session')->addError($this->translate("error-rma-allready-created"));
 				$this->redirectTo('index');
-			} else {
-        		 if ($this->getRequest()->isPost())
-        		 {
-        		 	if($this->APIRequest('Reutilization')) 
-    				{
-    					$this->redirectTo('supplychain');		//Alles is goed dus stuur door naar de volgende stap	
-    				} else {
-    					$this->redirectTo('servicekosten');		//stuur terug naar de klantgegevens stap					
-    				}
-        		 }
-            }
+			}
+    		 if ($this->getRequest()->isPost())
+    		 {
+    		 	if($this->APIRequest('Reutilization')) 
+				{
+					$this->redirectTo('supplychain');		//Alles is goed dus stuur door naar de volgende stap	
+				} else {
+					$this->redirectTo('servicekosten');		//stuur terug naar de klantgegevens stap					
+				}
+    		 }
     	} else {
     		$this->abort('005');
     	}
@@ -666,13 +612,6 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
     {
     	$this->_initAction();
     	$this->_initLayoutMessages('customer/session');
-        $tempPayment = $this->getSession('tempPayment');
-        if(!empty($tempPayment))
-        {
-            Mage::getSingleton('customer/session')->addError("U heeft deze RMA al aangemeld. U ontvangt het retourlabel per email.");
-            $this->redirectTo('index');
-        }
-        $this->addToSession('tempPayment','done');
     	if($this->checkIfLoggedIn())
     	{
     		 if ($this->getRequest()->isPost())
@@ -834,10 +773,9 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 
 			$orderSession['shippingAddress']=$thisAddress;
 			$this->addToSession('Customer',$orderSession);
-            $this->checkCountries();
 			return $thisAddress;
 		} else {
-        
+
 			return false;
 		}
 	}
@@ -933,7 +871,7 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 	
 	
 
-	private function checkCountries($showError=false)
+	private function checkCountries()
 	{
 		$count=$this->getSession('allowedCountries');
 		$erroShowed=$this->getSession('countryError');
@@ -956,10 +894,8 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
     	{
     		foreach($countArray as $country)if($land==$country['code'] || $country==$land)return true;
     	}
-
     	if(empty($erroShowed))
     	{
-    	    
     		$this->addToSession('countryError','1');	
     		Mage::getSingleton('customer/session')->addError($this->translate('notValidCountry'));
 		}
@@ -1112,7 +1048,7 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 	}
 
 
-	private function createProductDataset($products,$prodGroup=false) /////////////////////////////// ORDER LINE NUMBER ophalen
+	private function createProductDataset($products) /////////////////////////////// ORDER LINE NUMBER ophalen
 	{
 		$_order		= $this->getSession('order');
 		$config = $this->getSession('Config');
@@ -1128,15 +1064,11 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 			$desc = $custom->getName();
 
 			$error		= '';
-            if($prodGroup==false)
-            {
-                if(isset($_data['type']))$productsSet['product'][$lineNo]['type']=$this->validateValue($_data['type'],'AN','20');
-            } else  $productsSet['product'][$lineNo]['type']=$this->validateValue(strtoupper($prodGroup),'AN','20');
-                
+			if(isset($_data['type']))$productsSet['product'][$lineNo]['type']=$this->validateValue($_data['type'],'AN','20');
 			
 			
 			if(isset($_data['model']))$productsSet['product'][$lineNo]['model']=$this->validateValue($_data['model'],'AN','26');
-			elseif(isset($_data['sku']))$productsSet['product'][$lineNo]['model']=$this->validateValue($_data['sku'],'AN','26'); 
+			elseif(isset($_data['sku']))$productsSet['product'][$lineNo]['model']=$this->validateValue($_data['sku'],'AN','26');
 			else $error .= 'model ';
 			
 			if(isset($desc) && !empty($desc))$productsSet['product'][$lineNo]['productdesc']=$this->validateValue($desc,'AN','240');
@@ -1185,7 +1117,6 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 			$productsSet['product'][$lineNo]['lineno']=$lineNo;
 
 		}
-
 		if(empty($error))
 		{
 			$this->addToXMLSession($productsSet,'products');
@@ -1628,7 +1559,7 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 		curl_setopt($this->curl,CURLOPT_FORBID_REUSE, 1);	  //to force the connection to explicitly close when it has finished processing, and not be pooled for reuse
 		curl_setopt($this->curl,CURLOPT_FRESH_CONNECT, 1);	  //to force the use of a new connection instead of a cached one.
 		curl_setopt($this->curl,CURLOPT_CONNECTTIMEOUT, 30);	  //The number of seconds to wait while trying to connect. Use 0 to wait indefinitely.
-		curl_setopt($this->curl,CURLOPT_TIMEOUT, 30);
+		curl_setopt($this->curl,CURLOPT_TIMEOUT, 10);
 		curl_setopt($this->curl,CURLOPT_PORT, $this->RESTport);	
 		curl_setopt($this->curl,CURLOPT_CUSTOMREQUEST, "POST");  
 		curl_setopt($this->curl, CURLOPT_USERAGENT, "curl/7.23.1 (x86_64-unknown-linux-gnu) libcurl/7.23.1 OpenSSL/0.9.8b zlib/1.2.3");
@@ -1646,7 +1577,7 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	    curl_setopt($ch, CURLOPT_BINARYTRANSFER,1);
 		curl_setopt($ch,CURLOPT_FAILONERROR,1);
-		curl_setopt($ch,CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch,CURLOPT_TIMEOUT, 10);
 		curl_setopt($ch,CURLOPT_FOLLOWLOCATION,0);
 		curl_setopt($ch,CURLOPT_AUTOREFERER,1); 
 		curl_setopt($ch,CURLOPT_PORT, $this->RESTport);	
@@ -1791,22 +1722,6 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 			$this->Config['returnType'][$returnType]['refundshipping']= Mage::getStoreConfig('rma/'.$returnType.'/refundshipping');
 			$this->Config['returnType'][$returnType]['allowstatus']= Mage::getStoreConfig('rma/'.$returnType.'/allowstatus');
 			$this->Config['returnType'][$returnType]['daysfrom']= Mage::getStoreConfig('rma/'.$returnType.'/daysfrom');
-            $this->Config['returnType'][$returnType]['dynamic_enabled']= Mage::getStoreConfig('rma/'.$returnType.'/dynamic_enabled');
-            $this->Config['returnType'][$returnType]['dynamic_attribute']= Mage::getStoreConfig('rma/'.$returnType.'/dynamic_attribute');
-            $this->Config['returnType'][$returnType]['dynamic_options']= unserialize(Mage::getStoreConfig('rma/'.$returnType.'/dynamic_options'));
-            foreach( $this->Config['returnType'][$returnType]['dynamic_options'] as $key=>$value)
-            {
-                foreach($value as $k=>$v)
-                {
-                    
-                    $k = explode('_',$k); 
-                   
-                    unset($k[0]);
-                    $k=implode("_",$k);
-                    $this->Config['returnType'][$returnType]['dynamic_options'][$key][$k]=$v;
-                }
-            }
-            $this->Config['returnType'][$returnType]['dynamic_external_channel']= Mage::getStoreConfig('rma/'.$returnType.'/dynamic_external_channel');
 			if($this->Config['returnType'][$returnType]['enabled'])$i++;;
 		}
 		$this->addToSession('Config',$this->Config);
@@ -1909,13 +1824,6 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 			$this->Config['currentType']=$returnType;
 			$this->Config['allowstatus']=$this->Config['returnType'][$returnType]['allowstatus'];
 			$this->Config['daysfrom']=$this->Config['returnType'][$returnType]['daysfrom'];
-            $this->Config['dynamic_enabled']=$this->Config['returnType'][$returnType]['dynamic_enabled'];
-            $this->Config['dynamic_attribute']=$this->Config['returnType'][$returnType]['dynamic_attribute'];
-            $this->Config['dynamic_options']=$this->Config['returnType'][$returnType]['dynamic_options'];
-            $this->Config['dynamic_external_channel']=$this->Config['returnType'][$returnType]['dynamic_external_channel'];
-            
-            
-            
 			$this->addToSession('Config',$this->Config);	
 			
 			if(empty($this->Config['context']) || empty($this->Config['key']))$this->abort('Invalid context or key.');
@@ -2012,7 +1920,6 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 		{
 			foreach($rmaConditions as $c)
 			{
-			    if(!isset($c['questionvalue']))$c['questionvalue']='';
 				$rconditionsmodel 							= Mage::getSingleton('rma/rconditions');
 				$rcondition['rma_conditions_questioncode'] 	= $c['questioncode'];
 				$rcondition['rma_conditions_questiondesc'] 	= $c['questiondesc'];

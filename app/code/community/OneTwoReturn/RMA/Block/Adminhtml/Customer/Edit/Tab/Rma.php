@@ -6,31 +6,31 @@ class OneTwoReturn_RMA_Block_Adminhtml_Customer_Edit_Tab_Rma
     
     protected function _construct()
     {
-        parent::_construct();
-        $this->setId('rmaGrid');
-        $this->setUseAjax(true);
+     	parent::_construct();
+		$this->setId('rmaGrid');
+		$this->setUseAjax(true);
         $this->setDefaultSort('rma_created');
         $this->setDefaultDir('ASC');
-        $this->setFilterVisibility(false);
-        $this->setPagerVisibility(false);
+		$this->setFilterVisibility(false);
+		$this->setPagerVisibility(false);
         $this->setSaveParametersInSession(true);
     }
 
-    public function getCustomer()
+	public function getCustomer()
     {
         return Mage::registry('current_customer');
     }
-    
-    protected function _prepareCollection()
+	
+	protected function _prepareCollection()
     {
-        
+    	
       $collection = Mage::getModel('rma/rma')->getCollection()->addFieldToFilter('rma_customer_id', $this->getCustomer()->getId());
       $this->setCollection($collection);
 
       return parent::_prepareCollection();
     }
 
-    protected function _prepareColumns()
+	protected function _prepareColumns()
     {
         // Add the columns that should appear in the grid
         $this->addColumn('rma_id',
@@ -50,15 +50,15 @@ class OneTwoReturn_RMA_Block_Adminhtml_Customer_Edit_Tab_Rma
                 'renderer' =>  'OneTwoReturn_RMA_Block_Adminhtml_Rmaoverview_Renderer_Rmareference'
             )
         );
-        $this->addColumn('rma_customer',
+		$this->addColumn('rma_customer',
             array(
                 'header'=> $this->__('Customer'),
                 'index' => 'rma_order_entity_id',
                 'renderer' =>  'OneTwoReturn_RMA_Block_Adminhtml_Rmaoverview_Renderer_Customer'
             )
         );
-        
-        $this->addColumn('rma_status_code',
+		
+		$this->addColumn('rma_status_code',
             array(
                 'header'=> $this->__('Status'),
                 'type'  => 'options',
@@ -68,19 +68,19 @@ class OneTwoReturn_RMA_Block_Adminhtml_Customer_Edit_Tab_Rma
                 'options'=> OneTwoReturn_RMA_Block_Adminhtml_Rmaoverview_Renderer_Status::getOptions()
             )
         );
-        
-        $this->addColumn('rma_order_increment_id',
+		
+		$this->addColumn('rma_order_increment_id',
             array(
                 'header'=> $this->__('Order #'),
                 'type' => 'text',
                 'index' => 'rma_order_increment_id',
                 'width' => 120,
-                'type' => 'text',
-                'renderer' =>  'OneTwoReturn_RMA_Block_Adminhtml_Rmaoverview_Renderer_Orderno'
+            	'type' => 'text',
+            	'renderer' =>  'OneTwoReturn_RMA_Block_Adminhtml_Rmaoverview_Renderer_Orderno'
             )
         );
-        
-        $this->addColumn('rma_context',
+		
+		$this->addColumn('rma_context',
             array(
                 'header'=> $this->__('RMA Type'),
                 'type'      => 'options',
@@ -90,8 +90,8 @@ class OneTwoReturn_RMA_Block_Adminhtml_Customer_Edit_Tab_Rma
                 'options'=> OneTwoReturn_RMA_Block_Adminhtml_Rmaoverview_Renderer_Context::getOptions()
             )
         );
-        
-        $this->addColumn('rma_createdate',
+		
+		$this->addColumn('rma_createdate',
             array(
                 'header'=> $this->__('RMA Created at'),
                 'type'      => 'date',
@@ -99,8 +99,8 @@ class OneTwoReturn_RMA_Block_Adminhtml_Customer_Edit_Tab_Rma
                 'index' => 'rma_createdate'
             )
         );
-        
-        $this->addColumn('rma_updatedate',
+		
+		$this->addColumn('rma_updatedate',
             array(
                 'header'=> $this->__('RMA Updated at'),
                 'type'      => 'date',
@@ -113,7 +113,7 @@ class OneTwoReturn_RMA_Block_Adminhtml_Customer_Edit_Tab_Rma
         return parent::_prepareColumns();
     }
 
-    public function getRowUrl($row)
+	public function getRowUrl($row)
     {
         return $this->getUrl(
             '12return/adminhtml_rmaoverview/view',

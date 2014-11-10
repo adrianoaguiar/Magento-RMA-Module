@@ -103,9 +103,7 @@ $lineNo=0;
 				} else $class.=' odd ';
 			?>
 		        <tr class="<?php echo $class;?>">
-		        	<td width="80"><div class="demoAfbeelding">
-		        	    <?php if(!empty($products[$product['lineno']]['obj']) && $products[$product['lineno']]['obj'] instanceof Mage_Catalog_Model_Product){?><a target="_blank" href="<?php echo $products[$product['lineno']]['productUrl']; ?>"><img src="<?php echo Mage::helper('catalog/image')->init($products[$product['lineno']]['obj'], 'thumbnail')->resize(76, 59) ?>" border="0" width="76" height="59" /></a><?php }?>
-		        	    </div></td>
+		        	<td width="80"><div class="demoAfbeelding"><a target="_blank" href="<?php echo $products[$product['lineno']]['productUrl']; ?>"><img src="<?php echo Mage::helper('catalog/image')->init($products[$product['lineno']]['obj'], 'thumbnail')->resize(76, 59) ?>" border="0" width="76" height="59" /></a></div></td>
 		            <td><strong><a target="_blank" href="<?php echo $products[$product['lineno']]['productUrl']; ?>"><?php echo $products[$product['lineno']]['naam']; ?></a></strong><br /><?php echo $products[$product['lineno']]['customOpts'];?></td>
 		            <td><span class="price"><?php echo $products[$product['lineno']]['price']; ?></span></td>
 		            <td><?php echo $products[$product['lineno']]['qty']; ?></td>

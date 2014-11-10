@@ -1,75 +1,73 @@
 <?php echo $this->getMessagesBlock()->getGroupedHtml(); ?> 
 <div class="returnContainer">
-        <div class="registered-users">
-            <div class="page-title"><h1><?php echo $this->translate('selectOrder');?></h1></div>
-            <?php echo $this->showSubTitle('selectorder');?><br /><br />
-            <?php  
-                $allorders  = $this->getSession('allorders');
-                $config     = $this->getSession('Config');
-                $customer   = $this->getSession('Customer');
-                
-                if(isset($allorders) && !empty($allorders) && is_array($allorders))
-                {
-                    ?>
-                        <table cellpadding="0" cellspacing="0" border="0" width="100%" class="data-table">
-                            <thead>
-                                <tr class="first last">
-                                    <th><?php echo $this->translate('orderNummer');?> #</th>
-                                    <th><?php echo $this->translate('datum');?></th>
-                                    <th><span class="nobr"><?php echo $this->translate('Totaal')?></span></th>
-                                    <th><?php echo $this->translate('RetourStatusenOrder');?></th>
-                                    <th>&nbsp;</th>
-                                </tr>
-                            </thead>
-                    <?php
-                    $first=true;
-                    $i=0;
-                    $allorders=array_reverse($allorders,true);
-                    foreach($allorders as $orderId=>$rmas) 
-                    {
-                        $i++;
-                        $class='';
-                        $_order     = Mage::getModel('sales/order')->loadByIncrementId($orderId);
-                        $orderTime  = strtotime($_order['created_at']);
-                        $thisDate   = date('d-m-Y',$orderTime);
+		<div class="registered-users">
+			<div class="box-title"><h3><?php echo $this->translate('selectOrder'); ?></h3></div><?php echo $this->showSubTitle('selectorder');?><br /><br />
+			<?php  
+				$allorders 	= $this->getSession('allorders');
+				$config 	= $this->getSession('Config');
+				$customer 	= $this->getSession('Customer');
+				
+				if(isset($allorders) && !empty($allorders) && is_array($allorders))
+				{
+					?>
+						<table cellpadding="0" cellspacing="0" border="0" width="100%" class="data-table">
+					        <thead>
+					            <tr class="first last">
+					                <th><?php echo $this->translate('orderNummer');?> #</th>
+					                <th><?php echo $this->translate('datum');?></th>
+					                <th><span class="nobr"><?php echo $this->translate('Totaal')?></span></th>
+					                <th><?php echo $this->translate('RetourStatusenOrder');?></th>
+					                <th>&nbsp;</th>
+					            </tr>
+					        </thead>
+					<?php
+					$first=true;
+					$i=0;
+					$allorders=array_reverse($allorders,true);
+					foreach($allorders as $orderId=>$rmas) 
+					{
+						$i++;
+						$class='';
+						$_order 	= Mage::getModel('sales/order')->loadByIncrementId($orderId);
+						$orderTime 	= strtotime($_order['created_at']);
+			 			$thisDate 	= date('d-m-Y',$orderTime);
 
-                        if($first){
-                            $first=false;
-                            $class.='first';
-                        }
-                        if($i%2)$class.=' even '; 
-                        else $class.=' odd ';
-                        $orderData = $_order->getData();
-                    ?>
-                    <tr class="<?php echo $class;?>">
-                        <td><?php echo $orderId ?></td>
-                        <td><span class="nobr"><?php echo $thisDate ?></span></td>
-                        <td><span class="price">
-                            <?php 
-                                if($config['pricevat']=='ex') echo Mage::helper('core')->currency($_order->getSubtotal());  
-                                else echo Mage::helper('core')->currency($_order->getSubtotalInclTax()); 
-                            ?>
-                            </span></td>
-                        <td>
-                            <?php 
-                                if(is_array($rmas))
-                                {
-                                    foreach($rmas as $rma)
-                                    {
-                                        echo Mage::getStoreConfig('rma/'.$rma['rma_context'].'/labelname').' '.$rma['rma_reference'].': <b>'.Mage::helper('rma')->getStatusLabel($rma['rma_status_code']).'</b><br />';
-                                    }
-                                }
-                            ?>
-                        </td>
-                        <td class="a-center last">
-                            <form action="" method="post"><div class="buttons buttons-set nomargin"><input type="hidden" value="<?php echo $orderId ?>" name="orderid" id="orderid" /><span class="nobr"><button class="returnBtnBig btn btn-cart add-to-cart button" type="submit"  /><span><span><?php echo $this->translate('selecteer')?></span></span></button></span></div></form>
-                        </td>
-                    </tr>
-    
-            
+						if($first){
+							$first=false;
+							$class.='first';
+						}
+						if($i%2)$class.=' even '; 
+						else $class.=' odd ';
+						$orderData = $_order->getData();
+					?>
+			        <tr class="<?php echo $class;?>">
+	                    <td><?php echo $orderId ?></td>
+	                    <td><span class="nobr"><?php echo $thisDate ?></span></td>
+	                    <td><span class="price">
+		                    <?php 
+		                    	if($config['pricevat']=='ex') echo Mage::helper('core')->currency($_order->getSubtotal());  
+		                    	else echo Mage::helper('core')->currency($_order->getSubtotalInclTax()); 
+		                    ?>
+	                    	</span></td>
+                    	<td>
+                    		<?php 
+	                    		if(is_array($rmas))
+								{
+									foreach($rmas as $rma)
+									{
+										echo Mage::getStoreConfig('rma/'.$rma['rma_context'].'/labelname').' '.$rma['rma_reference'].': <b>'.Mage::helper('rma')->getStatusLabel($rma['rma_status_code']).'</b><br />';
+									}
+								}
+							?>
+                    	</td>
+	                    <td class="a-center last">
+	                        <form action="" method="post"><div class="buttons buttons-set nomargin"><input type="hidden" value="<?php echo $orderId ?>" name="orderid" id="orderid" /><span class="nobr"><button class="returnBtnBig btn btn-cart add-to-cart button" type="submit"  /><span><span><?php echo $this->translate('selecteer')?></span></span></button></span></div></form>
+	                    </td>
+	                </tr>
+	
+			
 <?php }} else { echo $this->translate('noOrdersAvailable')."<br /><br />"; } ?>
 </table>
 <div class="floatLeft buttons buttons-set"> <button onclick="location.href='/12return/form/'"class="returnBtnBig btn btn-cart add-to-cart button" type="button"  /><span><span><?php echo $this->translate('Terug')?></span></span></button></div>
-<?php $this->showLogs(); ?>
 
 </div></div>
