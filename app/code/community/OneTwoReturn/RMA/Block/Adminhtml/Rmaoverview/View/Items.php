@@ -40,6 +40,12 @@ class OneTwoReturn_RMA_Block_Adminhtml_Rmaoverview_View_Items extends Mage_Admin
 		$rmaitem = $this->getRmaItem($_item->getItemId());
 		return $rmaitem['rma_items_qty_tocredit'];
 	}
+    
+    public function getExchangePref($_item)
+    {
+        $rmaitem = $this->getRmaItem($_item->getItemId());
+        return $rmaitem['exchange_pref'];
+    }
     /**
      * Retrieve real html id for field
      *

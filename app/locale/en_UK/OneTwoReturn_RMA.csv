@@ -123,3 +123,16 @@ OneTwoReturn_RMA::WAR,Warranty
 OneTwoReturn_RMA::WRN,Warranty redemption
 OneTwoReturn_RMA::orderSelectie,Order
 OneTwoReturn_RMA::error-rma-allready-created,You have allready submitted this RMA. You will receive the instructions by mail shortly.
+OneTwoReturn_RMA::acceptWithdrawal, I want to withdraw my purchase by means of this online form
+OneTwoReturn_RMA::Ordered products, Ordered products
+OneTwoReturn_RMA::WithdrawalForm, Withdrawal form
+OneTwoReturn_RMA::Select an option, Select an option
+OneTwoReturn_RMA::Refund summary, Refund summary
+OneTwoReturn_RMA::Refund method, Refund method
+OneTwoReturn_RMA::Total product amount,Total product amount
+OneTwoReturn_RMA::Estimated refund amount, Estimated refund amount
+OneTwoReturn_RMA::selectRefundType, Select the refund method
+OneTwoReturn_RMA::Select,Select
+OneTwoReturn_RMA::Exchange,Exchange
+OneTwoReturn_RMA::exchangeProduct,If you want to exchange the product above then let us know your desired product
+OneTwoReturn_RMA::exchangeFor, Exchange for:

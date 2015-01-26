@@ -1,0 +1,178 @@
+<?php
+$sessionXML     = $this->getSession('xml');
+$configXML  = $this->getSession('Config');
+$order = $this->getSession('order');    
+$exchangedProds = $this->getSession('exchangeProducts');
+
+$_order = Mage::getModel('sales/order')->loadByIncrementID($order['orderId']);
+$allproducts = $_order->getAllItems();
+
+$rdate = 'unknown';
+foreach($sessionXML['questions']['question'] as $q)
+{
+    if(!empty($q['questionvalue']) && strtotime($q['questionvalue']) !=false && strtotime($q['questionvalue']) !=-1)$rdate= Date("l, F, j, Y",strtotime($q['questionvalue']) ); 
+}
+
+if(isset($allproducts) && !empty($allproducts) && is_array($allproducts))
+{
+$lineNo=0;
+$allProdTotals=0;
+    foreach($allproducts as $index=>$_product)
+    {
+        $obj = Mage::getModel('catalog/product')->load($_product->getProductId());
+        $allOptions = $_product->getData('product_options');
+        $options = unserialize($allOptions);
+        
+        if(!isset($options['info_buyRequest']['product']) || $_product->getProductId()==$options['info_buyRequest']['product'])
+        {
+            $lineNo++;
+            if($configXML['pricevat']=='ex')$price =  $_product->getPrice(); else $price =  $_product->getPriceInclTax();
+            
+
+            $customOpts='';
+            if (isset($options['options'])) {
+                foreach ($options['options'] as $optionValues) {
+                    if ($optionValues['value']) {
+                        $customOpts.= '&nbsp;<strong><i>'. $optionValues['label'].'</i></strong>: ';
+    
+                        $_printValue = isset($optionValues['print_value']) ? $optionValues['print_value'] : strip_tags($optionValues['value']);
+                        $values = explode(', ', $_printValue);
+                        foreach ($values as $value) {
+                            if (is_array($value))
+                              foreach ($value as $_value) 
+                                  $customOpts.= $_value;
+                            else $customOpts.= $value; 
+                        }
+                        $customOpts.= '<br />';
+                    }
+                }   
+            } 
+            if (isset($options['attributes_info'])) {
+                foreach ($options['attributes_info'] as $optionValues) {
+                    if ($optionValues['value']) {
+                        $customOpts.= '&nbsp;<strong><i>'. $optionValues['label'].'</i></strong>: ';
+    
+                        $_printValue = isset($optionValues['print_value']) ? $optionValues['print_value'] : strip_tags($optionValues['value']);
+                        $values = explode(', ', $_printValue);
+                        foreach ($values as $value) {
+                            if (is_array($value))
+                              foreach ($value as $_value) 
+                                  $customOpts.= $_value;
+                            else $customOpts.= $value; 
+                        }
+                        $customOpts.= '<br />';
+                    }
+                }
+            }
+            
+            $products[$lineNo]['customOpts']=$customOpts;
+            $products[$lineNo]['productUrl']=$obj->getProductUrl();
+            $products[$lineNo]['obj']= $obj;
+            $products[$lineNo]['naam']=$this->htmlEscape($_product['name']); 
+            foreach($sessionXML['products']['product'] as $sesProduct)if($lineNo==$sesProduct['lineno'])$products[$lineNo]['qty']=$sesProduct['qty'];
+            if(isset($products[$lineNo]['qty']))$totals=  $price*$products[$lineNo]['qty']; else $totals=0;
+            $products[$lineNo]['price'] = Mage::helper('core')->currency($price); 
+            $products[$lineNo]['totals']= Mage::helper('core')->currency($totals);
+            $allProdTotals+=$totals;
+        }
+    }
+}
+
+?>
+<div class="returnContainer">
+    <div class="registered-users">
+        <div class="box-title"><h3><?php echo $this->translate('WithdrawalForm')?></h3></div>
+        
+        
+        <h4><?php echo $configXML['withdrawal_label'];?></h4>
+        <div class="serviceBox">
+            <table cellpadding="0" cellspacing="0" border="0" width="100%" class="data-table">
+            <thead>
+                <tr class="first last">
+                    <th>&nbsp;</th> 
+                    <th><?php echo $this->translate('productname');?></th>
+                    
+                    <th><?php echo $this->translate('Prijsperstuk');?></th>
+                    <th><?php echo $this->translate('Aantal');?></th>
+                    <th><?php echo $this->translate('Subtotaal');?></th>
+                </tr>
+            </thead><?php
+            $first=true;
+            $i=0;
+            foreach($sessionXML['products']['product'] as $product)
+            {
+                $i++;
+                $class='';
+                if($first){
+                    $first=false;
+                    $class.='first';
+                }
+                if($i%2)
+                {
+                    $class.=' even ';
+                } else $class.=' odd ';
+                
+                $exchangeFor=false;
+                if($configXML['refund_enabled']=='2')
+                {
+                    if(isset($exchangedProds[$product['lineno']]))
+                    {
+                        $exchangeFor=$exchangedProds[$product['lineno']]['exchange']; 
+                    }
+                }
+                
+            ?>
+                <tr class="<?php echo $class;?>">
+                    <td width="80"><div class="demoAfbeelding">
+                        <?php if(!empty($products[$product['lineno']]['obj']) && $products[$product['lineno']]['obj'] instanceof Mage_Catalog_Model_Product){?><a target="_blank" href="<?php echo $products[$product['lineno']]['productUrl']; ?>"><img src="<?php echo Mage::helper('catalog/image')->init($products[$product['lineno']]['obj'], 'thumbnail')->resize(76, 59) ?>" border="0" width="76" height="59" /></a><?php }?>
+                        </div></td>
+                    <td><strong><a target="_blank" href="<?php echo $products[$product['lineno']]['productUrl']; ?>"><?php echo $products[$product['lineno']]['naam']; ?></a></strong><br /><?php echo $products[$product['lineno']]['customOpts'];?></td>
+                    <td><span class="price"><?php echo $products[$product['lineno']]['price']; ?></span></td>
+                    <td><?php echo $products[$product['lineno']]['qty']; ?></td>
+                    <td><span class="price"><?php echo $products[$product['lineno']]['totals']; ?></span></td>
+        
+                </tr>
+            <?php }?>
+            </table>
+        </div>
+        
+        <div class="serviceBox">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tr>
+                <td width="100">
+                    <?php echo $this->translate('Received on:');?>
+                </td>
+                <td width="15"></td>
+                <td>
+                    <?php echo $rdate;?>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <?php echo $this->translate('Name:');?>
+                </td>
+                <td width="15"></td>
+                <td>
+                    <?php echo $sessionXML['customer']['name'];?>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <?php echo $this->translate('Address:');?>
+                </td>
+                <td width="15"></td>
+                <td>
+                    <?php echo $sessionXML['customer']['street'].' '.$sessionXML['customer']['houseno'].', '.$sessionXML['customer']['postal'].', '.$sessionXML['customer']['city'].', '.$sessionXML['customer']['country'];?>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <?php echo $this->translate('Date:');?>
+                </td>
+                <td width="15"></td>
+                <td>
+                    <?php echo Date("l, F, j, Y"); ?>
+                </td>
+            </tr>
+        </table>
+    </div> 

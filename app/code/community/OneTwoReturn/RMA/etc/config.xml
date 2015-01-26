@@ -2,8 +2,8 @@
 <config>
 	<modules>
 		<OneTwoReturn_RMA>
-			<version>3.1.0</version> 
-		</OneTwoReturn_RMA>
+			<version>3.4.0</version> 
+		</OneTwoReturn_RMA> 
 	</modules>
 	<global>
 		<helpers>
@@ -217,6 +217,20 @@
 				<allowstatus>complete,rma_cancelled,rma_complete,rma_created,processing,closed</allowstatus>
 				<daysfrom>lastshipment</daysfrom>
 				<dynamic_enabled>0</dynamic_enabled>
+				<refund_enabled>0</refund_enabled>
+				<withdrawal_enabled>1</withdrawal_enabled>
+				<withdrawal_label><![CDATA[I hereby give notice that I withdraw from my contract of sale of the following goods:]]></withdrawal_label>
+				<withdrawal_message><![CDATA[Your withdrawal form is submitted]]></withdrawal_message>
+				<withdrawal_view>1</withdrawal_view>
+				<withdrawal_notify>1</withdrawal_notify>
+				<coupon_name><![CDATA[12Return - RMA #{RMAREF}]]></coupon_name>
+				<coupon_length>12</coupon_length>
+				<coupon_view>1</coupon_view>
+				<coupon_notify>1</coupon_notify>
+				<coupon_message><![CDATA[Your voucher code is: {VOUCHER_CODE}]]></coupon_message>
+				<refund_label_exchange><![CDATA[Coupon (exchange)]]></refund_label_exchange>
+				<refund_label_cashback><![CDATA[Cashback]]></refund_label_cashback>
+				<refund_help><![CDATA[Please select your preferred refund method. You can always choose to have your money back. Select the the voucher option if you plan to exchange the product for a different version or want to buy another product with us. You will receive a voucher code after we have received the returned product(s). You can use this voucher with your next purchase.]]></refund_help>
 			</view>
 			<warranty>
 				<labelname>Warranty</labelname>

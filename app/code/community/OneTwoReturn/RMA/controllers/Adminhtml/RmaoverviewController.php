@@ -59,6 +59,14 @@ class OneTwoReturn_RMA_Adminhtml_RmaoverviewController extends Mage_Adminhtml_Co
         $this->loadLayout(false);
         $this->renderLayout();
     }
+    
+    public function withdrawalformAction()
+    {
+        $order = $this->_initOrder();
+        $rma = $this->_initRma();
+        $this->loadLayout(false);
+        $this->renderLayout();
+    }
 	
 	public function statusAction()
     {

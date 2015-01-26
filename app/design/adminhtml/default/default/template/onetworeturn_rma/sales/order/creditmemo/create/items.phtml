@@ -24,7 +24,11 @@
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
-<?php $_items = $this->getCreditmemo()->getAllItems() ?>
+<?php 
+$id = $this->getRequest()->getParam('rma_id');
+if(isset($id) && !empty($id) && $id!=false)$_rma = Mage::getModel('rma/rma')->load($id); else $_rma=false;
+
+$_items = $this->getCreditmemo()->getAllItems() ?>
 <?php if (count($_items)) : ?>
 <div class="grid np">
   <div class="hor-scroll">
@@ -116,6 +120,12 @@
           <p>
               <label class="normal" for="send_email"><?php echo Mage::helper('sales')->__('Email Copy of Credit Memo') ?></label>
               <input id="send_email" name="creditmemo[send_email]" value="1" type="checkbox" />
+          </p>
+          <?php endif; ?>
+          <?php if ($_rma!=false && Mage::getStoreConfig('rma/view/refund_enabled') && $_rma->getRmaContext()=='view' && $_rma->getRmaRefundMethod()=='1'):?>
+          <p>
+              <label class="normal" for="create_coupon"><?php echo Mage::helper('sales')->__('Create and send coupon code') ?></label>
+              <input id="create_coupon" name="creditmemo[create_coupon]" value="1" type="checkbox" checked />
           </p>
           <?php endif; ?>
               <?php echo $this->getChildHtml('submit_before') ?>

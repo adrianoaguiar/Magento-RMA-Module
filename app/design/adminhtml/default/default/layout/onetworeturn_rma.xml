@@ -9,6 +9,21 @@
         <update handle="formkey"/>
         <block type="rma/adminhtml_rmaoverview_view_tab_label" name="adminhtml_rmaoverview_view_tab_label" output="toHtml"></block>
     </rma_adminhtml_rmaoverview_label>
+    
+    <rma_adminhtml_rmaoverview_withdrawalform>
+        <update handle="formkey"/>
+        <block type="rma/adminhtml_rmaoverview_view_tab_withdrawalform" name="adminhtml_rmaoverview_view_tab_withdrawalform" output="toHtml">
+	        <block type="rma/adminhtml_rmaoverview_view_table" name="rma_table" template="onetworeturn_rma/rmaoverview/view/table.phtml">
+	        	<block type="rma/adminhtml_rmaoverview_view_items" name="rma_items" template="onetworeturn_rma/rmaoverview/view/items.phtml">
+	        		<action method="addItemRender"><type>default</type><block>adminhtml/sales_order_view_items_renderer_default</block><template>sales/order/view/items/renderer/default.phtml</template></action>
+	                    <action method="addColumnRender"><column>qty</column><block>rma/Adminhtml_Rmaoverview_View_Items_Column_Qty</block><template>onetworeturn_rma/rmaoverview/view/items/column/qty.phtml</template></action>
+	                    <action method="addColumnRender"><column>name</column><block>adminhtml/sales_items_column_name</block><template>sales/items/column/name.phtml</template></action>
+	                    <action method="addColumnRender"><column>name</column><block>adminhtml/sales_items_column_name_grouped</block><template>sales/items/column/name.phtml</template><type>grouped</type></action>
+	                   <block type="core/text_list" name="order_item_extra_info"></block>
+	        	</block>
+	        </block>
+        </block>
+    </rma_adminhtml_rmaoverview_withdrawalform>
 
     
 	<rma_adminhtml_rmaoverview_index>

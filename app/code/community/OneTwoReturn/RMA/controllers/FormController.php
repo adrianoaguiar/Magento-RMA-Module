@@ -84,6 +84,7 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
     	$this->resetSession('allorders');
 		$this->resetSession('tempRMARef');
 		$this->resetSession('countryError');
+        $this->resetSession('exchangeProducts');
     	if($this->_initAction())
 		{
 			$this->_initLayoutMessages('customer/session');
@@ -166,6 +167,7 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 		$this->resetSession('allorders');
 		$this->resetSession('tempRMARef');
 		$this->resetSession('countryError');
+        $this->resetSession('exchangeProducts');
     	$this->_initAction();
 		$this->_initLayoutMessages('customer/session');
 		$orderSession = $this->getSession('order');		
@@ -211,6 +213,57 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
         $this->_initAction();
         $this->renderLayout();
     }
+    
+    public function searchAction()
+    {
+        $this->_initAction();
+        $searchText = $this->getRequest()->getParam('q');
+        if(!empty($searchText))
+        {
+            $query = Mage::getModel('catalogsearch/query')->loadByQueryText($searchText);
+            $query->setStoreId(1);
+            $query = Mage::getModel('catalogsearch/query')->setQueryText($searchText)->prepare();
+            $fulltextResource = Mage::getResourceModel('catalogsearch/fulltext')->prepareResult(
+                    Mage::getModel('catalogsearch/fulltext'), 
+                    $searchText, 
+                    $query
+                    );
+            $collection = Mage::getResourceModel('catalog/product_collection');
+            $collection->getSelect()->joinInner(
+                        array('search_result' => $collection->getTable('catalogsearch/result')),
+                        $collection->getConnection()->quoteInto(
+                            'search_result.product_id=e.entity_id AND search_result.query_id=?',
+                            $query->getId()
+                        ),
+                        array('relevance' => 'relevance')
+                    );
+             
+             if(count($collection->getData())>0)
+             {
+                 foreach($collection->getData() as $r)
+                 {
+                     $product = Mage::getModel('catalog/product')->load($r['entity_id']);
+                     
+                     $temp['name']=$product->getName();
+                     $temp['sku']=$product->getSku();
+                     $temp['description']=strip_tags($product->getShortDescription());
+                     //$temp['thumb']=Mage::helper('catalog/image')->init($product, 'thumbnail')->resize(76, 59);
+                     
+                     $data['products'][]=$temp;
+                 } 
+                $data['success']=true;
+             } else  {
+                 $data['success']=false;  
+                 $data['message']=$this->translate('NoResultsFound');
+             }
+         } else {
+             $data['success']=false;  
+             $data['message']=$this->translate('NoResultsFound');
+         }
+        die(json_encode($data));
+    }
+    
+    
 
     public function selectproductAction()
     {
@@ -308,6 +361,11 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 							if($quantity>=$_POST['aantal'][$product]){
 								$products[$product]['aantal']=$_POST['aantal'][$product];
 								$products[$product]['data']=$_product;
+                                
+                                if(isset($_POST['exchange-product'][$product]) && !empty($_POST['exchange-product'][$product]))
+                                {
+                                    $exchangeProducts[$product]['exchange']=$_POST['exchange-product'][$product];
+                                }
 							} else {
 								$error=true;
 								Mage::getSingleton('customer/session')->addError($this->translate('MaxiumQuantity'));
@@ -320,8 +378,10 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 							$this->redirectTo('selectproduct');				//stuur terug naar het product
 						}
 					}
-
+                   
                     
+                    $this->resetSession('exchangeProducts');
+                    if(isset($exchangeProducts))$this->addToSession('exchangeProducts',$exchangeProducts);
                     
                     if(strtolower($prodGroup)=='default')$prodGroup='O2RECOMPRT';
                     
@@ -631,23 +691,26 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 							Mage::getSingleton('customer/session')->addError($this->translate('acceptVoorwaarden'));
 							$this->redirectTo('checkout');
 						} else {
-							
-							if($response = $this->APIRequest('Submit'))
-							{
-								$orderSession = $this->getSession('order');
-								$orderXML = $this->getSession('xml');
-								if(isset($response["rmareference"]) && isset($response["status"]))
-								{
-									$this->addToSession('tempRMARef',$response["rmareference"]);
-									if($response["status"]["statuscode"] == "O")
-									{
-										$this->saveLocalRMAData($orderSession,$orderXML);
-									} 
-								}
-								$this->redirectTo('payment');
-							} else {
-								$this->redirectTo('checkout');
-							}
+						    
+                            if(isset($_POST['refundtype']) && $_POST['refundtype']=='0')
+                            {
+                                Mage::getSingleton('customer/session')->addError($this->translate('selectRefundType'));
+                                $this->redirectTo('checkout');
+                            } else {
+                                if($response = $this->APIRequest('Submit'))
+                                {
+                                    $orderSession = $this->getSession('order');
+                                    $orderXML = $this->getSession('xml');
+                                    if(isset($response["rmareference"]) && isset($response["status"]))
+                                    {
+                                        $this->addToSession('tempRMARef',$response["rmareference"]);
+                                        if($response["status"]["statuscode"] == "O")$this->saveLocalRMAData($orderSession,$orderXML,$_POST);
+                                    }
+                                    $this->redirectTo('payment');
+                                } else {
+                                    $this->redirectTo('checkout');
+                                }
+                            }
 						}
 					}
 				}
@@ -660,7 +723,25 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 		
     }
 
-	
+	public function withdrawalAction()
+    {
+        $this->_initAction();
+        $this->_initLayoutMessages('customer/session');
+        if($this->checkIfLoggedIn())
+        {
+             if ($this->getRequest()->isPost())
+             {
+                //Do something with the information;
+                //$this->redirectTo('retourinformatie');
+                //echo "Het retour proces is afgerond, hier komt later de stap dat de klant wordt doorgestuurd naar de betaalmodule van 12Return";
+                //$this->redirectTo('payment');
+             }
+        } else {
+            $this->abort('010');
+        }
+        $this->renderLayout();
+        
+    }
 	
 	public function paymentAction()
     {
@@ -1797,6 +1878,42 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
             $this->Config['returnType'][$returnType]['dynamic_product_selection']= Mage::getStoreConfig('rma/'.$returnType.'/dynamic_product_selection');
             $this->Config['returnType'][$returnType]['dynamic_external_channel']= Mage::getStoreConfig('rma/'.$returnType.'/dynamic_external_channel');
             
+            if($returnType=='view')
+            {
+                $this->Config['returnType'][$returnType]['refund_enabled']= Mage::getStoreConfig('rma/'.$returnType.'/refund_enabled');
+                $this->Config['returnType'][$returnType]['coupon_name']= Mage::getStoreConfig('rma/'.$returnType.'/coupon_name');
+                $this->Config['returnType'][$returnType]['coupon_length']= Mage::getStoreConfig('rma/'.$returnType.'/coupon_length');
+                $this->Config['returnType'][$returnType]['coupon_notify']= Mage::getStoreConfig('rma/'.$returnType.'/coupon_notify');
+                $this->Config['returnType'][$returnType]['coupon_message']= Mage::getStoreConfig('rma/'.$returnType.'/coupon_message');
+                $this->Config['returnType'][$returnType]['withdrawal_enabled']= Mage::getStoreConfig('rma/'.$returnType.'/withdrawal_enabled');
+                $this->Config['returnType'][$returnType]['refund_label_cashback']= Mage::getStoreConfig('rma/'.$returnType.'/refund_label_cashback');
+                $this->Config['returnType'][$returnType]['refund_label_exchange']= Mage::getStoreConfig('rma/'.$returnType.'/refund_label_exchange');
+                $this->Config['returnType'][$returnType]['refund_help']= Mage::getStoreConfig('rma/'.$returnType.'/refund_help');
+                $this->Config['returnType'][$returnType]['refund_apply_shipping']= Mage::getStoreConfig('rma/'.$returnType.'/refund_apply_shipping');
+                $this->Config['returnType'][$returnType]['refund_free_shipping']= Mage::getStoreConfig('rma/'.$returnType.'/refund_free_shipping');
+                $this->Config['returnType'][$returnType]['withdrawal_label']= Mage::getStoreConfig('rma/'.$returnType.'/withdrawal_label');
+                $this->Config['returnType'][$returnType]['withdrawal_notify']= Mage::getStoreConfig('rma/'.$returnType.'/withdrawal_notify');
+                $this->Config['returnType'][$returnType]['withdrawal_view']= Mage::getStoreConfig('rma/'.$returnType.'/withdrawal_view');
+                $this->Config['returnType'][$returnType]['withdrawal_message']= Mage::getStoreConfig('rma/'.$returnType.'/withdrawal_message');
+                
+            } else {
+                $this->Config['returnType'][$returnType]['refund_enabled']=false;
+                $this->Config['returnType'][$returnType]['coupon_name']=false;
+                $this->Config['returnType'][$returnType]['coupon_length']= false;
+                $this->Config['returnType'][$returnType]['coupon_notify']= false;
+                $this->Config['returnType'][$returnType]['coupon_message']= false;
+                $this->Config['returnType'][$returnType]['withdrawal_enabled']= false;
+                $this->Config['returnType'][$returnType]['refund_label_cashback']= false;
+                $this->Config['returnType'][$returnType]['refund_label_exchange']= false;
+                $this->Config['returnType'][$returnType]['refund_help']= false;
+                $this->Config['returnType'][$returnType]['refund_apply_shipping']= false;
+                $this->Config['returnType'][$returnType]['refund_free_shipping']= false;
+                $this->Config['returnType'][$returnType]['withdrawal_message']= false;
+                $this->Config['returnType'][$returnType]['withdrawal_label']= false;
+                $this->Config['returnType'][$returnType]['withdrawal_notify']= false;
+                $this->Config['returnType'][$returnType]['withdrawal_view']= false;
+            }
+            
             foreach( $this->Config['returnType'][$returnType]['dynamic_options'] as $key=>$value)
             {
                 foreach($value as $k=>$v)
@@ -1885,6 +2002,8 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 		$this->Config['cancelled_notify']=Mage::getStoreConfig('rma/communication/cancelled_notify');
 		$this->Config['cancelled_view']=Mage::getStoreConfig('rma/communication/cancelled_view');
 		$this->Config['cancelled_message']=Mage::getStoreConfig('rma/communication/cancelled_message');
+        
+        $this->Config['refund_summary']=Mage::getStoreConfig('rma/returnoptions/refund_summary');
 		
 		$this->addToSession('Config',$this->Config);		//Sla de instellingen op in een sessie
 
@@ -1918,6 +2037,22 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
             $this->Config['dynamic_external_channel']=$this->Config['returnType'][$returnType]['dynamic_external_channel'];
             $this->Config['dynamic_product_selection']=$this->Config['returnType'][$returnType]['dynamic_product_selection'];
             
+            $this->Config['refund_enabled']=$this->Config['returnType'][$returnType]['refund_enabled']; 
+            $this->Config['coupon_name']=$this->Config['returnType'][$returnType]['coupon_name'];
+            $this->Config['coupon_length']=$this->Config['returnType'][$returnType]['coupon_length'];
+            $this->Config['coupon_notify']=$this->Config['returnType'][$returnType]['coupon_notify'];
+            $this->Config['coupon_message']=$this->Config['returnType'][$returnType]['coupon_message'];
+            $this->Config['withdrawal_enabled']=$this->Config['returnType'][$returnType]['withdrawal_enabled'];
+            $this->Config['withdrawal_label']=$this->Config['returnType'][$returnType]['withdrawal_label'];
+            $this->Config['withdrawal_notify']=$this->Config['returnType'][$returnType]['withdrawal_notify'];
+            $this->Config['withdrawal_view']=$this->Config['returnType'][$returnType]['withdrawal_view'];
+            $this->Config['withdrawal_message']=$this->Config['returnType'][$returnType]['withdrawal_message'];
+            $this->Config['refund_label_cashback']=$this->Config['returnType'][$returnType]['refund_label_cashback'];
+            $this->Config['refund_label_exchange']=$this->Config['returnType'][$returnType]['refund_label_exchange'];
+            $this->Config['refund_help']=$this->Config['returnType'][$returnType]['refund_help'];
+            $this->Config['refund_free_shipping']=$this->Config['returnType'][$returnType]['refund_free_shipping'];
+            $this->Config['refund_apply_shipping']=$this->Config['returnType'][$returnType]['refund_apply_shipping'];
+            
             
             
 			$this->addToSession('Config',$this->Config);	
@@ -1942,17 +2077,31 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 		return true;
 	}
 	
-	private function saveLocalRMAData($orderSession,$response)
+	private function saveLocalRMAData($orderSession,$response,$post)
 	{
 		
 		$order = Mage::getModel('sales/order')->loadByIncrementID($orderSession['orderId']);
 		$notify=$this->Config['created_notify'];
 		$visible=$this->Config['created_view'];
+        
+        $wnotify=$this->Config['withdrawal_notify'];
+        $wvisible=$this->Config['withdrawal_view'];
+        $wcomment=str_replace('{LINK_LABEL}',$response["labellink"],str_replace('{RMAREF}',$response["rmareference"],str_replace('{LINK_STATUS}',$this->Config['statusurl'],$this->Config['withdrawal_message'])));
+        
+        $exchangedProds = $this->getSession('exchangeProducts');
 
         $comment=str_replace('{LINK_LABEL}',$response["labellink"],str_replace('{RMAREF}',$response["rmareference"],str_replace('{LINK_STATUS}',$this->Config['statusurl'],$this->Config['created_message'])));
         $order->addStatusHistoryComment($comment,'rma_created')->setIsVisibleOnFront($visible)->setIsCustomerNotified($notify);
 		$order->save();
 		$order->sendOrderUpdateEmail($notify, $comment);
+        
+        if($this->Config['withdrawal_enabled'])
+        {
+            $order->addStatusHistoryComment($wcomment,false)->setIsVisibleOnFront($wvisible)->setIsCustomerNotified($wnotify);
+            $order->save();
+            $order->sendOrderUpdateEmail($wnotify, $wcomment);
+        }
+        
 		
 		if(Mage::getSingleton('customer/session')->isLoggedIn()) {
      		$customerData 	= Mage::getSingleton('customer/session')->getCustomer();
@@ -1972,6 +2121,10 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 		$rma['rma_customer_id']					= $cid;
 		$rma['rma_store_id']					= Mage::app()->getStore()->getStoreId();
 		$rma['rma_labellink']					= $response['labellink'];
+        
+        if(isset($post['withdrawalform']) && $post['withdrawalform']==true && $this->Config['withdrawal_enabled'])$rma['rma_withdrawal_form']=1; else $rma['rma_withdrawal_form']=0;
+        if(isset($post['refundtype'])  && $post['refundtype']=='exchange' && $this->Config['refund_enabled']==1)$rma['rma_refund_method']=1; else $rma['rma_refund_method']=0;
+        
 		$rmaReturnoptions = $response["returnoptions"]['returnoption'];
 		if(isset($rmaReturnoptions[0]))
 		{
@@ -2061,6 +2214,13 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 							$rmaItems['rma_items_createdate']			= date('Y-m-d H:i:s');
 							$rmaItems['rma_items_updatedate']			= date('Y-m-d H:i:s');
 							$rmaItems['rma_item_qty_returned']			= 0;
+                            
+                            if(isset($exchangedProds[$lineNo]))
+                            {
+                                    $rmaItems['exchange_pref']          = $exchangedProds[$lineNo]['exchange'];
+                            }    
+                            
+                            
 							$ritemsmodel->setData($rmaItems);
 							$ritemsmodel->save();
 							

@@ -20,6 +20,11 @@ class OneTwoReturn_RMA_Block_Adminhtml_Rmaoverview_View_Tabs extends Mage_Adminh
         }
         Mage::throwException(Mage::helper('sales')->__('Cannot get the order instance.'));
     }
+    
+    public function getRma()
+    {
+        return Mage::registry('OneTwoReturn_RMA');
+    }
 
     public function __construct()
     {
@@ -47,6 +52,17 @@ class OneTwoReturn_RMA_Block_Adminhtml_Rmaoverview_View_Tabs extends Mage_Adminh
 		      'url'   =>   $this->getUrl('*/*/label',array('_current'=>true)),
 		      //'content'   => $this->getLayout()->createBlock('rma/adminhtml_rmaoverview_view_tab_label')->toHtml(),
 	      ));
+          
+          if($this->getRma()->getRmaWithdrawalForm()==1)
+          {
+              $this->addTab('rma_withdrawal_tab', array(
+                  'label'     => Mage::helper('sales')->__('EU Withdrawal form'),
+                  'title'     => Mage::helper('sales')->__('EU Withdrawal form'),
+                  'class' =>   'ajax',
+                  'url'   =>   $this->getUrl('*/*/withdrawalform',array('_current'=>true)),
+                  //'content'   => $this->getLayout()->createBlock('rma/adminhtml_rmaoverview_view_tab_label')->toHtml(),
+              ));
+          }
 	      
 	      return parent::_beforeToHtml();
 	}

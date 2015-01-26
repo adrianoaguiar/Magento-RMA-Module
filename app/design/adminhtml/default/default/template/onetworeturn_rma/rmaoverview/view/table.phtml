@@ -36,69 +36,6 @@ $imageFile= Mage::helper('rma')->getImageUrl($_rma->getRmaReturnlogo());
 <div>
     <input type="hidden" name="order_id" value="<?php echo $_order->getId() ?>"/>
 
-    <div class="box-left">
-        <!--Payment Method-->
-        <div class="entry-edit">
-            <div class="entry-edit-head">
-                <h4 class="icon-head head-payment-method"><?php echo Mage::helper('sales')->__('RMA Shipping, Handling &amp; Payment Information') ?></h4>
-            </div>
-            <fieldset>
-                <?php 
-                ?>
-                <table>
-                	<tr>
-                		<td>
-                			<img src="<?php echo $imageFile;?>" alt="<?php echo $_rma->getRmaReturnprompt();?>" height="70" />
-                		</td>
-                		<td width="10"></td>
-                		<td>
-                			<strong><?php echo $_rma->getRmaReturnprompt();?></strong><br />
-                			<i><?php echo $_rma->getRmaReturninstruction();?></i>
-                			<br />
-                			<?php $url = $_rma->getRmaReturnurl(); if(!empty($url)){ ?>
-                				<strong><a href="#"id="linkId4" title="<?php echo Mage::helper('sales')->__('View dropoff points') ?>" onclick="popWin('<?php echo $url ?>','TrackRMA','width=1100,height=600,resizable=yes,scrollbars=yes')"><?php echo Mage::helper('sales')->__('View dropoff points') ?></a></strong>
-                			<?php }?>
-                		</td>
-                	</tr>
-                
-                </table>
-            </fieldset>
-        </div>
-    </div>
-    <div class="box-right">
-        <!--Shipping Method-->
-        <div class="entry-edit">
-            <div class="entry-edit-head">
-                <h4 class="icon-head head-shipping-method"><?php echo Mage::helper('sales')->__('Order Shipping, Handling &amp; Payment Information') ?></h4>
-            </div>
-            <fieldset>
-                <?php  if ($_order->getTracksCollection()->count()) : ?>
-                <a href="#" id="linkId" onclick="popWin('<?php echo $this->helper('shipping')->getTrackingPopupUrlBySalesModel($_order) ?>','trackorder','width=800,height=600,resizable=yes,scrollbars=yes')" title="<?php echo $this->__('Track Order') ?>"><?php echo $this->__('Track Order') ?></a>
-                <br/>
-                <?php endif; ?>
-                <?php if ($_order->getShippingDescription()): ?>
-                    <strong><?php echo $this->escapeHtml($_order->getShippingDescription()) ?></strong>
-
-                    <?php if ($this->helper('tax')->displayShippingPriceIncludingTax()): ?>
-                        <?php $_excl = $this->displayShippingPriceInclTax($_order); ?>
-                    <?php else: ?>
-                        <?php $_excl = $this->displayPriceAttribute('shipping_amount', false, ' '); ?>
-                    <?php endif; ?>
-                    <?php $_incl = $this->displayShippingPriceInclTax($_order); ?>
-
-                    <?php echo $_excl; ?>
-                    <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
-                        (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
-                    <?php endif; ?>
-                <?php else: ?>
-                    <?php echo $this->helper('sales')->__('No shipping information available'); ?>
-                <?php endif; ?>
-                <?php echo $this->getPaymentHtml() ?>
-                <div><?php echo Mage::helper('sales')->__('Order was placed using %s', $_order->getOrderCurrencyCode()) ?></div>
-            </fieldset>
-        </div>
-    </div>
-    <div class="clear"></div>
     <div class="entry-edit">
         <div class="entry-edit-head">
             <h4 class="icon-head head-products"><?php echo Mage::helper('sales')->__('Items Returning') ?></h4>

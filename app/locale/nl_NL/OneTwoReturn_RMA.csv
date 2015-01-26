@@ -127,3 +127,19 @@ OneTwoReturn_RMA::Returning,Opgestuurd
 OneTwoReturn_RMA::Returned,Geretourneerd
 OneTwoReturn_RMA::error-rma-allready-created,U heeft deze RMA al aangemeld. U ontvangt het retourlabel per email.
 OneTwoReturn_RMA::There are products on this order with different return destinations,Deze order bevat producten met verschillende retourbestemmingen
+OneTwoReturn_RMA::acceptWithdrawal, Ik wil mijn aankoop ontbinden door middel van dit heroepingsformulier
+OneTwoReturn_RMA::Ordered products, Bestelde producten
+OneTwoReturn_RMA::WithdrawalForm, Heroepingsformulier
+OneTwoReturn_RMA::Select an option, Selecteer een optie
+OneTwoReturn_RMA::Refund summary, Samenvatting van terugbetaling
+OneTwoReturn_RMA::Refund method, Methode van terugbetaling
+OneTwoReturn_RMA::Total product amount, Totaal bedrag producten
+OneTwoReturn_RMA::Estimated refund amount, Geschatte terugbetaling
+OneTwoReturn_RMA::selectRefundType, Selecteer een methode voor terugbetaling
+OneTwoReturn_RMA::Select,Selecteer
+OneTwoReturn_RMA::Exchange,Omruilen
+OneTwoReturn_RMA::exchangeProduct,Indien u bovenstaand product wilt ruilen voer dan hier het gewenste product in
+OneTwoReturn_RMA::exchangeFor, Omruilen voor:
+OneTwoReturn_RMA::I hereby give notice that I withdraw from my contract of sale of the following goods:, Ik meld hierbij dat ik mijzelf terugtrek van het aankoopcontract van de volgende producten:
+OneTwoReturn_RMA::Name,Naam
+OneTwoReturn_RMA::Address,Adres

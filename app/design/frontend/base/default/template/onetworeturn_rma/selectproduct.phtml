@@ -178,11 +178,7 @@ if(isset($allproducts) && !empty($allproducts) && is_array($allproducts))
 	<div class="registered-users">
 		<div class="box-title"><h3><?php echo $this->translate('selectProducts'); ?></h3></div><?php echo $this->showSubTitle('selectproduct');?>
 		<?php if(is_array($allorders[$order['orderId']])) { ?>
-	   <?php 
-	        echo"<b>".$this->translate('There are products on this order with different return destinations')."</b>";
-            if($differentProdGroups && $config['dynamic_enabled'] && !empty($config['dynamic_product_selection']))echo'<div class="category-description std">'.$config['dynamic_product_selection'].'</div><br />'; else echo"<br />"; 
-        ?>
-		<b><?php echo $this->translate('Recent RMAs on this order');?></b>
+		<b><?php echo $this->translate('Recent RMAs on this order');?>:</b>
 		
 		
 		
@@ -207,6 +203,10 @@ if(isset($allproducts) && !empty($allproducts) && is_array($allproducts))
 		</table>
 		<br />
 		<?php }?>
+		<?php 
+            if($differentProdGroups && $config['dynamic_enabled'] && !empty($config['dynamic_product_selection']))echo'<div class="category-description std">'.$config['dynamic_product_selection'].'</div><br />'; else echo"<br />"; 
+        ?>
+        <b><?php echo $this->translate('Ordered products');?>:</b>
 		<form action="" method="post">
 			<table cellpadding="0" cellspacing="0" border="0"class="data-table selectprodstable <?php echo $multiProdGroups;?>">
 		        <thead>
@@ -256,5 +256,74 @@ $j( document ).ready(function() {
         }
     });
   }
+  <?php 
+  if($config['refund_enabled']=='2')
+  { ?>
+    $j('.selectprodstable input:checkbox').on('change', function(){
+        var name = 'exchange-'+$j(this).attr('name');
+        if($j (this).is(':checked')){
+            $j (this).parent().parent().after("<tr><td colspan='7'><input type='text'  style='width:100%;height:18px;' id='"+name+"' name='"+name+"' class='searchProd' value='' maxlength='255' placeholder='<?php echo $this->translate('exchangeProduct');?>' /></td></tr>");
+        } else {
+            console.log($j ('input[name="'+name+'"]'));
+            $j ('input[name="'+name+'"]').parent().parent().remove();
+        }
+    });
+    var delay = (function(){
+  		var timer = 0;
+		  return function(callback, ms){
+		    clearTimeout (timer);
+		    timer = setTimeout(callback, ms);
+		  };
+	})();
+
+	$j(".selectprodstable").on('keyup','.searchProd',function() { 
+		if($j("#12productSearch").length>0)$j("#12productSearch").slideUp().remove();
+		$j(this);
+		var me = $j(this);
+	    delay(function(){
+      		searchProds(me);
+    	}, 500 );
+    	
+    	$j(".selectprodstable").on('blur','.searchProd',function() { 
+    	    delay(function(){
+    	        if($j("#12productSearch").length>0)$j("#12productSearch").slideUp('fast',function(){
+    	            $j(this).remove();
+    	        });
+    	    }, 200 );
+    	});
+    	
+        
+        $j(".selectprodstable").on('click','td .dropdown12ReturnProdSearch li',function() { 
+                $j(this);
+                var me = $j(this);
+                me.closest('td').find('.searchProd:input').val(me.find('h2 a').text()).blur();
+                if($j("#12productSearch").length>0)$j("#12productSearch").slideUp('fast',function(){
+                    $j(this).remove();
+                });
+        });
+    	
+    	
+    	searchProds = function(me){
+    	    me.parent().append('<div id="12productSearch" class="dropdown12ReturnProdSearch block block-content"><span>Loading...</span></div>');
+    	    $j("#12productSearch").slideDown('fast');
+    	    $j.ajax({
+              dataType: "json",
+              url: '/12return/form/search',
+              data: {q:me.val()},
+              success: function(data)
+              {
+                if(data.success && data.products.length>0)
+                {
+                    if(data.products.length>5)data.products.length=5;
+                    var html='';
+                    for (var i = 0; i < data.products.length; i++)html+='<li><h2 class="product-name"><a>'+data.products[i].name+'</a></h2>'+data.products[i].description.substring(0,150);+'...</li>';
+ 
+                    $j("#12productSearch").html('<ul>'+html+'</ul>').slideDown('fast');
+                }
+              }
+            });
+    	}
+	});
+  <?php } ?>
 });
 </script>

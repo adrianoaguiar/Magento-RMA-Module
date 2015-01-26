@@ -1,0 +1,58 @@
+<?php 
+$_order         = $this->getOrder();
+$_rma           = $this->getRma();
+$_address       = $this->getAddress();
+$_conditions    = $this->getConditions();
+
+
+$rdate = 'unknown';
+foreach($_conditions->getData() as $q)
+{
+    if(!empty($q['rma_conditions_itemdesc']) && strtotime($q['rma_conditions_itemdesc']) !=false && strtotime($q['rma_conditions_itemdesc']) !=-1)$rdate=$q['rma_conditions_itemdesc'];
+}
+$rmaStoreDate   = $this->formatDate($_rma->getRmaCreatedate(), 'medium', true);
+?>
+<div class="entry-edit">
+    <fieldset>
+        <?php echo Mage::getStoreConfig('rma/view/withdrawal_label');?>
+    </fieldset>
+</div>
+<?php echo $this->getChildHtml('rma_table'); ?>
+<div class="entry-edit">
+    <fieldset>
+        <table cellspacing="0" class="form-list">
+            <tr>
+                <td class="label">
+                    <strong><?php echo Mage::helper('sales')->__('Received on:') ?></strong>
+                </td>
+                <td class="value">
+                    <?php echo $rdate?>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    <strong><?php echo Mage::helper('sales')->__('Name:') ?></strong>
+                </td>
+                <td class="value">
+                    <?php echo $_address->getRmaCustomerName(); ?>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    <strong><?php echo Mage::helper('sales')->__('Address:') ?></strong>
+                </td>
+                <td class="value">
+                    <address>
+                        <?php echo $_address->getRmaCustomerStreet(); ?> <?php echo $_address->getRmaCustomerHouseno(); ?>,
+                        <?php echo $_address->getRmaCustomerCity(); ?>,  <?php echo $_address->getRmaCustomerPostal(); ?>
+                        <?php echo $_address->getRmaCustomerCountry(); ?><br>
+                    </address>
+                </td>
+            </tr>
+            <tr>
+                <td class="label"><strong><?php echo Mage::helper('sales')->__('Date:') ?></strong></td>
+                <td class="value"><?php echo $rmaStoreDate ?></td>
+            </tr>
+        </table>
+    </fieldset>
+</div>

@@ -11,10 +11,6 @@ class OneTwoReturn_RMA_Block_Adminhtml_Rmaoverview_View_Table extends Mage_Admin
 	
 	protected function _beforeToHtml()
     {
-        if (!$this->getParentBlock()) {
-            Mage::throwException(Mage::helper('adminhtml')->__('Invalid parent block for this block'));
-        }
-        $this->setOrder($this->getParentBlock()->getOrder());
         parent::_beforeToHtml();
     }
 	

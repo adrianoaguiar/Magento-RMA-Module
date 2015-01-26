@@ -69,7 +69,7 @@ class OneTwoReturn_RMA_Block_Rma extends Mage_Core_Block_Template
             $html.='<li><span class="sep">/</span><a href="/12return/form/supplychain/">'.$this->translate('supplychain').'</a></li>';
             if($page=='checkout')return $html.'<li><span class="sep">/</span><i>'.$this->translate('Checkout').'</i></li></ul></div>'.$htmlmeta.'<br class="clearfix"/>';
             
-            return $html.$htmlmeta;
+            return $html.$htmlmeta.'<br />';
         } else {
             return'';
         }

@@ -3,6 +3,7 @@ echo $this->getMessagesBlock()->getGroupedHtml();
 $sessionXML 	= $this->getSession('xml');
 $configXML 	= $this->getSession('Config');
 $order = $this->getSession('order');	
+$exchangedProds = $this->getSession('exchangeProducts');
 
 $_order = Mage::getModel('sales/order')->loadByIncrementID($order['orderId']);
 $allproducts = $_order->getAllItems();
@@ -10,6 +11,7 @@ $allproducts = $_order->getAllItems();
 if(isset($allproducts) && !empty($allproducts) && is_array($allproducts))
 {
 $lineNo=0;
+$allProdTotals=0;
 	foreach($allproducts as $index=>$_product)
 	{
 		$obj = Mage::getModel('catalog/product')->load($_product->getProductId());
@@ -66,6 +68,7 @@ $lineNo=0;
 			if(isset($products[$lineNo]['qty']))$totals=  $price*$products[$lineNo]['qty']; else $totals=0;
 			$products[$lineNo]['price'] = Mage::helper('core')->currency($price); 
 			$products[$lineNo]['totals']= Mage::helper('core')->currency($totals);
+            $allProdTotals+=$totals;
 		}
 	}
 }
@@ -101,6 +104,16 @@ $lineNo=0;
 				{
 					$class.=' even ';
 				} else $class.=' odd ';
+				
+				$exchangeFor=false;
+				if($configXML['refund_enabled']=='2')
+                {
+                    if(isset($exchangedProds[$product['lineno']]))
+                    {
+                        $exchangeFor=$exchangedProds[$product['lineno']]['exchange']; 
+                    }
+                }
+				
 			?>
 		        <tr class="<?php echo $class;?>">
 		        	<td width="80"><div class="demoAfbeelding">
@@ -112,10 +125,16 @@ $lineNo=0;
 		            <td><span class="price"><?php echo $products[$product['lineno']]['totals']; ?></span></td>
 		
 		        </tr>
+		        
+		        <?php if($exchangeFor!=false){?>
+		            <tr class="<?php echo $class;?>">
+		                <td colspan='5'><b><?php echo $this->translate('exchangeFor');?></b> <i><?php echo $exchangeFor;?></i></td>
+		            </tr>
+		        <?php }?>
 			<?php }?>
 			</table>
 		</div>
-		<br /><br /><br /> 
+		<br />
 		<h4><?php echo $this->translate('Vervoerskosten');?>:</h4>
 		
 		<?php foreach($sessionXML['returnoptions']['returnoption'] as $returnoption){
@@ -127,7 +146,6 @@ $lineNo=0;
 	<div class="serviceBox">
 	    <table cellpadding="0" cellspacing="0" border="0" width="100%">
 	        <tr>
-	            <td width="100"><div class="demoAfbeelding"><img src="<?php echo $img;?>" width="85" /></div></td>
 	            <td><strong class="vervoerderTitel"><?php echo $returnoption['prompt']; ?></strong><br />
 	            	<?php if(isset($returnoption['instruction']))echo $returnoption['instruction'];?>
 	            </td>
@@ -140,7 +158,7 @@ $lineNo=0;
 	            </td>
 	        </tr>
 	    </table>
-	</div> 
+	</div> <br />
 <?php } }  ?>
 <?php
 if(isset($sessionXML['reutilization']['reutilcosts']['reutilcost']))
@@ -199,30 +217,94 @@ if(isset($totalPrice) && $totalPrice>0)
 	$totalPrijs+=$totalPrice;
 	$totalVatPrijs+=$totalVat;
 }
+
+
 $totalPrijsIncVat=$totalPrijs+$totalVatPrijs;
+if(!isset($returnoptionRight['optionccy']))$returnoptionRight['optionccy']='EUR';
+$currency_code = Mage::app()->getStore()->getCurrentCurrencyCode(); 
+ 
+if($returnoptionRight['optionccy']!=$currency_code)
+{
+    $allowedCurrencies = Mage::getModel('directory/currency')->getConfigAllowCurrencies();
+    $rates = Mage::getModel('directory/currency')->getCurrencyRates($currency_code, array_values($allowedCurrencies));
+    if(isset($rates[$returnoptionRight['optionccy']]))
+    {
+        $totalPrijsIncVat= round($totalPrijsIncVat/$rates[$returnoptionRight['optionccy']],2);
+    } else {
+        $totalPrijsIncVat=0;
+    }
+}
+
+$optionccy=Mage::app()->getLocale()->currency($currency_code)->getSymbol(); 
+$totalPay = $allProdTotals-$totalPrijsIncVat;
 ?>
 <form action="" method="post" onsubmit="myButton.disabled = true; return true;">
-	<div class="totaalKostenContainer">
-		<div class="floatRight">
-			<table cellpadding="0" border="0" cellspacing="0" width="100%">
-			<tr><td><span class="subtotaalKosten"><?php 
-		    if(!isset($returnoptionRight['optionccy']) || $returnoptionRight['optionccy']=='EUR')$optionccy='&euro;'; else $optionccy=$returnoptionRight['optionccy'];
-		    echo $this->translate('transporttationsCosts')?>:</span></td><td align="right"><span class="subtotaalKosten">  &nbsp; <?php echo $optionccy.' '.$totalPrijs?></span></td></tr>
-		    
-		    <tr><td><span class="totaalBTWKosten"><?php 
-		    echo $this->translate('BTW')?>:</span></td><td align="right"><span class="totaalBTWKosten">  &nbsp; <?php echo $optionccy.' '.$totalVatPrijs?></span></td></tr>
-		    
-		    <tr><td colspan="2" ><div style="border:0; height:1px; background:black; width:250px; margin-bottom:3px;">&nbsp;</div></td></tr>
-		    
-		    <tr><td><span class="totaalKosten"><?php 
-		    echo $this->translate('Totaal')?>:</span></td><td align="right"> <span class="totaalKosten"> &nbsp; <?php echo $optionccy.' '.$totalPrijsIncVat?></span></td></tr>
-		    </table>
-		</div><br /><br /><br style="clear:both" />
-		
-	</div>
+    <h4><?php echo $this->translate('Refund summary');?>:</h4>
+    <div class="serviceBox">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tr>
+                <td><?php echo $configXML['refund_summary'];?></td>
+                <td width="15"></td>
+                <td width="230">
+                    <table cellpadding="0" border="0" cellspacing="0" width="100%">
+                        <tr>
+                            <td>
+                                <span class="totaalBTWKosten"><?php echo $this->translate('Total product amount')?>:</span>
+                            </td>
+                            <td align="right">
+                                <span class="totaalBTWKosten">  &nbsp; <?php echo Mage::helper('core')->currency($allProdTotals);?></span>
+                           </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="subtotaalKosten"><?php echo $this->translate('transporttationsCosts')?>:</span>
+                           </td>
+                           <td align="right">
+                               <span class="subtotaalKosten">  &nbsp; <?php echo $optionccy.' '.$totalPrijsIncVat?></span>
+                           </td>
+                        </tr>
+                        <tr><td colspan="2" ><div style="border:0; height:1px; background:#888; width:230px; margin-bottom:3px;">&nbsp;</div></td></tr>
+                        <tr>
+                            <td>
+                                <span class="totaalKosten"><?php echo $this->translate('Estimated refund amount')?>:</span>
+                            </td>
+                            <td align="right">
+                                <span class="totaalKosten"> &nbsp; <?php echo Mage::helper('core')->currency($totalPay); ?></span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div> 
+    <br />
+    <?php if($configXML['refund_enabled']==1) { ?>
+	<h4><?php echo $this->translate('Refund method');?>:</h4>
+	<div class="serviceBox">
+	    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+	        <tr>
+	            <td>
+	                <?php echo $configXML['refund_help'];?>
+	            </td>
+	            <td width="15"></td>
+	            <td width="230" valign="middle">
+	                <select name='refundtype' style="width:230px;">
+                      <option value="0"><?php echo $this->translate('Select an option');?></option>
+                      <option value="cashback"><?php echo $configXML['refund_label_cashback'];?></option>
+                      <option value="exchange"><?php echo $configXML['refund_label_exchange'];?></option>
+                    </select>
+	            </td>
+	        </tr>
+	    </table>
+	</div> 
+	<br />
+    <?php } ?>
+	
+	<div class="floatRight" style="text-align:right"> <a href="<?php echo $configXML['tosurl'];?>" target="_blank"><?php echo $this->__('acceptTerms')?></a> <input value="true" name="voorwaarden" type="checkbox"/><br />
+	<?php if($configXML['withdrawal_enabled']) { ?><a href="#" onclick="popWin('/12return/form/withdrawal','<?php echo $this->translate('WithdrawalForm')?>','width=800,height=450,resizable=yes,scrollbars=yes,location=no,status=yes')" target="_blank"><?php echo $this->__('acceptWithdrawal')?></a> <input value="true" name="withdrawalform" type="checkbox"/> <?php } ?> </div><br style="clear:both"/>
 	<div class="floatLeft buttons buttons-set"> <button onclick="history.back()"class="returnBtnBig btn btn-cart add-to-cart button" type="button"  /><span><span><?php echo $this->translate('Terug')?></span></span></button></div>
 	<div class="floatRight buttons buttons-set"><button class="returnBtnBig btn btn-cart add-to-cart button" name="myButton" type="submit"  /><span><span><?php echo $this->translate('Verder')?></span></span></button></div>
-	<div class="floatRight"> <a href="<?php echo $configXML['tosurl'];?>" target="_blank"><?php echo $this->translate('Voorwaarden')?></a> &nbsp; &nbsp; &nbsp;&nbsp; <input value="true" name="voorwaarden" type="checkbox"/> &nbsp;  <?php echo $this->__('acceptTerms')?> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </div>
+	
 		
 </form>
 </div></div>

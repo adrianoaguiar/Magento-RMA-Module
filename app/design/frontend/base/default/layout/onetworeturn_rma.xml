@@ -38,6 +38,8 @@
        </reference>
     </rma_form_index>
     
+    
+    
     <rma_form_order>
     	<reference name="head">
 			<action method="addCss"><stylesheet>css/rma.css</stylesheet></action>
@@ -150,6 +152,18 @@
             <block type="rma/rma"  name="checkout_rma" template="onetworeturn_rma/checkout.phtml" />
        </reference>
     </rma_form_checkout>
+    
+    <rma_form_withdrawal>
+    	<reference name="root">
+    		<action method="setTemplate"><template>page/popup.phtml</template></action>
+    	</reference>
+    	<reference name="head">
+			<action method="addCss"><stylesheet>css/rma.css</stylesheet></action>
+		</reference>
+        <reference name="content">
+            <block type="rma/rma"  name="checkout_rma" template="onetworeturn_rma/withdrawal.phtml" />
+       </reference>
+    </rma_form_withdrawal>
     
     <rma_form_payment>
     	<reference name="head">

@@ -22,7 +22,40 @@ input[type=text].input-text {
 	margin-left:0px !important;
 	float:none !important;
 }
+.dropdown12ReturnProdSearch {
+	width:50%;
+	box-sizing: border-box;
+	
+	background:#fff;
+	color:#888;
+	display:none;
+	position:absolute;
+}
+.dropdown12ReturnProdSearch ul{
+	position:relative;
+}
 
+.dropdown12ReturnProdSearch span
+{
+	padding:5px 10px;
+	display:block;
+}
+.selectprodstable  {
+	position:relative;
+}
+.dropdown12ReturnProdSearch ul li {
+	display:block;
+	box-sizing: border-box;
+	padding:5px 10px;
+	float:left;
+	border-bottom:1px solid;
+	cursor:pointer;
+}
+
+
+.dropdown12ReturnProdSearch ul li h2 {
+	display:block;
+}
 .returnContainer p {
 	
 }
@@ -78,7 +111,7 @@ input[type=text].input-text {
 }
 
 .vervoerderTitel {
-	font-size:15px;
+	font-size:13px;
 }
 .serviceTitel {
 	font-size:17px;
@@ -106,7 +139,7 @@ input[type=text].input-text {
 	font-size:14px;
 }
 .returnAantalBox {
-	width:30px;
+	width:20px;
 }
 .demoAfbeelding {
 	border:2px solid #888;
@@ -122,7 +155,7 @@ input[type=text].input-text {
 }
 .subTitle { 
 	font-size:11px;
-	margin-top:-5px;
+	float:right;
 }
 .data-table,
 .data-table td,
@@ -165,7 +198,7 @@ input[type=text].input-text {
 	margin-bottom:15px;
 	font-size:11px;
 }
-
+.breadCrumb_rma {float:left;}
 .breadCrumb_rma li { display:inline; }
 .breadCrumb_rma li strong { font-weight:bold; }
 

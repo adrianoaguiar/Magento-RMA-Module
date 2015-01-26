@@ -77,6 +77,15 @@
                         	<logintype>order</logintype>
 						</depends>
 					</useaccountifpossible>
+					
+					<heading_appearance translate="label">
+                        <label>Appearance</label>
+                        <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                        <sort_order>48</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                     </heading_appearance>
 					<pricevat translate="label">
                         <label>Show product prices</label>
                         <frontend_type>select</frontend_type>
@@ -103,18 +112,27 @@
                         <show_in_website>1</show_in_website>
                         <show_in_store>1</show_in_store>
                     </introtext>
-                    <thankstext translate="label">
-                        <label>RMA completed message</label>
+                    <refund_summary translate="label">
+                        <label>Refund summary text</label>
                         <frontend_type>textarea</frontend_type>
                         <sort_order>52</sort_order>
                         <show_in_default>1</show_in_default>
                         <show_in_website>1</show_in_website>
                         <show_in_store>1</show_in_store>
+                    </refund_summary>
+                    <thankstext translate="label">
+                        <label>RMA completed message</label>
+                        <frontend_type>textarea</frontend_type>
+                        <sort_order>53</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
                     </thankstext>
+                    
                     <tosurl translate="label">
                         <label>Terms of use URL</label>
                         <frontend_type>text</frontend_type>
-                        <sort_order>53</sort_order>
+                        <sort_order>54</sort_order>
                         <show_in_default>1</show_in_default>
                         <show_in_website>1</show_in_website>
                         <show_in_store>1</show_in_store>
@@ -223,16 +241,19 @@
                         <show_in_default>1</show_in_default>
                         <show_in_website>1</show_in_website>
                         <show_in_store>1</show_in_store>
+                        <depends>
+                        	<dynamic_enabled>1</dynamic_enabled>
+						</depends>
                     </dynamic_attribute> 
                     <dynamic_options translate="comment">
-                            <label>Dynamic routing options</label> 
-                            <frontend_model>OneTwoReturn_RMA_Block_Adminhtml_System_Config_Form_Field_DynamicTableView</frontend_model>
-                            <backend_model>OneTwoReturn_RMA_Model_System_Config_Backend_Serialized_Array</backend_model>
-                            <sort_order>61</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment>These values need to match with dynamic routing options at the 12return platform.</comment>
+                        <label>Dynamic routing options</label> 
+                        <frontend_model>OneTwoReturn_RMA_Block_Adminhtml_System_Config_Form_Field_DynamicTableView</frontend_model>
+                        <backend_model>OneTwoReturn_RMA_Model_System_Config_Backend_Serialized_Array</backend_model>
+                        <sort_order>61</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                        <comment>These values need to match with dynamic routing options at the 12return platform.</comment>
                    </dynamic_options>
                    <dynamic_external_channel translate="label">
                         <label>External channel instruction</label>
@@ -241,6 +262,9 @@
                         <show_in_default>1</show_in_default>
                         <show_in_website>1</show_in_website>
                         <show_in_store>1</show_in_store>
+                        <depends>
+                        	<dynamic_enabled>1</dynamic_enabled>
+						</depends>
                     </dynamic_external_channel>
                     <dynamic_product_selection translate="label">
                         <label>Product selection instructions</label>
@@ -249,7 +273,204 @@
                         <show_in_default>1</show_in_default>
                         <show_in_website>1</show_in_website>
                         <show_in_store>1</show_in_store>
+                        <depends>
+                        	<dynamic_enabled>1</dynamic_enabled>
+						</depends>
                     </dynamic_product_selection>
+                    <heading_refundoptions translate="label">
+                        <label>Exchange returns</label>
+                        <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                        <sort_order>64</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                     </heading_refundoptions>
+                     <refund_enabled translate="label">
+                    	<label>Enable exchange returns</label>
+                    	<frontend_type>select</frontend_type>
+                    	<source_model>OneTwoReturn_RMA_Model_System_Config_Source_ExchangeList</source_model>
+                    	<sort_order>65</sort_order>
+                    	<show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>0</show_in_store>
+					</refund_enabled>
+					<coupon_name translate="label">
+                        <label>Voucher name</label>
+                        <frontend_type>text</frontend_type> 
+                        <sort_order>66</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                        <depends>
+                        	<refund_enabled>1</refund_enabled>
+						</depends>
+                    </coupon_name>
+                    <coupon_length translate="label">
+                        <label>Voucher code length</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>67</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                        <depends>
+                        	<refund_enabled>1</refund_enabled>
+						</depends>
+                    </coupon_length>
+                    <refund_apply_shipping translate="label">
+                    	<label>Apply to Shipping Amount</label>
+                    	<frontend_type>select</frontend_type>
+                    	<source_model>OneTwoReturn_RMA_Model_System_Config_Source_YesList</source_model>
+                    	<sort_order>68</sort_order>
+                    	<show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>0</show_in_store>
+                        <depends>
+                        	<refund_enabled>1</refund_enabled>
+						</depends>
+					</refund_apply_shipping>
+					<refund_free_shipping translate="label">
+                    	<label>Free Shipping</label>
+                    	<frontend_type>select</frontend_type>
+                    	<source_model>OneTwoReturn_RMA_Model_System_Config_Source_YesList</source_model>
+                    	<sort_order>69</sort_order>
+                    	<show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>0</show_in_store>
+                        <depends>
+                        	<refund_enabled>1</refund_enabled>
+						</depends>
+					</refund_free_shipping>
+					<coupon_notify translate="label">
+					    <label>Send voucher code to customer by Email</label>
+					    <frontend_type>select</frontend_type>
+              			<source_model>OneTwoReturn_RMA_Model_System_Config_Source_YesList</source_model>
+					    <sort_order>70</sort_order>
+					    <show_in_default>1</show_in_default>
+					    <show_in_website>1</show_in_website>
+					    <show_in_store>1</show_in_store>
+					    <depends>
+                        	<refund_enabled>1</refund_enabled>
+						</depends>
+					</coupon_notify>
+                     <coupon_view translate="label">
+					    <label>Voucher code visible on Frontend</label>
+					    <frontend_type>select</frontend_type>
+              			<source_model>OneTwoReturn_RMA_Model_System_Config_Source_YesList</source_model>
+					    <sort_order>71</sort_order>
+					    <show_in_default>1</show_in_default>
+					    <show_in_website>1</show_in_website>
+					    <show_in_store>1</show_in_store>
+					    <depends>
+                        	<refund_enabled>1</refund_enabled>
+						</depends>
+					</coupon_view>
+                    <coupon_message translate="label">
+                        <label>Message</label>
+                        <frontend_type>textarea</frontend_type>
+                        <sort_order>72</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                        <depends>
+                        	<refund_enabled>1</refund_enabled>
+						</depends>
+                    </coupon_message>
+                    <refund_label_cashback translate="label">
+                        <label>Cashback label</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>73</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                        <depends>
+                        	<refund_enabled>1</refund_enabled>
+						</depends>
+                    </refund_label_cashback >
+                    <refund_label_exchange translate="label">
+                        <label>Exchange label</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>74</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                        <depends>
+                        	<refund_enabled>1</refund_enabled>
+						</depends>
+                    </refund_label_exchange>
+                    <refund_help  translate="label">
+                        <label>Help text refund method frontend</label>
+                        <frontend_type>textarea</frontend_type>
+                        <sort_order>75</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                        <depends>
+                        	<refund_enabled>1</refund_enabled>
+						</depends>
+                    </refund_help>
+                    <heading_withdrawal translate="label">
+                        <label>EU Withdrawal form</label>
+                        <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                        <sort_order>77</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                     </heading_withdrawal>
+                    <withdrawal_enabled translate="label">
+                    	<label>Enable EU Withdrawal form</label>
+                    	<frontend_type>select</frontend_type>
+                    	<source_model>OneTwoReturn_RMA_Model_System_Config_Source_YesList</source_model>
+                    	<sort_order>78</sort_order>
+                    	<show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>0</show_in_store>
+					</withdrawal_enabled>
+					<withdrawal_label translate="label">
+                        <label>Withdrawal agree text</label>
+                        <frontend_type>text</frontend_type>
+                        <sort_order>79</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                        <depends>
+                        	<withdrawal_enabled>1</withdrawal_enabled>
+						</depends>
+                    </withdrawal_label>
+                    <withdrawal_notify translate="label">
+					    <label>Send withdrawal confirmation to customer by Email</label>
+					    <frontend_type>select</frontend_type>
+              			<source_model>OneTwoReturn_RMA_Model_System_Config_Source_YesList</source_model>
+					    <sort_order>80</sort_order>
+					    <show_in_default>1</show_in_default>
+					    <show_in_website>1</show_in_website>
+					    <show_in_store>1</show_in_store>
+					    <depends>
+                        	<withdrawal_enabled>1</withdrawal_enabled>
+						</depends>
+					</withdrawal_notify>
+                     <withdrawal_view translate="label">
+					    <label>Visible on Frontend</label>
+					    <frontend_type>select</frontend_type>
+              			<source_model>OneTwoReturn_RMA_Model_System_Config_Source_YesList</source_model>
+					    <sort_order>81</sort_order>
+					    <show_in_default>1</show_in_default>
+					    <show_in_website>1</show_in_website>
+					    <show_in_store>1</show_in_store>
+					    <depends>
+                        	<withdrawal_enabled>1</withdrawal_enabled>
+						</depends>
+					</withdrawal_view>
+					<withdrawal_message translate="label">
+                        <label>EU withdrawal confirmation message</label>
+                        <frontend_type>textarea</frontend_type>
+                        <sort_order>82</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                        <depends>
+                        	<withdrawal_enabled>1</withdrawal_enabled>
+						</depends>
+                    </withdrawal_message>
                 </fields>
 		        </view>
 		        
@@ -354,16 +575,19 @@
                         <show_in_default>1</show_in_default>
                         <show_in_website>1</show_in_website>
                         <show_in_store>1</show_in_store>
+                        <depends>
+                        	<dynamic_enabled>1</dynamic_enabled>
+						</depends>
                     </dynamic_attribute> 
                     <dynamic_options translate="comment">
-                            <label>Dynamic routing options</label> 
-                            <frontend_model>OneTwoReturn_RMA_Block_Adminhtml_System_Config_Form_Field_DynamicTableWarranty</frontend_model>
-                            <backend_model>OneTwoReturn_RMA_Model_System_Config_Backend_Serialized_Array</backend_model>
-                            <sort_order>61</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment>These values need to match with dynamic routing options at the 12return platform.</comment>
+                        <label>Dynamic routing options</label> 
+                        <frontend_model>OneTwoReturn_RMA_Block_Adminhtml_System_Config_Form_Field_DynamicTableWarranty</frontend_model>
+                        <backend_model>OneTwoReturn_RMA_Model_System_Config_Backend_Serialized_Array</backend_model>
+                        <sort_order>61</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                        <comment>These values need to match with dynamic routing options at the 12return platform.</comment>
                    </dynamic_options>
                    <dynamic_external_channel translate="label">
                         <label>External channel instruction</label>
@@ -372,6 +596,9 @@
                         <show_in_default>1</show_in_default>
                         <show_in_website>1</show_in_website>
                         <show_in_store>1</show_in_store>
+                        <depends>
+                        	<dynamic_enabled>1</dynamic_enabled>
+						</depends>
                     </dynamic_external_channel>
                     <dynamic_product_selection translate="label">
                         <label>Product selection instructions</label>
@@ -380,6 +607,9 @@
                         <show_in_default>1</show_in_default>
                         <show_in_website>1</show_in_website>
                         <show_in_store>1</show_in_store>
+                        <depends>
+                        	<dynamic_enabled>1</dynamic_enabled>
+						</depends>
                     </dynamic_product_selection>
                   </fields>
 		        </warranty>

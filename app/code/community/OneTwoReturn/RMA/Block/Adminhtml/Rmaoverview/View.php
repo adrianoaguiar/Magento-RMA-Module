@@ -30,12 +30,12 @@ class OneTwoReturn_RMA_Block_Adminhtml_Rmaoverview_View extends Mage_Adminhtml_B
 		        ), 0, 2);
 			}
 		}
-		if($this->getRma()->getRmaStatusCode()=='rma_complete' || $this->getRma()->getRmaStatusCode()=='rma_cancelled')
+		if($this->getRma()->getRmaStatusCode()=='rma_complete')
 		{
-	        $this->_addButton('rma_credit', array(
-	            'label'     => $this->__('Credit Memo'),
-	            'onclick'   => "window.location.href='". Mage::helper("adminhtml")->getUrl('adminhtml/sales_order_creditmemo/new/', array('order_id' => $this->getRequest()->getParam('order_id'))) ."';",
-	        ), 0, 1);
+    	        $this->_addButton('rma_credit', array(
+    	            'label'     => $this->__('Creditmemo'),
+    	            'onclick'   => "window.location.href='". Mage::helper("adminhtml")->getUrl('adminhtml/sales_order_creditmemo/new/', array('order_id' => $this->getRequest()->getParam('order_id'),'rma_id'=>$this->getRequest()->getParam('rma_id'))) ."';",
+    	        ), 0, 1);
 		}
     }  
      

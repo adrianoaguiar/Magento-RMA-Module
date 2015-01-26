@@ -2,6 +2,9 @@
 
 if($this->getRma()->getRmaStatusCode()=='rma_created')$numPriceCalc = $this->getQtyReturning($_item); 
 else $numPriceCalc = $this->getQtyReturned($_item);
+
+$exchangePref = $this->getExchangePref($_item);
+
 ?>
 <?php $this->setPriceDataObject($_item) ?>
 <tr<?php if (!$this->canDisplayGiftmessage()): ?> class="border"<?php endif; ?>>
@@ -15,6 +18,10 @@ else $numPriceCalc = $this->getQtyReturned($_item);
         </div>
         <?php if ($this->canDisplayContainer()): ?>
         </div>
+        <?php endif ?>
+        
+        <?php if ($exchangePref!='0' && !empty($exchangePref)): ?>
+            <strong><?php echo Mage::helper('weee')->__('Exchange for:'); ?></strong> <i><?php echo $exchangePref;?></i>
         <?php endif ?>
     </td>
     <td class="a-right"><?php echo $this->displayPriceAttribute('original_price') ?></td>

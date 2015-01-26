@@ -1,69 +1,60 @@
 <?php
-class OneTwoReturn_RMA_Block_Adminhtml_Rmaoverview_View_Info extends Mage_Adminhtml_Block_Sales_Order_Abstract
+class OneTwoReturn_RMA_Block_Adminhtml_Rmaoverview_View_Tab_Withdrawalform extends Mage_Adminhtml_Block_Widget_Form
 {
     /**
      * Init class
      */
     public function __construct()
-    {  
-        return parent::__construct();
-		
-    }  
-	/*
-	protected function _beforeToHtml()
     {
-        if (!$this->getParentBlock()) {
-            Mage::throwException(Mage::helper('adminhtml')->__('Invalid parent block for this block.'));
-        }
-        $this->setOrder($this->getParentBlock()->getOrder());
-
-
-        parent::_beforeToHtml();
-    }*/
+        parent::__construct();
+        $this->setTemplate('onetworeturn_rma/rmaoverview/view/tab/withdrawalform.phtml');
+        
+    }  
+    
     public function getOrder()
     {
         return Mage::registry('current_order');
     } 
-	
-	public function getRma()
+    
+    public function getRma()
     {
         return Mage::registry('OneTwoReturn_RMA');
     }
-	
-	public function getAddress()
+    
+    public function getAddress()
     {
          return Mage::getModel('rma/raddress')->getCollection()->addFieldToFilter('rma_id', $this->getRma()->getRmaId())->getFirstItem();
     }
-	
-	public function getConditions()
+    
+    public function getConditions()
     {
          return Mage::getModel('rma/rconditions')->getCollection()->addFieldToFilter('rma_id', $this->getRma()->getRmaId());
     }
-	
-	public function getRmaStatusLabel()
-	{
-		return Mage::getModel('rma/rstatus')->load($this->getRma()->getRmaStatusCode())->getRmaStatusLabel();
-	}	
-	
-	public function getHeaderText()
+    
+    public function getRmaStatusLabel()
+    {
+        return Mage::getModel('rma/rstatus')->load($this->getRma()->getRmaStatusCode())->getRmaStatusLabel();
+    }   
+    
+    public function getHeaderText()
     {
         return $this->__('RMA #'.$this->getRma()->getRmaReference().' | '.$this->getRma()->getRmaCreatedate()); 
     }  
 
-	public function getCustomerGroupName($gid)
+    public function getCustomerGroupName($gid)
     {
         if ($this->getOrder()) {
             return Mage::getModel('customer/group')->load((int) $gid)->getCode();
         }
         return null;
     }
-	
-	public function getRmaContext()
-	{
-		return Mage::helper('rma')->returnTypes[$this->getRma()->getRmaContext()];
-	}
-	
-	public function getOrderStoreName($storeId)
+    
+    public function getRmaContext()
+    {
+        return Mage::helper('rma')->returnTypes[$this->getRma()->getRmaContext()];
+    }
+    
+    public function getOrderStoreName($storeId)
     {
         if ($this->getOrder()) {
             
@@ -81,16 +72,16 @@ class OneTwoReturn_RMA_Block_Adminhtml_Rmaoverview_View_Info extends Mage_Adminh
         }
         return null;
     }
-	
-	public function getCustomerViewUrl($cid)
+    
+    public function getCustomerViewUrl($cid)
     {
         if (!$cid || $cid==0) {
             return false;
         }
         return $this->getUrl('adminhtml/customer/edit', array('id' => $cid));
     }
-	
-	/**
+    
+    /**
      * Return array of additional account data
      * Value is option style array
      *
@@ -129,8 +120,8 @@ class OneTwoReturn_RMA_Block_Adminhtml_Rmaoverview_View_Info extends Mage_Adminh
 
         return $accountData;
     }
-	
-	public function shouldDisplayCustomerIp($storeid)
+    
+    public function shouldDisplayCustomerIp($storeid)
     {
         return !Mage::getStoreConfigFlag('sales/general/hide_customer_ip', $storeid);
     }
