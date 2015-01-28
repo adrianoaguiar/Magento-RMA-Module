@@ -262,12 +262,14 @@ $j( document ).ready(function() {
     $j('.selectprodstable input:checkbox').on('change', function(){
         var name = 'exchange-'+$j(this).attr('name');
         if($j (this).is(':checked')){
-            $j (this).parent().parent().after("<tr><td colspan='7'><input type='text'  style='width:100%;height:18px;' id='"+name+"' name='"+name+"' class='searchProd' value='' maxlength='255' placeholder='<?php echo $this->translate('exchangeProduct');?>' /></td></tr>");
+            $j (this).parent().parent().after("<tr><td colspan='7'><input type='text'  style='width:100%;height:18px;' id='"+name+"' name='"+name+"' class='searchProd' value='' autocomplete='off' maxlength='255' placeholder='<?php echo $this->translate('exchangeProduct');?>' /></td></tr>");
         } else {
-            console.log($j ('input[name="'+name+'"]'));
             $j ('input[name="'+name+'"]').parent().parent().remove();
         }
     });
+    <?php 
+  if($config['refund_show_search'])
+  { ?>
     var delay = (function(){
   		var timer = 0;
 		  return function(callback, ms){
@@ -324,6 +326,6 @@ $j( document ).ready(function() {
             });
     	}
 	});
-  <?php } ?>
+  <?php } }?>
 });
 </script>

@@ -1891,10 +1891,12 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
                 $this->Config['returnType'][$returnType]['refund_help']= Mage::getStoreConfig('rma/'.$returnType.'/refund_help');
                 $this->Config['returnType'][$returnType]['refund_apply_shipping']= Mage::getStoreConfig('rma/'.$returnType.'/refund_apply_shipping');
                 $this->Config['returnType'][$returnType]['refund_free_shipping']= Mage::getStoreConfig('rma/'.$returnType.'/refund_free_shipping');
+                $this->Config['returnType'][$returnType]['refund_show_search']= Mage::getStoreConfig('rma/'.$returnType.'/refund_show_search');
                 $this->Config['returnType'][$returnType]['withdrawal_label']= Mage::getStoreConfig('rma/'.$returnType.'/withdrawal_label');
                 $this->Config['returnType'][$returnType]['withdrawal_notify']= Mage::getStoreConfig('rma/'.$returnType.'/withdrawal_notify');
                 $this->Config['returnType'][$returnType]['withdrawal_view']= Mage::getStoreConfig('rma/'.$returnType.'/withdrawal_view');
                 $this->Config['returnType'][$returnType]['withdrawal_message']= Mage::getStoreConfig('rma/'.$returnType.'/withdrawal_message');
+                
                 
             } else {
                 $this->Config['returnType'][$returnType]['refund_enabled']=false;
@@ -1912,6 +1914,7 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
                 $this->Config['returnType'][$returnType]['withdrawal_label']= false;
                 $this->Config['returnType'][$returnType]['withdrawal_notify']= false;
                 $this->Config['returnType'][$returnType]['withdrawal_view']= false;
+                $this->Config['returnType'][$returnType]['refund_show_search']= false;
             }
             
             foreach( $this->Config['returnType'][$returnType]['dynamic_options'] as $key=>$value)
@@ -1957,7 +1960,7 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 		$this->Config['loginType']= Mage::getStoreConfig('rma/returnoptions/logintype');		
 
 		
-		$this->debug=Mage::getStoreConfig('rma/returnoptions/debugmode');
+		$this->debug=false;
 		$this->Config['debug']=$this->debug;
 		
 		$this->servers = array();
@@ -2052,7 +2055,7 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
             $this->Config['refund_help']=$this->Config['returnType'][$returnType]['refund_help'];
             $this->Config['refund_free_shipping']=$this->Config['returnType'][$returnType]['refund_free_shipping'];
             $this->Config['refund_apply_shipping']=$this->Config['returnType'][$returnType]['refund_apply_shipping'];
-            
+            $this->Config['refund_show_search']=$this->Config['returnType'][$returnType]['refund_show_search'];
             
             
 			$this->addToSession('Config',$this->Config);	
