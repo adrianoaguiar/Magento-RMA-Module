@@ -2089,16 +2089,16 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
         
         $wnotify=$this->Config['withdrawal_notify'];
         $wvisible=$this->Config['withdrawal_view'];
-        $wcomment=str_replace('{LINK_LABEL}',$response["labellink"],str_replace('{RMAREF}',$response["rmareference"],str_replace('{LINK_STATUS}',$this->Config['statusurl'],$this->Config['withdrawal_message'])));
+        $wcomment=str_replace('{LINK_LABEL}','<a target="_blank" href="'.$response["labellink"].'" >'.$response["labellink"].'</a>',str_replace('{RMAREF}',$response["rmareference"],str_replace('{LINK_STATUS}','<a target="_blank" href="'.$this->Config['statusurl'].'" >'.$this->Config['statusurl'].'</a>',$this->Config['withdrawal_message'])));
         
         $exchangedProds = $this->getSession('exchangeProducts');
 
-        $comment=str_replace('{LINK_LABEL}',$response["labellink"],str_replace('{RMAREF}',$response["rmareference"],str_replace('{LINK_STATUS}',$this->Config['statusurl'],$this->Config['created_message'])));
+        $comment=str_replace('{LINK_LABEL}','<a target="_blank" href="'.$response["labellink"].'" >'.$response["labellink"].'</a>',str_replace('{RMAREF}',$response["rmareference"],str_replace('{LINK_STATUS}','<a target="_blank" href="'.$this->Config['statusurl'].'" >'.$this->Config['statusurl'].'</a>',$this->Config['created_message'])));
         $order->addStatusHistoryComment($comment,'rma_created')->setIsVisibleOnFront($visible)->setIsCustomerNotified($notify);
 		$order->save();
 		$order->sendOrderUpdateEmail($notify, $comment);
         
-        if($this->Config['withdrawal_enabled'])
+        if($this->Config['withdrawal_enabled'] && isset($post['withdrawalform']) && $post['withdrawalform']=='true')
         {
             $order->addStatusHistoryComment($wcomment,false)->setIsVisibleOnFront($wvisible)->setIsCustomerNotified($wnotify);
             $order->save();
@@ -2133,7 +2133,7 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 		{
 			foreach($rmaReturnoptions as $ro)
 			{
-				if(strtoupper($ro['selected'])=='Y')
+				if(isset($ro['selected']) && strtoupper($ro['selected'])=='Y')
 				{
 					$rma['rma_returnprompt']		= $ro['prompt'];
 					$rma['rma_returnlogo']			= $ro['logourl'];

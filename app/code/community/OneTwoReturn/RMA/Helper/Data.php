@@ -77,10 +77,8 @@ class OneTwoReturn_RMA_Helper_Data extends Mage_Core_Helper_Abstract
 		
 		$notify=Mage::getStoreConfig('rma/communication/'.$action.'_notify');
 		$visible=Mage::getStoreConfig('rma/communication/'.$action.'_view');
-        $comment=str_replace('{RMAREF}',$rma->getRmaReference(),str_replace('{LINK_STATUS}',Mage::getStoreConfig('rma/advanced/statusurl'),Mage::getStoreConfig('rma/communication/'.$action.'_message')));
+        $comment=str_replace('{RMAREF}',$rma->getRmaReference(),str_replace('{LINK_STATUS}','<a target="_blank" href="'.Mage::getStoreConfig('rma/advanced/statusurl').'" >'.Mage::getStoreConfig('rma/advanced/statusurl').'</a>',Mage::getStoreConfig('rma/communication/'.$action.'_message')));
 		
-		//$order->addStatusHistoryComment('12Return RMA request '.$action.'.<br /><br />RMA Reference number:'.$rma->getRmaReference());
-		//$order->save();
 		
 		$order->addStatusHistoryComment($comment,$newstatus)
 		->setIsVisibleOnFront($visible)
