@@ -1,12 +1,28 @@
  <?php echo $this->getMessagesBlock()->getGroupedHtml();
  $sessionXML    = $this->getSession('xml');
+ $prodGroup    = $this->getSession('prodGroup');
  $config = $this->getSession('Config');
+ 
+ $msg = Mage::getStoreConfig('rma/returnoptions/thankstext');
+ 
+ 
+if($config['dynamic_enabled'] && !empty($prodGroup))
+{
+    foreach($config['dynamic_options'] as $attopt)
+    {
+        if(strtoupper($attopt['product_type'])==strtoupper($prodGroup))
+        {
+            if(isset($attopt['show_label']) && !empty($attopt['show_label']) && ($attopt['show_label']=='false' || $attopt['show_label']=='0'))$config['labelview']=false;
+            if(isset($attopt['submit_text']) && !empty($attopt['submit_text']))$msg.="<br /><br />".$attopt['submit_text'];
+        }
+    }
+}
 ?>
 <div class="returnContainer">
         <div class="registered-users">
 <div class="page-title"><h1><?php echo $this->translate('Bedankt voor uw retour.');?></h1></div>
 <div class="mediumText"> <b><?php echo $this->translate("Uw RMA referentie nummer:");?></b> <i><?php echo $sessionXML['rmareference'];?></i><br /><br />
-<?php echo Mage::getStoreConfig('rma/returnoptions/thankstext'); ?><br />
+<?php echo $msg; ?><br />
 <?php if(isset($sessionXML['labellink']) && !empty($sessionXML['labellink']) && isset($config['labelurl']) && !empty($config['labelurl'])&& isset($config['labelview']) && $config['labelview']==true){ ?><iframe id="labelPreview" width="100%" border="0" height="712" style="padding:0;margin:0;border:0;overflow:hidden;" src="<?php echo $config['labelurl'];?>o2rlabel/html/labelcontainer.html?url=<?php echo urlencode($sessionXML['labellink']);?>"></iframe><?php }?>
 <?php ?>
 <div class="floatLeft buttons buttons-set"><button onclick="location.href='/12return/form/'"class="returnBtnBig btn btn-cart add-to-cart button" type="button"  /><span><span><?php echo $this->translate('newretour')?></span></span></button></div>

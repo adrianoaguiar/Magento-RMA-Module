@@ -41,16 +41,27 @@ class OneTwoReturn_RMA_Block_Adminhtml_System_Config_Form_Field_DynamicTableView
     {
         $this->addColumn('view_attr_value', array(
             'label' => Mage::helper('adminhtml')->__('Matched attribute value'),
-            'style' => 'width:150px',
+            'style' => 'width:120px',
         ));
         $this->addColumn('view_product_channel', array(
-            'label' => Mage::helper('adminhtml')->__('External channel'),
-            'style' => 'width:80px',
+            'label' => Mage::helper('adminhtml')->__('External'),
+            'style' => 'width:40px',
         ));
         $this->addColumn('view_product_type', array(
             'label' => Mage::helper('adminhtml')->__('Product destination code'),
-            'style' => 'width:150px',
-            'size' => 20,
+            'style' => 'width:130px',
+        ));
+        $this->addColumn('view_show_label', array(
+            'label' => Mage::helper('adminhtml')->__('Show label'),
+            'style' => 'width:60px',
+        ));
+        $this->addColumn('view_submit_email', array(
+            'label' => Mage::helper('adminhtml')->__('Submit email address'),
+            'style' => 'width:130px',
+        ));
+        $this->addColumn('view_submit_text', array(
+            'label' => Mage::helper('adminhtml')->__('Post submit text'),
+            'style' => 'width:200px',
         ));
         $this->_addAfter = false;
         $this->_addButtonLabel = Mage::helper('adminhtml')->__('Add new route');

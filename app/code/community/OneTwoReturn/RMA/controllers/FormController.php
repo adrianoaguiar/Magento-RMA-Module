@@ -343,7 +343,7 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
                                     {
                                         if($attopt['product_channel']==false || $attopt['product_channel']=='false') 
                                         {
-                                            if(!empty($attopt['product_type']))$prodGroup = $attopt['product_type']; else $prodGroup=$attopt['attr_value'];
+                                            if(!empty($attopt['product_type']))$prodGroup = $attopt['product_type']; else $prodGroup='DEFAULT';
                                         } else {
                                             $externalChannel=str_replace("{increment_id}",$order['orderId'],$attopt['product_type']);
                                             $prodGroup='CHANNEL_ROUTING_MAGE_'.$attopt['attr_value'];
@@ -381,9 +381,11 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
                    
                     
                     $this->resetSession('exchangeProducts');
+                    $this->resetSession('prodGroup');
                     if(isset($exchangeProducts))$this->addToSession('exchangeProducts',$exchangeProducts);
                     
                     if(strtolower($prodGroup)=='default')$prodGroup='O2RECOMPRT';
+                    $this->addToSession('prodGroup',strtoupper($prodGroup));
                     
 					if(!$error && isset($products) && is_array($products))
 					{
@@ -704,7 +706,11 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
                                     if(isset($response["rmareference"]) && isset($response["status"]))
                                     {
                                         $this->addToSession('tempRMARef',$response["rmareference"]);
-                                        if($response["status"]["statuscode"] == "O")$this->saveLocalRMAData($orderSession,$orderXML,$_POST);
+                                        if($response["status"]["statuscode"] == "O")
+                                        {
+                                            $this->saveLocalRMAData($orderSession,$orderXML,$_POST);
+                                            
+                                        }
                                     }
                                     $this->redirectTo('payment');
                                 } else {
@@ -1877,7 +1883,7 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
             $this->Config['returnType'][$returnType]['dynamic_options']= unserialize(Mage::getStoreConfig('rma/'.$returnType.'/dynamic_options'));
             $this->Config['returnType'][$returnType]['dynamic_product_selection']= Mage::getStoreConfig('rma/'.$returnType.'/dynamic_product_selection');
             $this->Config['returnType'][$returnType]['dynamic_external_channel']= Mage::getStoreConfig('rma/'.$returnType.'/dynamic_external_channel');
-            
+
             if($returnType=='view')
             {
                 $this->Config['returnType'][$returnType]['refund_enabled']= Mage::getStoreConfig('rma/'.$returnType.'/refund_enabled');
@@ -2168,6 +2174,7 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 		
 		
 		$rmaConditions = $response["questions"]['question'];
+        $tempQuestions = array();
 		if(isset($rmaConditions[0]))
 		{
 			foreach($rmaConditions as $c)
@@ -2179,6 +2186,7 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 				$rcondition['rma_conditions_itemcode'] 		= $c['questionvalue'];
 				$rcondition['rma_conditions_itemdesc'] 		= $c['questionvalue'];
 				$rcondition['rma_id'] 						= $rmaid;
+                $tempQuestions[]= $rcondition;
 				$rconditionsmodel->setData($rcondition);
 				$rconditionsmodel->save();
 				
@@ -2188,6 +2196,7 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 
 		$rmaProducts = $response["products"]['product'];
 		$rmaReutil = $response["reutilization"];
+        $tempProducts = array();
 		if(isset($rmaProducts[0]))
 		{
 			$lineNo=0;
@@ -2223,6 +2232,7 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
                                     $rmaItems['exchange_pref']          = $exchangedProds[$lineNo]['exchange'];
                             }    
                             
+                            $tempProducts[]=$rmaItems;
                             
 							$ritemsmodel->setData($rmaItems);
 							$ritemsmodel->save();
@@ -2246,9 +2256,51 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 					}	
 				}						
 			}
-		} else {
-			//TODO ERROR MESSAGE
-		}
+		} 
+
+        $prodGroup = $this->getSession('prodGroup');
+        if($this->Config['dynamic_enabled'] && !empty($prodGroup))
+        {
+            foreach($this->Config['dynamic_options'] as $attopt)
+            {
+                if(strtoupper($attopt['product_type'])==strtoupper($prodGroup) && !empty($attopt['submit_email']) && $attopt['submit_email']!='false')
+                {
+
+                    $odata = $order->getShippingAddress()->getData ();
+
+                    $body = "Hello, \n\n";
+                    $body .= "A new RMA request (".$response['rmareference'].") has been submitted for your location with the following information: \n\n";
+                    
+                    $body .= "Name: ".$odata['firstname']." ".$odata['lastname']."\n";
+                    $body .= "Email: ".$odata['email']."\n";
+                    $body .= "Street: ".str_replace("\n"," ",$odata['street'])."\n";
+                    $body .= "Postal: ".$odata['postcode']."\n";
+                    $body .= "City: ".$odata['city']."\n";
+                    $body .= "Phone: ".$odata['telephone']."\n";
+                    $body .= "Company: ".$odata['company']."\n";
+                    $body .= "Country: ".$odata['country_id']."\n\n\n";
+                    
+                    $body .= "Returning products:\n\n";
+                    
+                    foreach($tempProducts as $prod)$body .= $prod['rma_items_qty_returning'].' X '.$prod['rma_items_product_model']."\n";
+                    
+                    $body .= "\n\nRMA information:\n\n";
+                    
+                    foreach($tempQuestions as $ques)$body .= $ques['rma_conditions_questiondesc'].'  '.$ques['rma_conditions_itemdesc']."\n";
+                    
+                    $mail = Mage::getModel('core/email');
+                    $mail->setToName($attopt['submit_email']);
+                    $mail->setToEmail($attopt['submit_email']);
+                    $mail->setBody($body);
+                    $mail->setSubject('New RMA request ('.$response['rmareference'].') from: '.Mage::app()->getStore()->getHomeUrl());
+                    $mail->setFromEmail(Mage::getStoreConfig('trans_email/ident_general/email'));
+                    $mail->setFromName(Mage::getStoreConfig('trans_email/ident_general/name'));
+                    $mail->setType('text');// You can use 'html' or 'text'
+                    $mail->send();
+
+                }
+            }
+        }
 	}
 
 	private function getSession($key)				//Functie om data uit een sessie te halen
