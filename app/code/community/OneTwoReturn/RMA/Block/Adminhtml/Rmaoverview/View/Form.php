@@ -9,6 +9,8 @@ class OneTwoReturn_RMA_Block_Adminhtml_Rmaoverview_View_Form extends Mage_Adminh
 		
     	$this->setId('rma_view');  
         parent::__construct();
+        $this->_controller = false; 
+        $this->_mode='view';
 		$this->setTemplate('rma/rmaoverview/view/form.phtml');
 		
     }  

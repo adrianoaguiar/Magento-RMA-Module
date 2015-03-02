@@ -14,11 +14,6 @@ class OneTwoReturn_RMA_Model_Observers_Creditnota
             $orderItem->setQtyReturning(0);
             
             $orderItem->save();
-            if(isset($aantal) && $aantal > 0)
-            {
-                $rma_changed = true;
-            }
-
         } 
         
         if(isset($order) && !is_null($order) && $rma_changed)

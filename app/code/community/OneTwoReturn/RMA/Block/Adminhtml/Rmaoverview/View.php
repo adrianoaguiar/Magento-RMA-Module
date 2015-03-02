@@ -8,6 +8,7 @@ class OneTwoReturn_RMA_Block_Adminhtml_Rmaoverview_View extends Mage_Adminhtml_B
     {
 		
 		parent::__construct();
+        $this->_controller = FALSE;
      	$this->_removeButton('delete');
         $this->_removeButton('reset');
         $this->_removeButton('save');
