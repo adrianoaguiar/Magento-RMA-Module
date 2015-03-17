@@ -18,7 +18,7 @@ United Kingdom
 
 ##Sign up with 12Return
 
-Besides downloading the module you need to create [an account](https://signup.12return.eu/) with 12Return. The starter version for Magento Community is and will stay FREE. 
+Besides downloading the module you need to create [an account](https://signup.12return.eu/) with 12Return.  
 
 ##RMA Module
 
@@ -66,13 +66,8 @@ Business intelligence
 Maximum flexibility to support your business growth
 
 
-##Starter version
-
-The FREE starter version for Magento Community offers an "install and go" solution including following logistics features:
-(1) Self postage and send by the customer is the most simple return option. You don’t need a carrier contract for it and it can be used in every country. The customer receives a clear return label with the RMA number in barcode to send the return (e.g. via the local postal office). Despite there is no track & trace integration with a carrier, this solution offers many advantages in combination with the RMA Module. As the return has been registered you know that it is returning. And the status of the returns processing is visible to the customer. The RMA Module enables you to offer a controlled returns process with this commonly used return option.
-(2) Warehouse returns handling can be done in the Magento backend with the "internal processing" option. All RMAs that have been checked in are directly available in the standard Credit Memo for restock and refund. Internal processing offers you a "just-2-clicks" RMA process in your Magento admin panel.
 
 
 ##Easy sign up
 
-With your new RMA Module from 12Return your returns process is future proof. Improve customer service, decrease costs and improve overview and control over the end-to-end returns process. You can download the module at Magento Connect and directly [sign up](http://signup.12return.eu/) and create an account with us. See our [plans and prices](http://12return.nl/en/platform/plans-prices/). Welcome to 12Return.
+With your new RMA Module from 12Return your returns process is future proof. Improve customer service, decrease costs and improve overview and control over the end-to-end returns process. You can download the module here and directly [sign up](http://signup.12return.eu/) and create an account with us. See our [plans and prices](http://12return.nl/en/platform/plans-prices/). Welcome to 12Return.
