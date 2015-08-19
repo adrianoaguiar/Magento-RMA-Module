@@ -133,4 +133,8 @@ class OneTwoReturn_RMA_ProcessingController extends Mage_Core_Controller_Front_A
 
 		return Mage::helper('rma')->changeRmaStatus($this->getRma(),$newstatus,$this->getOrder());
 	}
+    protected function _isAllowed()
+   {
+       return true;
+   }
 }

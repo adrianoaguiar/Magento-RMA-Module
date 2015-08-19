@@ -1922,17 +1922,19 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
                 $this->Config['returnType'][$returnType]['withdrawal_view']= false;
                 $this->Config['returnType'][$returnType]['refund_show_search']= false;
             }
-            
-            foreach( $this->Config['returnType'][$returnType]['dynamic_options'] as $key=>$value)
+            if($this->Config['returnType'][$returnType]['dynamic_enabled'] && is_array($this->Config['returnType'][$returnType]['dynamic_options']))
             {
-                foreach($value as $k=>$v)
+                foreach( $this->Config['returnType'][$returnType]['dynamic_options'] as $key=>$value)
                 {
-                    
-                    $k = explode('_',$k); 
-                   
-                    unset($k[0]);
-                    $k=implode("_",$k);
-                    $this->Config['returnType'][$returnType]['dynamic_options'][$key][$k]=$v;
+                    foreach($value as $k=>$v)
+                    {
+                        
+                        $k = explode('_',$k); 
+                       
+                        unset($k[0]);
+                        $k=implode("_",$k);
+                        $this->Config['returnType'][$returnType]['dynamic_options'][$key][$k]=$v;
+                    }
                 }
             }
             $this->Config['returnType'][$returnType]['dynamic_external_channel']= Mage::getStoreConfig('rma/'.$returnType.'/dynamic_external_channel');
@@ -2345,7 +2347,10 @@ class OneTwoReturn_RMA_FormController extends Mage_Core_Controller_Front_Action
 		
 	    $this->_forward('defaultNoRoute');
 	}
-
+       protected function _isAllowed()
+       {
+            return true;
+       }
 }
 
 

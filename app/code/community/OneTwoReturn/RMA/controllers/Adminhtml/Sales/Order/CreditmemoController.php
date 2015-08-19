@@ -105,4 +105,8 @@ class OneTwoReturn_RMA_Adminhtml_Sales_Order_CreditmemoController extends Mage_A
                 $this->_getSession()->addError($this->__('Failed to generate a coupon code'));
             }
     }
+    protected function _isAllowed()
+   {
+       return true;
+   }
 }

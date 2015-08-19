@@ -124,5 +124,9 @@ class OneTwoReturn_RMA_Adminhtml_RmaoverviewController extends Mage_Adminhtml_Co
         
         return $this;
     }
+    protected function _isAllowed()
+   {
+      return Mage::getSingleton('admin/session')->isAllowed('admin/sales/menurma');
+   }
 
 }

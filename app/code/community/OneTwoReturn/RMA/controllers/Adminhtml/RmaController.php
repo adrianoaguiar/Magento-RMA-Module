@@ -110,6 +110,11 @@ class OneTwoReturn_RMA_Adminhtml_RmaController extends Mage_Adminhtml_Controller
         }
         $this->redirect();
     }
+    protected function _isAllowed()
+   {
+      return true;
+   }
+
 }
 
 /* EOF */

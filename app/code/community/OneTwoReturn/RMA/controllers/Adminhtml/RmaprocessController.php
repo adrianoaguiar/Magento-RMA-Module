@@ -138,6 +138,9 @@ class OneTwoReturn_RMA_Adminhtml_RmaprocessController extends Mage_Adminhtml_Con
 		}
 	}
 
+    protected function _isAllowed(){
+      return Mage::getSingleton('admin/session')->isAllowed('admin/sales/menurma/rma_allow_check_cancel');
+    }
 
 
 
